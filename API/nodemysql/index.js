@@ -20,12 +20,14 @@ function execSQLQuery(sqlQry, res){
       database : 'db_api'
     });
     connection.query(sqlQry, function(error, results, fields){
-      if(error) 
+      if(error){
         res.json(error);
-      else
-        res.json(results);
+      }else{
+        // console.log("Query Executada: " + JSON.stringify(results))
+        console.log(results[0]);
+        res.json(results)
+      }
       connection.end();
-      console.log('executou!');
     });
   }
 
@@ -38,7 +40,7 @@ router.get('/logout', function(req, res) {
 });
 
 //authentication
-router.post('/login', (req, res, next) => {
+/**router.post('/login', (req, res, next) => {
   if(req.body.user === 'luiz' && req.body.pwd === '123'){
     //auth ok
     const id = 1; //esse id viria do banco de dados
@@ -49,6 +51,26 @@ router.post('/login', (req, res, next) => {
   }
   
   res.status(500).send('Login inválido!');
+});*/
+
+router.post('/login', (req, res, next) => {
+
+  let filter = '';
+  const nome =  req.body.nome.substring(0,150);
+  const senha = parseInt(req.body.senha);
+  if(req.body.nome && req.body.senha) filter = ` WHERE nome = '${nome}' AND senha = ${senha}`;
+  execSQLQuery('SELECT id FROM Clientes' + filter, res)
+  
+  /**if(nome === 'luiz' && senha === '123'){
+    //auth ok
+    const id = parseInt(req.params.id); //esse id viria do banco de dados
+    var token = jwt.sign({ id }, process.env.SECRET, {
+      expiresIn: 300 // expires in 5min
+    });
+    res.status(200).send({ auth: true, token: token });
+  }*/
+  
+  // res.status(500).send('Login inválido!');
 });
 
 // Proxy request
@@ -67,7 +89,7 @@ router.get('/clientes', (req, res) =>{
     execSQLQuery('SELECT * FROM Clientes', res);
 });
  
-router.get('/clientes/:id?', (req, res) =>{
+router.get('/clientes/teste', (req, res) =>{
     let filter = '';
     if(req.params.id) filter = ' WHERE ID=' + parseInt(req.params.id);
     execSQLQuery('SELECT * FROM Clientes' + filter, res);
