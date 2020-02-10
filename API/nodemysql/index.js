@@ -12,24 +12,23 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
 function execSQLQuery(sqlQry, res){
-    const connection = mysql.createConnection({
-      host     : 'localhost',
-      port     : 3306,
-      user     : 'root',
-      password : 'Ladera*610892',
-      database : 'db_api'
-    });
-    connection.query(sqlQry, function(error, results, fields){
-      if(error){
-        res.json(error);
-      }else{
-        // console.log("Query Executada: " + JSON.stringify(results))
-        console.log(results[0]);
-        res.json(results)
-      }
-      connection.end();
-    });
-  }
+  const connection = mysql.createConnection({
+    host     : 'localhost',
+    port     : 3306,
+    user     : 'root',
+    password : 'Ladera*610892',
+    database : 'db_api'
+  });
+  connection.query(sqlQry, function(error, results, fields){
+    if(error){
+      res.json(error);
+    }else{
+      console.log("Query Executada: " + JSON.stringify(results))
+      res.json(results)
+    }
+    connection.end();
+  });
+}
 
 
 /**Definindo as rotas */
@@ -58,9 +57,10 @@ router.post('/login', (req, res, next) => {
   let filter = '';
   const nome =  req.body.nome.substring(0,150);
   const senha = parseInt(req.body.senha);
+  // Se existe!
   if(req.body.nome && req.body.senha) filter = ` WHERE nome = '${nome}' AND senha = ${senha}`;
   execSQLQuery('SELECT id FROM Clientes' + filter, res)
-  
+
   /**if(nome === 'luiz' && senha === '123'){
     //auth ok
     const id = parseInt(req.params.id); //esse id viria do banco de dados
@@ -97,6 +97,8 @@ router.get('/clientes/teste', (req, res) =>{
 
 router.delete('/clientes/:id', (req, res) =>{
     execSQLQuery('DELETE FROM Clientes WHERE ID=' + parseInt(req.params.id), res);
+    console.log('Cliente deletado');
+    res.redirect('/clientes')
 });
 
 router.post('/clientes', (req, res) =>{
