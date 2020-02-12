@@ -53,24 +53,57 @@ router.get('/logout', function(req, res) {
 });*/
 
 router.post('/login', (req, res, next) => {
-
-  let filter = '';
-  const nome =  req.body.nome.substring(0,150);
-  const senha = parseInt(req.body.senha);
-  // Se existe!
-  if(req.body.nome && req.body.senha) filter = ` WHERE nome = '${nome}' AND senha = ${senha}`;
-  execSQLQuery('SELECT id FROM Clientes' + filter, res)
-
-  /**if(nome === 'luiz' && senha === '123'){
-    //auth ok
-    const id = parseInt(req.params.id); //esse id viria do banco de dados
-    var token = jwt.sign({ id }, process.env.SECRET, {
-      expiresIn: 300 // expires in 5min
-    });
-    res.status(200).send({ auth: true, token: token });
-  }*/
   
-  // res.status(500).send('Login inválido!');
+  const con = mysql.createConnection({
+    host     : 'localhost',
+    port     : 3306,
+    user     : 'root',
+    password : 'Ladera*610892',
+    database : 'db_api'
+  });
+
+
+  if(req.body.nome && req.body.senha){
+
+    const nome = req.body.nome.substring(0,150);
+    const senha = req.body.senha.substr(0,11);
+    var teste = null;
+
+    teste = con.connect(function(err) {
+      if (err) throw err;
+    
+      con.query(`SELECT nome, senha, id FROM Clientes WHERE nome = '${nome}' AND senha = '${senha}'`, function (err, result, fields) {
+      
+        if (err) throw err;
+
+        var id = JSON.parse(result[0].id);
+        
+
+        return id
+      
+        
+      });
+      con.end();
+    });
+    
+    console.log(teste);
+    // var token = jwt.sign({ id }, process.env.SECRET, {
+    //   expiresIn: 300 // expires in 5min
+    // });
+    
+    // res.status(200).send({ auth: true, token: token });
+
+    
+    res.end();
+
+  }else{
+    res.status(500).send('Login inválido!');
+  }
+
+
+
+
+  // console.log(con.connect())
 });
 
 // Proxy request
