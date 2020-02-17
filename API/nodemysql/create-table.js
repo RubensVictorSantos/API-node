@@ -1,12 +1,6 @@
 const mysql = require('mysql');
-
-const connection = mysql.createConnection({
-  host     : 'localhost',
-  port     : 3306,
-  user     : 'root',
-  password : 'Ladera*610892',
-  database : 'db_api'
-});
+const con = require('./db.js');
+exports.connection
 
 /** Criando a tabela clientes */
 function createTable(conn){
@@ -20,7 +14,7 @@ function createTable(conn){
       
       conn.query(sql, function (error, results, fields){
           if(error) return console.log(error);
-          console.log('criou a tabela!');
+          console.log(' Criou a tabela!');
           //addRows(connection)
       });
 }
@@ -43,6 +37,6 @@ function createTable(conn){
 
 connection.connect(function(err){
   if(err) return console.log(err);
-  console.log('conectou!');
+  console.log('Conectou!');
   createTable(connection);
 });
