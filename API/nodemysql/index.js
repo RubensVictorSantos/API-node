@@ -1,5 +1,6 @@
 require("dotenv-safe").config();
-
+const crypto = require('crypto');
+const mysql = require('mysql');
 const http = require('http');
 const jwt = require('jsonwebtoken');
 const httpProxy = require('express-http-proxy');
@@ -10,7 +11,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const port = 3000;/**Porta padrão */
-const connection = require('./db.js');
+
 const userServiceProxy = httpProxy('http://localhost:3001');
 const productsServiceProxy = httpProxy('http://localhost:3002');
 
@@ -24,15 +25,21 @@ app.use(cookieParser());
 
 function execSQLQuery(sqlQry, res){
 
-  exports.connection
+  const connection = mysql.createConnection({
+    host     : 'localhost',
+    port     : 3306,
+    user     : 'root',
+    password : 'Ladera*610892',
+    database : 'db_api'
+  });
 
   connection.query(sqlQry, function(error, results, fields){
     if(error){
       res.json(error);
     }else{
       // console.log(res);
-      // console.log("Query Executada: " + JSON.stringify(results))
-      res.json(results)
+      console.log("Query Executada: " + JSON.stringify(results))
+      console.log(res.json(results))
     }
   });
 }
@@ -46,36 +53,40 @@ router.get('/logout', function(req, res) {
 
 //authentication
 router.post('/login', (req, res, next) => {
-  
-  exports.connection
+
+  const connection = mysql.createConnection({
+    host     : 'localhost',
+    port     : 3306,
+    user     : 'root',
+    password : 'Ladera*610892',
+    database : 'db_api'
+  });
 
   if(req.body.nome && req.body.senha){
 
     const nome = req.body.nome.substring(0,150);
     const senha = req.body.senha.substr(0,11);
 
-    connection.connect(function(err) {
-      if (err) throw err;
+      // if (err) throw err;
     
       connection.query(`SELECT id FROM Clientes WHERE nome = '${nome}' AND senha = '${senha}'`, function (err, result, fields) {
-      
-        if (err) throw err;
-
+        
         var id = JSON.parse(result[0].id);
-        
-            
-        var token = jwt.sign({ id }, process.env.SECRET, {
-          expiresIn: 300 // expires in 5min
-        });
-        
-        res.status(200).send({ auth: true, token: token });
-        
-      });
-      // connection.end();
-    });
-    
-    // res.end();
 
+        if(err){
+          res.json(err);
+        }else{
+          
+          var token = jwt.sign({ id }, process.env.SECRET, {
+            expiresIn: 300 // expires in 5min
+          });
+          res.status(200).send({ auth: true, token: token });
+
+          console.log(result); 
+
+        }
+      });
+      connection.end();  
   }else{
     res.status(500).send('Login inválido!');
   }
@@ -95,8 +106,8 @@ router.get('/products', verifyJWT, (req, res, next) => {
 router.get('/',(req, res)=> res.json({message: 'funcionando'}));
     
 router.get('/clientes', (req, res) =>{
-
     execSQLQuery('SELECT * FROM Clientes', res);
+
 });
 
 router.get('/clientes/:id', (req, res,) =>{
@@ -115,14 +126,32 @@ router.delete('/clientes/:id', (req, res, method) =>{
 router.post('/clientes', (req, res) =>{
     const nome = req.body.nome.substring(0,150);
     const cpf = req.body.cpf.substr(0,11);
-    execSQLQuery(`INSERT INTO Clientes(Nome, cpf, senha) VALUES('${nome}','${cpf}','${senha}')`, res);
+    const senha = req.body.senha.substring(0,11);
+
+    // Nodejs encryption with CTR
+    const senha_crypt = encrypt(senha)
+
+    function encrypt(text) {
+      const key = crypto.randomBytes(32);
+      const iv = crypto.randomBytes(16);
+      const algorithm = 'aes-256-cbc';
+
+      let cipher = crypto.createCipheriv(algorithm, Buffer.from(key), iv);
+      let encrypted = cipher.update(text);
+
+      encrypted = Buffer.concat([encrypted, cipher.final()]);
+      return iv.toString('hex');
+    }
+
+    execSQLQuery(`INSERT INTO Clientes(Nome, cpf, senha) VALUES('${nome}','${cpf}','${senha_crypt}')`, res);
 });
 
 router.patch('/clientes/:id', (req, res) => {
     const id = parseInt(req.params.id);
     const nome = req.body.nome.substring(0,150);
     const cpf = req.body.cpf.substr(0,11);
-    execSQLQuery(`UPDATE Clientes SET Nome='${nome}', CPF='${cpf}' WHERE ID=${id}`, res);
+    const senha = req.body.senha.substr(0,8);
+    execSQLQuery(`UPDATE Clientes SET Nome='${nome}', CPF='${cpf}', senha = '${senha}' WHERE ID=${id}`, res);
 })
 
 app.use('/',router);
@@ -140,12 +169,19 @@ function verifyJWT(req, res, next){
     })
 }
 
-
+function decrypt(text) {
+ let iv = Buffer.from(text.iv, 'hex');
+ let encryptedText = Buffer.from(text.encryptedData, 'hex');
+ let decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(key), iv);
+ let decrypted = decipher.update(encryptedText);
+ decrypted = Buffer.concat([decrypted, decipher.final()]);
+ return decrypted.toString();
+}
 /**Inicia o servidor */
 app.listen(port);
 
 // var server = http.createServer(app);
-// server.listen(3000);
+// server.listen(3001);
 
 
 console.log('API funcionando!');
