@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const helmet = require('helmet');
 const express = require('express');
+const encrypt = require('./senha.js');
 const app = express();
 const bodyParser = require('body-parser');
 const port = 3000;/**Porta padrão */
@@ -39,7 +40,7 @@ function execSQLQuery(sqlQry, res){
     }else{
       // console.log(res);
       console.log("Query Executada: " + JSON.stringify(results))
-      console.log(res.json(results))
+      res.json(results)
     }
   });
 }
@@ -82,7 +83,7 @@ router.post('/login', (req, res, next) => {
           });
           res.status(200).send({ auth: true, token: token });
 
-          console.log(result); 
+          // console.log(result); 
 
         }
       });
@@ -131,17 +132,7 @@ router.post('/clientes', (req, res) =>{
     // Nodejs encryption with CTR
     const senha_crypt = encrypt(senha)
 
-    function encrypt(text) {
-      const key = crypto.randomBytes(32);
-      const iv = crypto.randomBytes(16);
-      const algorithm = 'aes-256-cbc';
-
-      let cipher = crypto.createCipheriv(algorithm, Buffer.from(key), iv);
-      let encrypted = cipher.update(text);
-
-      encrypted = Buffer.concat([encrypted, cipher.final()]);
-      return iv.toString('hex');
-    }
+    console.log(senha_crypt)
 
     execSQLQuery(`INSERT INTO Clientes(Nome, cpf, senha) VALUES('${nome}','${cpf}','${senha_crypt}')`, res);
 });
@@ -151,7 +142,10 @@ router.patch('/clientes/:id', (req, res) => {
     const nome = req.body.nome.substring(0,150);
     const cpf = req.body.cpf.substr(0,11);
     const senha = req.body.senha.substr(0,8);
-    execSQLQuery(`UPDATE Clientes SET Nome='${nome}', CPF='${cpf}', senha = '${senha}' WHERE ID=${id}`, res);
+
+    let senha_crypt = encrypt(senha); 
+
+    execSQLQuery(`UPDATE Clientes SET Nome='${nome}', CPF='${cpf}', senha = '${senha_crypt}' WHERE ID=${id}`, res);
 })
 
 app.use('/',router);
@@ -169,19 +163,36 @@ function verifyJWT(req, res, next){
     })
 }
 
-function decrypt(text) {
- let iv = Buffer.from(text.iv, 'hex');
- let encryptedText = Buffer.from(text.encryptedData, 'hex');
- let decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(key), iv);
- let decrypted = decipher.update(encryptedText);
- decrypted = Buffer.concat([decrypted, decipher.final()]);
- return decrypted.toString();
-}
+// function encrypt(text) {
+
+//   var mykey = crypto.createCipher('aes-128-cbc', text);
+//   var mystr = mykey.update('abc', 'utf8', 'hex')
+//   mystr += mykey.final('hex');
+
+//   return mystr
+
+
+//   // const key = crypto.randomBytes(32);
+//   // const iv = crypto.randomBytes(16);
+//   // const algorithm = 'aes-256-cbc';
+
+//   // let cipher = crypto.createCipheriv(algorithm, Buffer.from(key), iv);
+//   // let encrypted = cipher.update(text);
+
+//   // encrypted = Buffer.concat([encrypted, cipher.final()]);
+//   // return iv.toString('hex');
+// }
+
+// function decrypt(text) {
+//   let iv = Buffer.from(text.iv, 'hex');
+//   let encryptedText = Buffer.from(text.encryptedData, 'hex');
+//   let decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(key), iv);
+//   let decrypted = decipher.update(encryptedText);
+  
+//   decrypted = Buffer.concat([decrypted, decipher.final()]);
+//   return decrypted.toString();
+// }
 /**Inicia o servidor */
 app.listen(port);
-
-// var server = http.createServer(app);
-// server.listen(3001);
-
 
 console.log('API funcionando!');
