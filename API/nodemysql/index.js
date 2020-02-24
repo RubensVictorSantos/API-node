@@ -97,6 +97,7 @@ router.post('/login', (req, res, next) => {
 // Proxy request
 router.get('/users', verifyJWT, (req, res, next) => {
     userServiceProxy(req, res, next);
+    console.log(next);
 })
   
 router.get('/products', verifyJWT, (req, res, next) => {
@@ -130,11 +131,11 @@ router.post('/clientes', (req, res) =>{
     const senha = req.body.senha.substring(0,11);
 
     // Nodejs encryption with CTR
-    const senha_crypt = encrypt(senha)
+    // const senha_crypt = encrypt(senha)
 
-    console.log(senha_crypt)
+    console.log(senha)
 
-    execSQLQuery(`INSERT INTO Clientes(Nome, cpf, senha) VALUES('${nome}','${cpf}','${senha_crypt}')`, res);
+    execSQLQuery(`INSERT INTO Clientes(Nome, cpf, senha) VALUES('${nome}','${cpf}','${senha}')`, res);
 });
 
 router.patch('/clientes/:id', (req, res) => {
@@ -143,9 +144,9 @@ router.patch('/clientes/:id', (req, res) => {
     const cpf = req.body.cpf.substr(0,11);
     const senha = req.body.senha.substr(0,8);
 
-    let senha_crypt = encrypt(senha); 
+    // let senha_crypt = encrypt(senha); 
 
-    execSQLQuery(`UPDATE Clientes SET Nome='${nome}', CPF='${cpf}', senha = '${senha_crypt}' WHERE ID=${id}`, res);
+    execSQLQuery(`UPDATE Clientes SET Nome='${nome}', CPF='${cpf}', senha = '${senha}' WHERE ID=${id}`, res);
 })
 
 app.use('/',router);
@@ -192,6 +193,7 @@ function verifyJWT(req, res, next){
 //   decrypted = Buffer.concat([decrypted, decipher.final()]);
 //   return decrypted.toString();
 // }
+
 /**Inicia o servidor */
 app.listen(port);
 
