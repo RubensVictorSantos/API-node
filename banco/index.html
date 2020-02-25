@@ -1,10 +1,29 @@
+<!DOCTYPE html>
+
 <html>
    <head> 
        <title>
             Cadastro
        </title>
-      <meta charset="utf-8">
+       <meta charset="utf-8">
+       <!-- <meta charset="utf-8" http-equiv="Content-Security-Policy"
+        content="default-src *;
+               script-src 'self' 'unsafe-inline' 'unsafe-eval'
+                           127.0.0.1:*
+                           http://*.gstatic.com          
+                           http://*.googleapis.com
+                           https://*.gstatic.com
+                           https://*.googleapis.com
+                           ;
+               style-src  'self' 'unsafe-inline'
+                           127.0.0.1
+                           http://*.gstatic.com         
+                           http://*.googleapis.com
+                           https://*.gstatic.com
+                           https://*.googleapis.com
+    "> -->
       <link rel="stylesheet" href="cadastro.css">
+      <script type="" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
    </head>
    <body>
       <div id=form>
@@ -12,7 +31,7 @@
          <h1> Cadastro Funcionário</h1>
       </header>
       
-      <form >
+      <!-- <form > -->
          <div class='grupos'> 
             <div class='grupo'>
                <label> Nome: </label>
@@ -69,19 +88,19 @@
                <input type="text" id="cep"/>
             </div>
          </div>
-         <fieldset>
+         <!-- <fieldset>
             <div class="grupo1">
                <label>Obs.:</label>
                <textarea id="obs"></textarea>
             </div>
-         </fieldset>
+         </fieldset> -->
          <div class="btn">
             <button id='cadastrar'>Cadastrar nome</button>
             <button id='atualizar'>Atualizar nome</button>
             <button id='deletar'>Deletar nome</button>
          </div>
 
-      </form>
+      <!-- </form> -->
 
       <!--Tabela para visualizar as informações-->
       <div class='grupos'>
@@ -90,12 +109,15 @@
                 <tr>
                    <th>Código</th>
                    <th>Nome</th>
-                   <th>Sexo</th>
-                   <th>E-mail</th>
-                   <th>Celular</th>
+                   <th>CPF</th>
+                   <th>Senha</th>
+                   <th>Status</th>
                 </tr>
              </thead>
              <tbody id="bd">
+                
+             </tbody>
+             <tbody id="test">
                 
              </tbody>
          </table> 

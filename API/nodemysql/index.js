@@ -9,6 +9,7 @@ const logger = require('morgan');
 const helmet = require('helmet');
 const express = require('express');
 const encrypt = require('./senha.js');
+const cors = require('cors')
 const app = express();
 const bodyParser = require('body-parser');
 const port = 3000;/**Porta padrão */
@@ -19,7 +20,7 @@ const productsServiceProxy = httpProxy('http://localhost:3002');
 /**Configurando o body parser para pegar POST mais tarde*/
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
-
+app.use(cors())
 app.use(logger('dev'));
 app.use(helmet());
 app.use(cookieParser());
@@ -38,6 +39,10 @@ function execSQLQuery(sqlQry, res){
     if(error){
       res.json(error);
     }else{
+
+      res.header("Access-Control-Allow-Origin", "*");
+      res.header("Access-Control-Allow-Headers", "Origin, X-Request-Width, Content-Type, Accept");
+      res.setHeader("Access-Control-Allow-Origin", "*");
       // console.log(res);
       console.log("Query Executada: " + JSON.stringify(results))
       res.json(results)

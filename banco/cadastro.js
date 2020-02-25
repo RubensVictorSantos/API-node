@@ -1,3 +1,5 @@
+// import { response } from "express";
+
 let btnCadastrar = document.getElementById("cadastrar");
 let btnDeletar = document.getElementById("deletar");
 const btnAtualizar = document.getElementById("atualizar");
@@ -37,7 +39,6 @@ const limparCampos = () =>{
 	Array.from(rdoSexo).map(opt => opt.checked = false);
 }
 
-
 const emailValido = (email) =>{
 	const er = /[0-9a-z._-]+@[0-9a-z]+([.][a-z]+)+/
 
@@ -70,10 +71,7 @@ const verificarCampos = () =>{
 		semErro = false;	
 	};
 
-	console.log(semErro);
-
 	return semErro;
-
 };
 
 const cadastrarAluno = () => {
@@ -187,20 +185,33 @@ const deletarNome = () =>{
 	mostrarBD();
 }
 
-const mostrarBD = () => {
-	const tb = document.getElementById('bd');
+function mostrarBD(){
 	
-	while (tb.firstChild){
-		tb.removeChild(tb.firstChild);
-	}
-	bd.map((aluno) => tb.insertAdjacentHTML("beforeend", `
-	<tr>
-		<td>${aluno.codigo}</td>
-		<td>${aluno.nome}</td>
-		<td>${aluno.sexo}</td>
-		<td>${aluno.email}</td>
-		<td>${aluno.celular}</td>
-	</tr>`));
+	var url = 'http://127.0.0.1:3000/clientes';
+	$.ajax({
+		url: url,
+		dataType: "json",
+		method: 'get',
+		contentType: 'application/json',
+		
+		success: function (response) {
+			
+			const tabela = document.getElementById('test');
+
+			while (tabela.firstChild){
+				tabela.removeChild(tabela.firstChild);
+			}
+
+			response.map((teste) => tabela.insertAdjacentHTML("beforeend", `
+			<tr>
+				<td>${teste.ID}</td>
+				<td>${teste.Nome}</td>
+				<td>${teste.CPF}</td>
+				<td>${teste.senha}</td>
+				<td>${teste.status}</td>
+			</tr>`));
+		}
+	});
 }
 
 const atualizarCancelar = () =>{
@@ -242,6 +253,7 @@ const mascCelular = () =>{
 
 btnCadastrar.addEventListener('click', cadastrarSalvar);
 btnDeletar.addEventListener('click', deletarNome);
+// btnDeletar.addEventListener('click', teste);
 btnAtualizar.addEventListener('click', atualizarCancelar);
 txtCep.addEventListener('blur', cep);
 txtNome.addEventListener("change", () => removerErro (txtNome));
