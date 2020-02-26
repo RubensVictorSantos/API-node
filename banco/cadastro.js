@@ -91,7 +91,7 @@ const cadastrarAluno = () => {
 			dataType: "json",
 			method: 'post',
 			body:{ nome : nome, cpf : cpf, senha  : senha },
-			contentType: '',
+			contentType: 'application/x-www-form-urlencoded',
 			
 			success: function (result,status,request) {
 				
