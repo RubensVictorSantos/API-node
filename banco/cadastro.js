@@ -31,8 +31,6 @@ const cep = () =>{
 	});
 }
 
-const bd = [];
-
 const limparCampos = () =>{
 	const campos = Array.from(document.querySelectorAll("input[type='text'], select"));
 	campos.map(tag => tag.value = "");
@@ -75,59 +73,78 @@ const verificarCampos = () =>{
 };
 
 const cadastrarAluno = () => {
+
+	alert(txtNome.value + "\n" + txtEmail.value + "\n" +txtNumero.value);
 	
 	if (verificarCampos()){
 	codigo++;
 
-	const novoAluno = {
-		codigo:codigo,
-		nome:txtNome.value,
-		sexo:rdoSexo[0].checked ? "M":"F",
-		email:txtEmail.value,
-		celular:txtCelular.value,
-		end:txtEnd.value,
-		cidade:txtCidade.value,
-		numero:txtNumero.value,
-		bairro:txtBairro.value,
-		uf: cmbEstado.value,
-		cep:txtCep.value,
-	}
-	
-	bd.push(novoAluno);
+		var nome = txtNome.value;
+		var cpf = txtEmail.value;
+		var senha = txtNumero.value;
+		
+		alert(nome + "\n" + cpf + "\n" +senha);
+
+		var url = 'http://127.0.0.1:3000/clientes';
+		$.ajax({
+			url: url,
+			dataType: "json",
+			method: 'post',
+			body:{ nome : nome, cpf : cpf, senha  : senha },
+			contentType: '',
+			
+			success: function (result,status,request) {
+				
+					alert("Estado atual---\n" + status + "\nResultado: " + result);
+					//Abaixo está listando os header do conteudo que você requisitou, só para confirmar se você setou os header e dataType corretos
+					alert("Informações da requisição: \n" + request.getAllResponseHeaders());
+					confirmationValue = result; //Repassa o retorno da requisição para teste futuro
+				},
+				error: function (request, status, erro) {
+					alert("Problema ocorrido: " + status + "\nDescição: " + erro);
+					//Abaixo está listando os header do conteudo que você requisitou, só para confirmar se você setou os header e dataType corretos
+					alert("Informações da requisição: \n" + request.getAllResponseHeaders());
+				},
+					complete: function (jqXHR, textStatus) {
+					alert("Chegou ao fim: : " + textStatus);
+					//Exibindo o valor que você obeteve e repassou para o confirmationValue
+					alert("Confirmation value: " + confirmationValue);
+				}
+		});
 
 	limparCampos();
 	
 	verificarCampos();
-	mostrarBD();
+	// mostrarBD();
 	}else{
 		alert ("Preencha os campos em destaque!")
 	}
 };
 
-const atualizarAluno = () => {
-	const codigo = bd[indiceAluno].codigo;
+// const atualizarAluno = () => {
+// 	const codigo = bd[indiceAluno].codigo;
 	
-	bd.splice (indiceAluno,1,{
-	codigo: bd[indiceAluno].codigo,
-	nome:txtNome.value,
-	sexo:rdoSexo[0].checked ? "M":"F",
-	email:txtEmail.value,
-	celular:txtCelular.value,
-	end:txtEnd.value,
-	cidade:txtCidade.value,
-	numero:txtNumero.value,
-	bairro:txtBairro.value,
-	uf: cmbEstado.value,
-	cep:txtCep.value,
-	});
-	mudarEstado("normal");
-	limparCampos();
-	mostrarBD();
-}
+// 	bd.splice (indiceAluno,1,{
+// 	codigo: bd[indiceAluno].codigo,
+// 	nome:txtNome.value,
+// 	sexo:rdoSexo[0].checked ? "M":"F",
+// 	email:txtEmail.value,
+// 	celular:txtCelular.value,
+// 	end:txtEnd.value,
+// 	cidade:txtCidade.value,
+// 	numero:txtNumero.value,
+// 	bairro:txtBairro.value,
+// 	uf: cmbEstado.value,
+// 	cep:txtCep.value,
+// 	});
+// 	mudarEstado("normal");
+// 	limparCampos();
+// 	mostrarBD();
+// }
 
 const cadastrarSalvar = () =>{
 	if (btnCadastrar.textContent == "Salvar"){
-		atualizarAluno();
+		// atualizarAluno();
 	}else{
 		cadastrarAluno();
 	};
@@ -145,45 +162,62 @@ const mudarEstado = (estado) => {
 	}
 }
 
-const atualizarNome =() =>{
+// const atualizarNome =() =>{
 
-	const codigo = prompt("Digite o código para modificar: ");
+// 	const codigo = prompt("Digite o código para modificar: ");
 	
-	preencherCampos = (i) => {
-		const iSexo = bd[i].sexo == "M"? 0 : 1;
-		const iEstado = ["SP", "RJ", "MG", "ES"].indexOf(bd[i].uf);
+// 	preencherCampos = (i) => {
+// 		const iSexo = bd[i].sexo == "M"? 0 : 1;
+// 		const iEstado = ["SP", "RJ", "MG", "ES"].indexOf(bd[i].uf);
 		
-		txtNome.value = bd[i].nome;
-		rdoSexo[iSexo].checked = true;
-		txtEmail.value = bd[i].email;
-		txtCelular.value = bd[i].celular;
-		txtEnd.value = bd[i].end;
-		txtNumero.value = bd[i].numero;
-		txtBairro.value = bd[i].bairro;
-		txtCidade.value = bd[i].cidade;
-		cmbEstado.selectedIndex = iEstado;
-		txtCep.value = bd[i].cep;
+// 		txtNome.value = bd[i].nome;
+// 		rdoSexo[iSexo].checked = true;
+// 		txtEmail.value = bd[i].email;
+// 		txtCelular.value = bd[i].celular;
+// 		txtEnd.value = bd[i].end;
+// 		txtNumero.value = bd[i].numero;
+// 		txtBairro.value = bd[i].bairro;
+// 		txtCidade.value = bd[i].cidade;
+// 		cmbEstado.selectedIndex = iEstado;
+// 		txtCep.value = bd[i].cep;
 			
-	}
+// 	}
 		
-	indiceAluno = bd.findIndex(aluno=>aluno.codigo == codigo);
+// 	indiceAluno = bd.findIndex(aluno=>aluno.codigo == codigo);
 	
-	if(indiceAluno == -1){
-		alert("Aluno não encontrado!")
-	}else{
-		preencherCampos(indiceAluno);
-		mostrarBD();
-		mudarEstado("");
-	}
-}
+// 	if(indiceAluno == -1){
+// 		alert("Aluno não encontrado!")
+// 	}else{
+// 		preencherCampos(indiceAluno);
+// 		mostrarBD();
+// 		mudarEstado("");
+// 	}
+// }
+
+// DELETAR USUÁRIOS
 
 const deletarNome = () =>{
-	const codigo= prompt("Digite o código para deletar:");
-	
-	const indiceDeletar = bd.findIndex(aluno => aluno.codigo == codigo);
-	bd.splice(indiceDeletar, 1);
+
+	const codigo = prompt("Digite o código para deletar:");
+
+	const url = `http://127.0.0.1:3000/clientes/${codigo}`;
+
+	$.ajax({
+		url: url,
+		dataType: "json",
+		method: 'delete',
+		contentType: 'application/json',
+		
+		success: function (response) {
+			console.log(`Usuário excluido com sucesso!`);
+		}
+
+	});
+
 	mostrarBD();
 }
+
+// TABELA USUÁRIOS
 
 function mostrarBD(){
 	
@@ -202,30 +236,29 @@ function mostrarBD(){
 				tabela.removeChild(tabela.firstChild);
 			}
 
-			response.map((teste) => tabela.insertAdjacentHTML("beforeend", `
+			response.map((usuario) => tabela.insertAdjacentHTML("beforeend", `
 			<tr>
-				<td>${teste.ID}</td>
-				<td>${teste.Nome}</td>
-				<td>${teste.CPF}</td>
-				<td>${teste.senha}</td>
-				<td>${teste.status}</td>
+				<td>${usuario.ID}</td>
+				<td>${usuario.Nome}</td>
+				<td>${usuario.CPF}</td>
+				
 			</tr>`));
 		}
 	});
 }
 
-const atualizarCancelar = () =>{
-	if (btnAtualizar.textContent == "Cancelar"){
-		cancelarAtualizacao();
-	}else{
-		atualizarNome();
-	}
-}
+// const atualizarCancelar = () =>{
+// 	if (btnAtualizar.textContent == "Cancelar"){
+// 		cancelarAtualizacao();
+// 	}else{
+// 		atualizarNome();
+// 	}
+// }
 
-const cancelarAtualizacao = () =>{
-	mudarEstado("normal");
-	limparCampos();
-}
+// const cancelarAtualizacao = () =>{
+// 	mudarEstado("normal");
+// 	limparCampos();
+// }
 
 const removerErro = (elem) =>{
 	elem.classList.remove("erro");
@@ -249,12 +282,12 @@ const mascCelular = () =>{
 	txtCelular.value = texto;
 }
 
-// mostrarBD();
+mostrarBD();
 
 btnCadastrar.addEventListener('click', cadastrarSalvar);
 btnDeletar.addEventListener('click', deletarNome);
 // btnDeletar.addEventListener('click', teste);
-btnAtualizar.addEventListener('click', atualizarCancelar);
+// btnAtualizar.addEventListener('click', atualizarCancelar);
 txtCep.addEventListener('blur', cep);
 txtNome.addEventListener("change", () => removerErro (txtNome));
 txtEmail.addEventListener("change", () => removerErro (txtEmail));

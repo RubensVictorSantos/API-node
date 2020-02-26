@@ -6,32 +6,16 @@
             Cadastro
        </title>
        <meta charset="utf-8">
-       <!-- <meta charset="utf-8" http-equiv="Content-Security-Policy"
-        content="default-src *;
-               script-src 'self' 'unsafe-inline' 'unsafe-eval'
-                           127.0.0.1:*
-                           http://*.gstatic.com          
-                           http://*.googleapis.com
-                           https://*.gstatic.com
-                           https://*.googleapis.com
-                           ;
-               style-src  'self' 'unsafe-inline'
-                           127.0.0.1
-                           http://*.gstatic.com         
-                           http://*.googleapis.com
-                           https://*.gstatic.com
-                           https://*.googleapis.com
-    "> -->
       <link rel="stylesheet" href="cadastro.css">
       <script type="" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
    </head>
    <body>
-      <div id=form>
+      <div id= "form">
       <header>
          <h1> Cadastro Funcionário</h1>
       </header>
       
-      <!-- <form > -->
+      <form name="frmcadastrar" id="frmcadastrar" method="post" action="index.html">
          <div class='grupos'> 
             <div class='grupo'>
                <label> Nome: </label>
@@ -95,12 +79,12 @@
             </div>
          </fieldset> -->
          <div class="btn">
-            <button id='cadastrar'>Cadastrar nome</button>
+            <button id='cadastrar' type="submit">Cadastrar nome</button>
             <button id='atualizar'>Atualizar nome</button>
             <button id='deletar'>Deletar nome</button>
          </div>
 
-      <!-- </form> -->
+      </form>
 
       <!--Tabela para visualizar as informações-->
       <div class='grupos'>
@@ -110,8 +94,8 @@
                    <th>Código</th>
                    <th>Nome</th>
                    <th>CPF</th>
-                   <th>Senha</th>
-                   <th>Status</th>
+                   <th>e-mail</th>
+                   <!-- <th>Status</th> -->
                 </tr>
              </thead>
              <tbody id="bd">

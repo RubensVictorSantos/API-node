@@ -44,7 +44,7 @@ function execSQLQuery(sqlQry, res){
       res.header("Access-Control-Allow-Headers", "Origin, X-Request-Width, Content-Type, Accept");
       res.setHeader("Access-Control-Allow-Origin", "*");
       // console.log(res);
-      console.log("Query Executada: " + JSON.stringify(results))
+      // console.log("Query Executada: " + JSON.stringify(results))
       res.json(results)
     }
   });
@@ -131,14 +131,16 @@ router.delete('/clientes/:id', (req, res, method) =>{
 });
 
 router.post('/clientes', (req, res) =>{
+
+    console.log(req.body);
+
     const nome = req.body.nome.substring(0,150);
     const cpf = req.body.cpf.substr(0,11);
-    const senha = req.body.senha.substring(0,11);
+    const senha = req.body.senha.substring(0,50);
 
+    console.log(nome +"\n"+cpf+"\n"+senha);
     // Nodejs encryption with CTR
     // const senha_crypt = encrypt(senha)
-
-    console.log(senha)
 
     execSQLQuery(`INSERT INTO Clientes(Nome, cpf, senha) VALUES('${nome}','${cpf}','${senha}')`, res);
 });
