@@ -43,7 +43,7 @@ function execSQLQuery(sqlQry, res){
       res.header("Access-Control-Allow-Origin", "*");
       res.header("Access-Control-Allow-Headers", "Origin, X-Request-Width, Content-Type, Accept");
       res.setHeader("Access-Control-Allow-Origin", "*");
-      // console.log(res);
+      // console.log(sqlQry);
       // console.log("Query Executada: " + JSON.stringify(results))
       res.json(results)
     }
@@ -102,7 +102,6 @@ router.post('/login', (req, res, next) => {
 // Proxy request
 router.get('/users', verifyJWT, (req, res, next) => {
     userServiceProxy(req, res, next);
-    console.log(next);
 })
   
 router.get('/products', verifyJWT, (req, res, next) => {
@@ -126,34 +125,26 @@ router.get('/clientes/:id', (req, res,) =>{
 
 router.delete('/clientes/:id', (req, res, method) =>{
     execSQLQuery('DELETE FROM Clientes WHERE ID=' + parseInt(req.params.id), res);
-    console.log('Cliente deletado com sucesso!');
     // res.redirect('/clientes')
 });
 
 router.post('/clientes', (req, res) =>{
 
-    console.log(req.body);
-
     const nome = req.body.nome.substring(0,150);
-    const cpf = req.body.cpf.substr(0,11);
-    const senha = req.body.senha.substring(0,50);
-
-    console.log(nome +"\n"+cpf+"\n"+senha);
-    // Nodejs encryption with CTR
-    // const senha_crypt = encrypt(senha)
-
-    execSQLQuery(`INSERT INTO Clientes(Nome, cpf, senha) VALUES('${nome}','${cpf}','${senha}')`, res);
+    const email = req.body.email.substring(0,150);
+    const celular = req.body.celular;
+    
+    execSQLQuery(`INSERT INTO Clientes(nome, email, celular) VALUES('${nome}','${email}','${celular}')`, res);
 });
 
 router.patch('/clientes/:id', (req, res) => {
-    const id = parseInt(req.params.id);
-    const nome = req.body.nome.substring(0,150);
-    const cpf = req.body.cpf.substr(0,11);
-    const senha = req.body.senha.substr(0,8);
+ 
+  const id = parseInt(req.params.id);
+  const nome = req.body.nome.substring(0,150);
+  const email = req.body.email.substring(0,150);
+  const celular = req.body.celular.substring(0,150);
 
-    // let senha_crypt = encrypt(senha); 
-
-    execSQLQuery(`UPDATE Clientes SET Nome='${nome}', CPF='${cpf}', senha = '${senha}' WHERE ID=${id}`, res);
+  execSQLQuery(`UPDATE Clientes SET Nome='${nome}', email='${email}', celular = '${celular}' WHERE ID=${id}`, res);
 })
 
 app.use('/',router);
