@@ -162,7 +162,7 @@ const atualizar = () =>{
 	}else{
 		btnDeletar.style.display = "inline";
 		btnCadastrar.textContent = "Cadastrar";
-		btnAtualizar.textContent = "Atualizar";
+		// btnAtualizar.textContent = "Atualizar";
 	}
 	
 	// alert(btnAtualizar.textContent);
