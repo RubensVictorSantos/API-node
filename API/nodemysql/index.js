@@ -43,8 +43,8 @@ function execSQLQuery(sqlQry, res){
       res.header("Access-Control-Allow-Origin", "*");
       res.header("Access-Control-Allow-Headers", "Origin, X-Request-Width, Content-Type, Accept");
       res.setHeader("Access-Control-Allow-Origin", "*");
-      // console.log(sqlQry);
-      // console.log("Query Executada: " + JSON.stringify(results))
+      console.log(sqlQry);
+      console.log("Query Executada: " + JSON.stringify(results))
       res.json(results)
     }
   });
@@ -117,9 +117,12 @@ router.get('/clientes', (req, res) =>{
 });
 
 router.get('/clientes/:id', (req, res,) =>{
-    let filter = '';
-    if(req.params.id) filter = ' WHERE ID = ' + parseInt(req.params.id);
-    execSQLQuery('SELECT * FROM Clientes' + filter, res);
+  let filter = '';
+
+  console.log(req.params.id)
+
+  if(req.params.id) filter = ' WHERE ID = ' + parseInt(req.params.id);
+  execSQLQuery('SELECT * FROM Clientes' + filter, res);
     
 });
 
@@ -130,11 +133,12 @@ router.delete('/clientes/:id', (req, res, method) =>{
 
 router.post('/clientes', (req, res) =>{
 
-    const nome = req.body.nome.substring(0,150);
-    const email = req.body.email.substring(0,150);
-    const celular = req.body.celular;
-    
-    execSQLQuery(`INSERT INTO Clientes(nome, email, celular) VALUES('${nome}','${email}','${celular}')`, res);
+  //Tem q ser igual o nome no banco
+  const nome = req.body.Nome.substring(0,150);
+  const email = req.body.email.substring(0,150);
+  const celular = req.body.celular;
+  
+  execSQLQuery(`INSERT INTO Clientes(Nome, email, celular) VALUES('${nome}','${email}','${celular}')`, res);
 });
 
 router.patch('/clientes/:id', (req, res) => {
