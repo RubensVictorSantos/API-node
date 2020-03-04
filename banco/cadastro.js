@@ -26,6 +26,15 @@ const cep = () =>{
 	});
 }
 
+//$( "form" ).submit(function( event ) {
+//	event.preventDefault();
+//});
+
+
+const limparCampos = () =>{
+	
+}
+
 const emailValido = (email) =>{
 	const er = /[0-9a-z._-]+@[0-9a-z]+([.][a-z]+)+/
 
@@ -74,12 +83,17 @@ const cadastrarAluno = () => {
 		$.ajax({
 			url: url,
 			dataType: "json",
-			method: 'post',
+			method: 'POST',
 			data:{ Nome : nome, email : email, celular  : celular },
 			contentType: 'application/x-www-form-urlencoded',
 			
 			success: function (result,status,request) {
 				
+				mostrarBD();
+				limparCampos();
+
+				alert();
+
 				alert("Estado atual---\n" + status + "\nResultado: " + result);
 				//Abaixo está listando os header do conteudo que você requisitou, só para confirmar se você setou os header e dataType corretos
 				alert("Informações da requisição: \n" + request.getAllResponseHeaders());
@@ -104,41 +118,43 @@ const cadastrarAluno = () => {
 	}
 };
 
-// function atualizarAluno(){
 
-// 	const nome = txtNome.value;
-// 	const email = txtEmail.value;
-// 	const celular = txtCelular.value;
 
-// 	const url = `http://127.0.0.1:3000/clientes/${codigo}`;
+function atualizarAluno(){
 
-// 	$.ajax({
+	const nome = txtNome.value;
+	const email = txtEmail.value;
+	const celular = txtCelular.value;
 
-// 		url: url,
-// 		dataType: "json",
-// 		method: 'PATCH',
-// 		data:{ id: codigo, nome : nome, email :email, celular  : celular },
-// 		contentType: 'application/x-www-form-urlencoded',
+	const url = `http://127.0.0.1:3000/clientes/${codigo}`;
+
+	$.ajax({
+
+		url: url,
+		dataType: "json",
+		method: 'PATCH',
+		data:{ id: codigo, nome : nome, email :email, celular  : celular },
+		contentType: 'application/x-www-form-urlencoded',
 		
-// 		success: function (result,status,request) {
+		success: function (result,status,request) {
 				
-// 			alert("Estado atual---\n" + status + "\nResultado: " + result);
-// 			//Abaixo está listando os header do conteudo que você requisitou, só para confirmar se você setou os header e dataType corretos
-// 			alert("Informações da requisição: \n" + request.getAllResponseHeaders());
-// 			confirmationValue = result; //Repassa o retorno da requisição para teste futuro
-// 		},
-// 		error: function (request, status, erro) {
-// 			alert("Problema ocorrido: " + status + "\nDescição: " + erro);
-// 			//Abaixo está listando os header do conteudo que você requisitou, só para confirmar se você setou os header e dataType corretos
-// 			alert("Informações da requisição: \n" + request.getAllResponseHeaders());
-// 		},
-// 		complete: function (jqXHR, textStatus) {
-// 			alert("Chegou ao fim: : " + textStatus);
-// 			//Exibindo o valor que você obeteve e repassou para o confirmationValue
-// 			alert("Confirmation value: " + confirmationValue);
-// 		}
-// 	});
-// }
+			alert("Estado atual---\n" + status + "\nResultado: " + result);
+			//Abaixo está listando os header do conteudo que você requisitou, só para confirmar se você setou os header e dataType corretos
+			alert("Informações da requisição: \n" + request.getAllResponseHeaders());
+			confirmationValue = result; //Repassa o retorno da requisição para teste futuro
+		},
+		error: function (request, status, erro) {
+			alert("Problema ocorrido: " + status + "\nDescição: " + erro);
+			//Abaixo está listando os header do conteudo que você requisitou, só para confirmar se você setou os header e dataType corretos
+			alert("Informações da requisição: \n" + request.getAllResponseHeaders());
+		},
+		complete: function (jqXHR, textStatus) {
+			alert("Chegou ao fim: : " + textStatus);
+			//Exibindo o valor que você obeteve e repassou para o confirmationValue
+			alert("Confirmation value: " + confirmationValue);
+		}
+	});
+}
 
 const cadastrarSalvar = () =>{
 	// if (btnCadastrar.textContent == "Salvar"){
@@ -162,7 +178,7 @@ const atualizar = () =>{
 	}else{
 		btnDeletar.style.display = "inline";
 		btnCadastrar.textContent = "Cadastrar";
-		// btnAtualizar.textContent = "Atualizar";
+		btnAtualizar.textContent = "Atualizar";
 	}
 	
 	// alert(btnAtualizar.textContent);
@@ -200,29 +216,29 @@ function preencherCampos(){
 
 		url: url,
 		dataType: "json",
-		method: 'get',
+		method: 'GET',
 		contentType: 'application/x-www-form-urlencoded',
-		
 		success: function (result,status,request){
 
-			txtNome.value = result[0].Nome;
-			txtEmail.value = result[0].email;
-			txtCelular.value = result[0].celular;
-
-			return result[0].Nome
+			result.map((res) => {
+				$('#nome').val(res.Nome);
+				$('#email').val(res.email);
+				$('#celular').val(res.celular);
+			});
 		},
 		error: function (request, status, erro) {
 			alert("Problema ocorrido: " + status + "\nDescição: " + erro);
-			//Abaixo está listando os header do conteudo que você requisitou, só para confirmar se você setou os header e dataType corretos
 			alert("Informações da requisição: \n" + request.getAllResponseHeaders());
 		},
 		complete: function (jqXHR, textStatus,confirmationValue) {
 			alert("Chegou ao fim: : " + textStatus);
-			//Exibindo o valor que você obeteve e repassou para o confirmationValue
 			alert("Confirmation value: " + confirmationValue);
 		}
 	});
+
+	// return
 }
+
 
 // DELETAR USUÁRIOS
 
@@ -237,11 +253,10 @@ const deletarNome = () =>{
 		dataType: "json",
 		method: 'delete',
 		contentType: 'application/json',
-		
 		success: function (response) {
-			alert(response)
+			
+			mostrarBD();
 		}
-
 	});
 }
 
