@@ -73,6 +73,13 @@ const cadastrarAluno = () => {
 		let nome = txtNome.value;
 		let email = txtEmail.value;
 		let celular = txtCelular.value;
+		let endereco = txtEnd.value;
+		let numero = txtNumero.value;
+		let bairro = txtBairro.value;
+		let cidade = txtCidade.value;
+		let estado = cmbEstado.value;
+		let cep = txtCep.value;
+		let sexo = $("input[name='sexo']:checked").val();
 
 		let url = 'http://127.0.0.1:3000/clientes';
 
@@ -80,11 +87,28 @@ const cadastrarAluno = () => {
 			url: url,
 			dataType: "json",
 			method: 'POST',
-			data:{ nome : nome,email : email,celular  : celular },
+			data:{ nome : nome,
+				email : email,
+				celular  : celular,
+				endereco : endereco,
+				numero : numero,
+				bairro : bairro,
+				cidade : cidade,
+				estado : estado,
+				cep : cep
+			},
 			contentType: 'application/x-www-form-urlencoded',
 			
 			success: function (result,status,request) {
 				
+				console.log(
+					sexo
+				);
+		
+				alert(
+					sexo
+				);
+
 				mostrarBD();
 				limparCampos();
 

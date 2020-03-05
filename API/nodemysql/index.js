@@ -137,14 +137,32 @@ router.post('/clientes', (req, res) =>{
   const nome = req.body.nome.substring(0,150);
   const email = req.body.email.substring(0,150);
   const celular = req.body.celular;
-
-  console.log(
-    nome +
-    "\n"+email+
-    "\n"+celular
-  );
+  const endereco = req.body.endereco;
+  const numero = req.body.numero;
+  const bairro = req.body.bairro;
+  const cidade = req.body.cidade;
+  const estado = req.body.estado.substring(0,150);
+  const cep = req.body.cep;
   
-  execSQLQuery(`INSERT INTO tbl_clientes(nome, email, celular) VALUES('${nome}','${email}','${celular}')`, res);
+  execSQLQuery(
+    `INSERT INTO tbl_clientes(nome, 
+      email, 
+      celular, 
+      endereco, 
+      numero, 
+      bairro, 
+      cidade, 
+      estado, 
+      cep) 
+    VALUES('${nome}',
+    '${email}',
+    '${celular}',
+    '${endereco}',
+    '${numero}',
+    '${bairro}',
+    '${cidade}',
+    '${estado}',
+    '${cep}')`, res);
 });
 
 router.patch('/clientes/:id', (req, res) => {
