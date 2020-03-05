@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.7.28, for Win64 (x86_64)
 --
--- Host: localhost    Database: db_api
+-- Host: localhost    Database: db_newsite
 -- ------------------------------------------------------
 -- Server version	5.7.28-log
 
@@ -16,39 +16,36 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `clientes`
+-- Table structure for table `tbl_clientes`
 --
 
-DROP TABLE IF EXISTS `clientes`;
+DROP TABLE IF EXISTS `tbl_clientes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `clientes` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `Nome` varchar(150) NOT NULL,
-  `cpf` int(11) DEFAULT NULL,
-  `senha` varchar(50) DEFAULT NULL,
-  `status` tinyint(1) DEFAULT '1',
-  `email` varchar(255) DEFAULT NULL,
-  `celular` varchar(20) DEFAULT NULL,
-  `endereco` varchar(50) DEFAULT NULL,
-  `numero` int(5) DEFAULT NULL,
-  `bairro` varchar(50) DEFAULT NULL,
-  `cidade` varchar(50) DEFAULT NULL,
-  `estado` varchar(50) DEFAULT NULL,
-  `cep` int(20) DEFAULT NULL,
-  `sexo` tinyint(4) DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=latin1;
+CREATE TABLE `tbl_clientes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nome` varchar(100) DEFAULT NULL,
+  `email` varchar(150) DEFAULT NULL,
+  `celular` varchar(15) DEFAULT NULL,
+  `endereco` varchar(150) DEFAULT NULL,
+  `numero` varchar(5) DEFAULT NULL,
+  `bairro` varchar(150) DEFAULT NULL,
+  `cidade` varchar(150) DEFAULT NULL,
+  `estado` varchar(100) DEFAULT NULL,
+  `cep` varchar(8) DEFAULT NULL,
+  `sexo` char(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `clientes`
+-- Dumping data for table `tbl_clientes`
 --
 
-LOCK TABLES `clientes` WRITE;
-/*!40000 ALTER TABLE `clientes` DISABLE KEYS */;
-INSERT INTO `clientes` VALUES (16,'',NULL,NULL,1,'','',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(17,'',NULL,NULL,1,'','',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(18,'roney',NULL,NULL,1,'qwe@gmail.com','(11) 95880-8525',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(19,'Rubens',NULL,NULL,1,'rubens@gmail.com','(11) 95880-8525',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(20,'Rubens',NULL,NULL,1,'rubens@gmail.com','(11) 95880-8525',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(21,'Rubens',NULL,NULL,1,'rubens@gmail.com','(11) 95880-8525',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(22,'Rubens',NULL,NULL,1,'rubens@gmail.com','(11) 95880-8525',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(23,'Rubens',NULL,NULL,1,'rubens@gmail.com','(11) 95880-8525',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(24,'Rubens',NULL,NULL,1,'rubens@gmail.com','(11) 95880-8525',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(25,'Rubens',NULL,NULL,1,'qwe@qwe.com','(11) 95880-8525',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(26,'wwwwwwwwww',NULL,NULL,1,'wwwwwww@gmail.com','(11) 95880-8525',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(27,'Rubens',NULL,NULL,1,'qwe@gmail.com','(11) 95880-8525',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(28,'Rubens',NULL,NULL,1,'qwe@gmail.com','(11) 95880-8525',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(29,'Rubens',NULL,NULL,1,'rubens@gmail.com','(11) 95880-8525',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(30,'Rubens',NULL,NULL,1,'qwe@qwe.com','(11) 95880-8525',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(31,'qwe',NULL,NULL,1,'rubens@gmail.com','(11) 95880-8525',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(32,'qweqwe',NULL,NULL,1,'rubens@gmail.com','(11) 95880-8525',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(33,'Rubens',NULL,NULL,1,'rubens@gmail.com','(11) 95880-8525',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(34,'Rubens',NULL,NULL,1,'rubens@gmail.com','(11) 95880-8525',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(35,'roney',NULL,NULL,1,'qwe@qwe.com','(11) 95880-8525',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(37,'TesteTrês',NULL,NULL,1,'rubens@gmail.com','(11) 95880-8525',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(38,'Rubão',NULL,NULL,1,'rubens@gmail.com','(11) 95880-8525',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
-/*!40000 ALTER TABLE `clientes` ENABLE KEYS */;
+LOCK TABLES `tbl_clientes` WRITE;
+/*!40000 ALTER TABLE `tbl_clientes` DISABLE KEYS */;
+INSERT INTO `tbl_clientes` VALUES (1,'Rubens','rubens@gmail.com','(11) 95880-8525',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(2,'roney','qwe@qwe.com','(11) 95880-8525',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+/*!40000 ALTER TABLE `tbl_clientes` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -60,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-05 16:35:02
+-- Dump completed on 2020-03-05 16:38:06
