@@ -2,9 +2,9 @@ var btnCadastrar = document.getElementById("cadastrar");
 var btnDeletar = document.getElementById("deletar");
 var btnAtualizar = document.getElementById("atualizar");
 
-var txtNome = document.getElementById("nome");
-var txtEmail = document.getElementById("email");
-var txtCelular = document.getElementById("celular");
+const txtNome = document.getElementById("nome");
+const txtEmail = document.getElementById("email");
+const txtCelular = document.getElementById("celular");
 const txtEnd = document.getElementById("endereco");
 const txtNumero= document.getElementById("numero");
 const txtBairro = document.getElementById("bairro");
@@ -26,13 +26,9 @@ const cep = () =>{
 	});
 }
 
-//$( "form" ).submit(function( event ) {
-//	event.preventDefault();
-//});
-
-
-const limparCampos = () =>{
-	
+//LIMPAR CAMPOS
+function limparCampos(){
+	$(":input").val("");
 }
 
 const emailValido = (email) =>{
@@ -74,17 +70,17 @@ const cadastrarAluno = () => {
 	
 	if (verificarCampos()){
 
-		var nome = txtNome.value;
-		var email = txtEmail.value;
-		var celular = txtCelular.value;
+		let nome = txtNome.value;
+		let email = txtEmail.value;
+		let celular = txtCelular.value;
 
-		var url = 'http://127.0.0.1:3000/clientes';
+		let url = 'http://127.0.0.1:3000/clientes';
 
 		$.ajax({
 			url: url,
 			dataType: "json",
 			method: 'POST',
-			data:{ Nome : nome, email : email, celular  : celular },
+			data:{ nome : nome,email : email,celular  : celular },
 			contentType: 'application/x-www-form-urlencoded',
 			
 			success: function (result,status,request) {
@@ -92,22 +88,20 @@ const cadastrarAluno = () => {
 				mostrarBD();
 				limparCampos();
 
-				alert();
-
-				alert("Estado atual---\n" + status + "\nResultado: " + result);
+				console.log("Estado atual---\n" + status + "\nResultado: " + result[0]);
 				//Abaixo está listando os header do conteudo que você requisitou, só para confirmar se você setou os header e dataType corretos
-				alert("Informações da requisição: \n" + request.getAllResponseHeaders());
+				console.log("Informações da requisição: \n" + request.getAllResponseHeaders());
 				confirmationValue = result; //Repassa o retorno da requisição para teste futuro
 			},
 			error: function (request, status, erro) {
-				alert("Problema ocorrido: " + status + "\nDescição: " + erro);
-				//Abaixo está listando os header do conteudo que você requisitou, só para confirmar se você setou os header e dataType corretos
-				alert("Informações da requisição: \n" + request.getAllResponseHeaders());
+				console.log("Problema ocorrido: " + status + "\nDescição: " + erro);
+				// //Abaixo está listando os header do conteudo que você requisitou, só para confirmar se você setou os header e dataType corretos
+				console.log("Informações da requisição: \n" + request.getAllResponseHeaders());
 			},
 			complete: function (jqXHR, textStatus) {
-				alert("Chegou ao fim: : " + textStatus);
-				//Exibindo o valor que você obeteve e repassou para o confirmationValue
-				alert("Confirmation value: " + confirmationValue);
+				console.log("Chegou ao fim: : " + textStatus);
+				// //Exibindo o valor que você obeteve e repassou para o confirmationValue
+				console.log("Confirmation value: " + confirmationValue);
 			}
 		});
 	
@@ -118,15 +112,14 @@ const cadastrarAluno = () => {
 	}
 };
 
-
-
 function atualizarAluno(){
 
-	const nome = txtNome.value;
-	const email = txtEmail.value;
-	const celular = txtCelular.value;
+	let nome = txtNome.value;
+	let email = txtEmail.value;
+	let celular = txtCelular.value;
 
-	const url = `http://127.0.0.1:3000/clientes/${codigo}`;
+	let codigo = sessionStorage.getItem('id');
+	let url = `http://127.0.0.1:3000/clientes/${codigo}`;
 
 	$.ajax({
 
@@ -137,80 +130,67 @@ function atualizarAluno(){
 		contentType: 'application/x-www-form-urlencoded',
 		
 		success: function (result,status,request) {
-				
-			alert("Estado atual---\n" + status + "\nResultado: " + result);
+			
+			limparCampos();
+			mostrarBD();
+			mudarEstado("normal");
+			console.log("Estado atual---\n" + status + "\nResultado: " + result);
 			//Abaixo está listando os header do conteudo que você requisitou, só para confirmar se você setou os header e dataType corretos
-			alert("Informações da requisição: \n" + request.getAllResponseHeaders());
+			console.log("Informações da requisição: \n" + request.getAllResponseHeaders());
 			confirmationValue = result; //Repassa o retorno da requisição para teste futuro
 		},
 		error: function (request, status, erro) {
-			alert("Problema ocorrido: " + status + "\nDescição: " + erro);
+			console.log("Problema ocorrido: " + status + "\nDescição: " + erro);
 			//Abaixo está listando os header do conteudo que você requisitou, só para confirmar se você setou os header e dataType corretos
-			alert("Informações da requisição: \n" + request.getAllResponseHeaders());
+			console.log("Informações da requisição: \n" + request.getAllResponseHeaders());
 		},
 		complete: function (jqXHR, textStatus) {
-			alert("Chegou ao fim: : " + textStatus);
+			console.log("Chegou ao fim: : " + textStatus);
 			//Exibindo o valor que você obeteve e repassou para o confirmationValue
-			alert("Confirmation value: " + confirmationValue);
+			console.log("Confirmation value: " + confirmationValue);
 		}
 	});
 }
 
 const cadastrarSalvar = () =>{
-	// if (btnCadastrar.textContent == "Salvar"){
-	// 	atualizarAluno();
+	if (btnCadastrar.textContent == "Salvar"){
+		atualizarAluno();
 		
-	// }else{
+	}else{
 		cadastrarAluno();
-	// };
+	};
 }
-
 
 const atualizar = () =>{
 	if(btnAtualizar.textContent === "Atualizar"){
-		
-		btnAtualizar.textContent = "Cancelar";
-		btnCadastrar.textContent = "Salvar";
-		btnDeletar.style.display = "none";
 
 		preencherCampos();
 
+		mudarEstado("atualizar");
+
 	}else{
+		mudarEstado("normal");
+	}
+}
+
+const mudarEstado = (estado) => {
+	if(estado == "normal"){
 		btnDeletar.style.display = "inline";
 		btnCadastrar.textContent = "Cadastrar";
 		btnAtualizar.textContent = "Atualizar";
-	}
 	
-	// alert(btnAtualizar.textContent);
-
-	// console.log(btnAtualizar.textContent);
-
-	// if(btnAtualizar.textContent == "Cancelar"){
-	// 	mudarEstado("normal");
-	// }else{
-		
-	// 	mudarEstado();
-		// atualizarAluno();
-	// }
+	}if(estado == "atualizar"){
+		btnDeletar.style.display = "none";
+		btnCadastrar.textContent = "Salvar";
+		btnAtualizar.textContent = "Cancelar";
+	}
 }
-
-// const mudarEstado = (estado) => {
-// 	if(estado == "normal"){
-// 		btnDeletar.style.display = "inline";
-// 		btnCadastrar.textContent = "Cadastrar";
-// 		btnAtualizar.textContent = "Atualizar";
-// 	}else {
-// 		btnDeletar.style.display = "none";
-// 		btnCadastrar.textContent = "Salvar";
-// 		btnAtualizar.textContent = "Cancelar";
-// 	}
-// }
 
 function preencherCampos(){
 
-	const codigo = prompt("Digite o código para modificar: ");
-
-	const url = `http://127.0.0.1:3000/clientes/${codigo}`;
+	let codigo = prompt("Digite o do funcionário codigo:");
+	let url = `http://127.0.0.1:3000/clientes/${codigo}`;
+	sessionStorage.setItem('id', `${codigo}`);
 
 	$.ajax({
 
@@ -227,26 +207,23 @@ function preencherCampos(){
 			});
 		},
 		error: function (request, status, erro) {
-			alert("Problema ocorrido: " + status + "\nDescição: " + erro);
-			alert("Informações da requisição: \n" + request.getAllResponseHeaders());
+			console.log("Problema ocorrido: " + status + "\nDescição: " + erro);
+			console.log("Informações da requisição: \n" + request.getAllResponseHeaders());
 		},
 		complete: function (jqXHR, textStatus,confirmationValue) {
-			alert("Chegou ao fim: : " + textStatus);
-			alert("Confirmation value: " + confirmationValue);
+			console.log("Chegou ao fim: : " + textStatus);
+			console.log("Confirmation value: " + confirmationValue);
 		}
 	});
-
-	// return
 }
-
 
 // DELETAR USUÁRIOS
 
 const deletarNome = () =>{
 
-	const codigo = prompt("Digite o código para deletar:");
+	let codigo = prompt("Digite o código para deletar:");
 
-	const url = `http://127.0.0.1:3000/clientes/${codigo}`;
+	let url = `http://127.0.0.1:3000/clientes/${codigo}`;
 
 	$.ajax({
 		url: url,
@@ -264,7 +241,7 @@ const deletarNome = () =>{
 
 function mostrarBD(){
 	
-	var url = 'http://127.0.0.1:3000/clientes';
+	let url = 'http://127.0.0.1:3000/clientes';
 	$.ajax({
 		url: url,
 		dataType: "json",
@@ -273,7 +250,7 @@ function mostrarBD(){
 		
 		success: function (response) {
 			
-			const tabela = document.getElementById('bd');
+			let tabela = document.getElementById('bd');
 			
 			while (tabela.firstChild){
 				tabela.removeChild(tabela.firstChild);
@@ -281,8 +258,8 @@ function mostrarBD(){
 
 			response.map((usuario) => tabela.insertAdjacentHTML("beforeend", `
 			<tr>
-				<td>${usuario.ID}</td>
-				<td>${usuario.Nome}</td>
+				<td>${usuario.id}</td>
+				<td>${usuario.nome}</td>
 				<td>${usuario.email}</td>
 				<td>${usuario.celular}</td>
 			</tr>`));
@@ -290,17 +267,13 @@ function mostrarBD(){
 	});
 }
 
-// const atualizarCancelar = () =>{
-// 	if (btnAtualizar.textContent == "Cancelar"){
-// 		mudarEstado("normal");
-// 	}else{
-// 		mudarEstado("atualizar");
-// 	}
-// }
-
-// const cancelarAtualizacao = () =>{
-	
-// }
+const atualizarCancelar = () =>{
+	if (btnAtualizar.textContent == "Cancelar"){
+		mudarEstado("normal");
+	}else{
+		mudarEstado("atualizar");
+	}
+}
 
 const removerErro = (elem) =>{
 	elem.classList.remove("erro");
@@ -310,7 +283,6 @@ const mascNome = () =>{
 	let texto = txtNome.value;
 	
 	texto = texto.replace((/[^a-zA-Z À-Ÿ]/),"");
-	
 	txtNome.value = texto;
 }
 
@@ -327,8 +299,6 @@ const mascCelular = () =>{
 btnCadastrar.addEventListener('click', cadastrarSalvar);
 btnDeletar.addEventListener('click', deletarNome);
 btnAtualizar.addEventListener('click', atualizar);
-// btnAtualizar.addEventListener('click', atualizarAluno);
-
 txtNome.addEventListener("change", () => removerErro (txtNome));
 txtEmail.addEventListener("change", () => removerErro (txtEmail));
 txtCelular.addEventListener("change", () => removerErro (txtCelular));

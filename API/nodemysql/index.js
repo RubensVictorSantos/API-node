@@ -32,7 +32,7 @@ function execSQLQuery(sqlQry, res){
     port     : 3306,
     user     : 'root',
     password : 'Ladera*610892',
-    database : 'db_api'
+    database : 'db_newsite'
   });
 
   connection.query(sqlQry, function(error, results, fields){
@@ -65,7 +65,7 @@ router.post('/login', (req, res, next) => {
     port     : 3306,
     user     : 'root',
     password : 'Ladera*610892',
-    database : 'db_api'
+    database : 'db_newsite'
   });
 
   if(req.body.nome && req.body.senha){
@@ -75,7 +75,7 @@ router.post('/login', (req, res, next) => {
 
       // if (err) throw err;
     
-      connection.query(`SELECT id FROM Clientes WHERE nome = '${nome}' AND senha = '${senha}'`, function (err, result, fields) {
+      connection.query(`SELECT id FROM tbl_clientes WHERE nome = '${nome}' AND senha = '${senha}'`, function (err, result, fields) {
         
         var id = JSON.parse(result[0].id);
 
@@ -112,7 +112,7 @@ router.get('/products', verifyJWT, (req, res, next) => {
 router.get('/',(req, res)=> res.json({message: 'funcionando'}));
     
 router.get('/clientes', (req, res) =>{
-    execSQLQuery('SELECT * FROM Clientes', res);
+    execSQLQuery('SELECT * FROM tbl_clientes ORDER BY id DESC LIMIT 5', res);
 
 });
 
@@ -122,23 +122,29 @@ router.get('/clientes/:id', (req, res,) =>{
   console.log(req.params.id)
 
   if(req.params.id) filter = ' WHERE ID = ' + parseInt(req.params.id);
-  execSQLQuery('SELECT * FROM Clientes' + filter, res);
+  execSQLQuery('SELECT * FROM tbl_clientes' + filter, res);
     
 });
 
 router.delete('/clientes/:id', (req, res, method) =>{
-    execSQLQuery('DELETE FROM Clientes WHERE ID=' + parseInt(req.params.id), res);
+    execSQLQuery('DELETE FROM tbl_clientes WHERE ID=' + parseInt(req.params.id), res);
     // res.redirect('/clientes')
 });
 
 router.post('/clientes', (req, res) =>{
 
   //Tem q ser igual o nome no banco
-  const nome = req.body.Nome.substring(0,150);
+  const nome = req.body.nome.substring(0,150);
   const email = req.body.email.substring(0,150);
   const celular = req.body.celular;
+
+  console.log(
+    nome +
+    "\n"+email+
+    "\n"+celular
+  );
   
-  execSQLQuery(`INSERT INTO Clientes(Nome, email, celular) VALUES('${nome}','${email}','${celular}')`, res);
+  execSQLQuery(`INSERT INTO tbl_clientes(nome, email, celular) VALUES('${nome}','${email}','${celular}')`, res);
 });
 
 router.patch('/clientes/:id', (req, res) => {
@@ -148,7 +154,7 @@ router.patch('/clientes/:id', (req, res) => {
   const email = req.body.email.substring(0,150);
   const celular = req.body.celular.substring(0,150);
 
-  execSQLQuery(`UPDATE Clientes SET Nome='${nome}', email='${email}', celular = '${celular}' WHERE ID=${id}`, res);
+  execSQLQuery(`UPDATE tbl_clientes SET Nome='${nome}', email='${email}', celular = '${celular}' WHERE ID=${id}`, res);
 })
 
 app.use('/',router);
