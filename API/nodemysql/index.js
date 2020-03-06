@@ -119,8 +119,6 @@ router.get('/clientes', (req, res) =>{
 router.get('/clientes/:id', (req, res,) =>{
   let filter = '';
 
-  console.log(req.params.id)
-
   if(req.params.id) filter = ' WHERE ID = ' + parseInt(req.params.id);
   execSQLQuery('SELECT * FROM tbl_clientes' + filter, res);
     
@@ -134,15 +132,15 @@ router.delete('/clientes/:id', (req, res, method) =>{
 router.post('/clientes', (req, res) =>{
 
   //Tem q ser igual o nome no banco
-  const nome = req.body.nome.substring(0,150);
-  const email = req.body.email.substring(0,150);
-  const celular = req.body.celular;
-  const endereco = req.body.endereco;
-  const numero = req.body.numero;
-  const bairro = req.body.bairro;
-  const cidade = req.body.cidade;
-  const estado = req.body.estado.substring(0,150);
-  const cep = req.body.cep;
+  let nome = req.body.nome.substring(0,150);
+  let email = req.body.email.substring(0,150);
+  let celular = req.body.celular;
+  let endereco = req.body.endereco;
+  let numero = req.body.numero;
+  let bairro = req.body.bairro;
+  let cidade = req.body.cidade;
+  let estado = req.body.estado.substring(0,150);
+  let cep = req.body.cep;
   
   execSQLQuery(
     `INSERT INTO tbl_clientes(nome, 
@@ -167,12 +165,27 @@ router.post('/clientes', (req, res) =>{
 
 router.patch('/clientes/:id', (req, res) => {
  
-  const id = parseInt(req.params.id);
-  const nome = req.body.nome.substring(0,150);
-  const email = req.body.email.substring(0,150);
-  const celular = req.body.celular.substring(0,150);
-
-  execSQLQuery(`UPDATE tbl_clientes SET Nome='${nome}', email='${email}', celular = '${celular}' WHERE ID=${id}`, res);
+  let id = parseInt(req.params.id);
+  let nome = req.body.nome.substring(0,150);
+  let email = req.body.email.substring(0,150);
+  let celular = req.body.celular;
+  let endereco = req.body.endereco;
+  let numero = req.body.numero;
+  let bairro = req.body.bairro;
+  let cidade = req.body.cidade;
+  let estado = req.body.estado.substring(0,150);
+  let cep = req.body.cep;
+  
+  execSQLQuery(`UPDATE tbl_clientes SET Nome='${nome}', 
+  email='${email}', 
+  celular = '${celular}',
+  endereco = '${endereco}',
+  numero = '${numero}',
+  bairro = '${bairro}',
+  cidade = '${cidade}',
+  estado = '${estado}',
+  cep = '${cep}'
+  WHERE ID=${id}`, res);
 })
 
 app.use('/',router);
