@@ -17,7 +17,7 @@ window.onload = mostrarBD();
 
 // Constante cep vai receber uma função anonima que vai pegar o json retornado da api do viacep  
 const cep = () =>{
-	const url = `https://viacep.com.br/ws/${txtCep.value}/json/`;
+	let url = `https://viacep.com.br/ws/${txtCep.value}/json/`;
 
 	fetch (url).then(res => res.json()).then(dado => {
 		txtBairro.value = dado.bairro
@@ -33,14 +33,14 @@ function limparCampos(){
 
 const emailValido = (email) =>{
 	const er = /[0-9a-z._-]+@[0-9a-z]+([.][a-z]+)+/
-
 	return er.test(email);
+
 };
 
 const celularValido = (celular) =>{
 	const er = /[(][0-9]{2}[)] ?9[0-9]{4}-[0-9]{4}/
-
 	return er.test(celular);
+
 }
 
 const verificarCampos = () =>{
@@ -60,7 +60,7 @@ const verificarCampos = () =>{
 
 	if (!celularValido(txtCelular.value)){
 		txtCelular.classList.add("erro");
-		semErro = false;	
+		semErro = false;adsa
 	};
 
 	return semErro;
@@ -86,44 +86,36 @@ const cadastrarAluno = () => {
 			url: url,
 			dataType: "json",
 			method: 'POST',
-			data:{ nome : nome,
-				email : email,
-				celular  : celular,
-				endereco : endereco,
-				numero : numero,
-				bairro : bairro,
-				cidade : cidade,
-				estado : estado,
-				cep : cep
+			data:{ 
+				nome 	: nome,
+				email 	: email,
+				celular : celular,
+				endereco: endereco,
+				numero 	: numero,
+				bairro 	: bairro,
+				cidade 	: cidade,
+				estado 	: estado,
+				cep 	: cep
 			},
 			contentType: 'application/x-www-form-urlencoded',
 			
-			success: function (result,status,request) {
-				
+			success: function (response) {
 				mostrarBD();
 				limparCampos();
+				console.log("Resposta: " + response);
 
-				console.log("Estado atual---\n" + status + "\nResultado: " + result[0]);
-				//Abaixo está listando os header do conteudo que você requisitou, só para confirmar se você setou os header e dataType corretos
-				console.log("Informações da requisição: \n" + request.getAllResponseHeaders());
-				confirmationValue = result; //Repassa o retorno da requisição para teste futuro
 			},
 			error: function (request, status, erro) {
 				console.log("Problema ocorrido: " + status + "\nDescição: " + erro);
-				// //Abaixo está listando os header do conteudo que você requisitou, só para confirmar se você setou os header e dataType corretos
+				//Abaixo está listando os header do conteudo que você requisitou, só para confirmar se você setou os header e dataType corretos
 				console.log("Informações da requisição: \n" + request.getAllResponseHeaders());
-			},
-			complete: function (jqXHR, textStatus) {
-				console.log("Chegou ao fim: : " + textStatus);
-				// //Exibindo o valor que você obeteve e repassou para o confirmationValue
-				console.log("Confirmation value: " + confirmationValue);
 			}
 		});
 	
 	verificarCampos();
 
 	}else{
-		alert ("Preencha os campos em destaque!")
+		alert("Preencha os campos em destaque!")
 	}
 };
 
@@ -147,16 +139,17 @@ function atualizarAluno(){
 		url: url,
 		dataType: "json",
 		method: 'PATCH',
-		data:{ id: codigo, 
-			nome : nome, 
-			email :email, 
-			celular  : celular,
-			endereco : endereco,
-			numero : numero,
-			bairro : bairro,
-			cidade : cidade,
-			estado : estado,
-			cep : cep	
+		data:{ 
+			id		: codigo, 
+			nome 	: nome, 
+			email 	: email, 
+			celular : celular,
+			endereco: endereco,
+			numero 	: numero,
+			bairro 	: bairro,
+			cidade 	: cidade,
+			estado 	: estado,
+			cep 	: cep	
 		},
 		contentType: 'application/x-www-form-urlencoded',
 		
@@ -165,6 +158,7 @@ function atualizarAluno(){
 			limparCampos();
 			mostrarBD();
 			mudarEstado("normal");
+
 			console.log("Estado atual---\n" + status + "\nResultado: " + result);
 			//Abaixo está listando os header do conteudo que você requisitou, só para confirmar se você setou os header e dataType corretos
 			console.log("Informações da requisição: \n" + request.getAllResponseHeaders());
@@ -189,17 +183,18 @@ const cadastrarSalvar = () =>{
 		
 	}else{
 		cadastrarAluno();
+
 	};
 }
 
 const atualizar = () =>{
+
 	if(btnAtualizar.textContent === "Atualizar"){
-
 		preencherCampos();
-
 		mudarEstado("atualizar");
 
-	}else{
+	}else if(btnAtualizar.textContent === "Cancelar"){
+		limparCampos();
 		mudarEstado("normal");
 	}
 }
@@ -219,7 +214,7 @@ const mudarEstado = (estado) => {
 
 function preencherCampos(){
 
-	let codigo = prompt("Digite o do funcionário codigo:");
+	let codigo = prompt("Digite o funcionário do codigo:");
 	let url = `http://127.0.0.1:3000/clientes/${codigo}`;
 	sessionStorage.setItem('id', `${codigo}`);
 
@@ -229,28 +224,29 @@ function preencherCampos(){
 		dataType: "json",
 		method: 'GET',
 		contentType: 'application/x-www-form-urlencoded',
-		success: function (result,status,request){
+		success: function (response){
 
-			result.map((res) => {
-				$('#nome').val(res.nome);
-				$('#email').val(res.email);
-				$('#celular').val(res.celular);
-				$('#endereco').val(res.endereco);
-				$('#numero').val(res.numero);
-				$('#bairro').val(res.bairro);
-				$('#cidade').val(res.cidade);
-				$('#estado').val(res.estado);
-				$('#cep').val(res.cep);
-			});
+			console.log(response);
+
+			if(response){
+				response.map((res) => {
+					$('#nome').val(res.nome);
+					$('#email').val(res.email);
+					$('#celular').val(res.celular);
+					$('#endereco').val(res.endereco);
+					$('#numero').val(res.numero);
+					$('#bairro').val(res.bairro);
+					$('#cidade').val(res.cidade);
+					$('#estado').val(res.estado);
+					$('#cep').val(res.cep);
+				});
+			}
 		},
 		error: function (request, status, erro) {
 			console.log("Problema ocorrido: " + status + "\nDescrição: " + erro);
 			console.log("Informações da requisição: \n" + request.getAllResponseHeaders());
+
 		},
-		complete: function (jqXHR, textStatus,confirmationValue) {
-			console.log("Chegou ao fim: : " + textStatus);
-			console.log("Confirmation value: " + confirmationValue);
-		}
 	});
 }
 
@@ -259,7 +255,6 @@ function preencherCampos(){
 const deletarNome = () =>{
 
 	let codigo = prompt("Digite o código para deletar:");
-
 	let url = `http://127.0.0.1:3000/clientes/${codigo}`;
 
 	$.ajax({
@@ -267,9 +262,13 @@ const deletarNome = () =>{
 		dataType: "json",
 		method: 'delete',
 		contentType: 'application/json',
-		success: function (response) {
-			
+		success: function (status){
 			mostrarBD();
+			console.log(status);
+
+		},
+		error: function(erro){
+			console.log(erro);
 		}
 	});
 }
@@ -279,6 +278,7 @@ const deletarNome = () =>{
 function mostrarBD(){
 	
 	let url = 'http://127.0.0.1:3000/clientes';
+
 	$.ajax({
 		url: url,
 		dataType: "json",
@@ -288,7 +288,7 @@ function mostrarBD(){
 		success: function (response) {
 			
 			let tabela = document.getElementById('bd');
-			
+		
 			while (tabela.firstChild){
 				tabela.removeChild(tabela.firstChild);
 			};
@@ -302,14 +302,6 @@ function mostrarBD(){
 			</tr>`));
 		}
 	});
-}
-
-const atualizarCancelar = () =>{
-	if (btnAtualizar.textContent == "Cancelar"){
-		mudarEstado("normal");
-	}else{
-		mudarEstado("atualizar");
-	}
 }
 
 const removerErro = (elem) =>{
