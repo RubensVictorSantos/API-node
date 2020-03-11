@@ -10,12 +10,10 @@
       <script type="" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
    </head>
    <body>
-      <div id= "form">
-      <header>
-         <h1> Cadastro Funcionário</h1>
-      </header>
-      
-      <!-- <form name="frmcadastrar" id="frmcadastrar" method="post" action="index.html"> -->
+      <form name="frm" id="frm" method="post" action="index.html">
+         <header>
+            <h1> Cadastro Funcionário</h1>
+         </header>
          <div class='grupos'> 
             <div class='grupo'>
                <label> Nome: </label>
@@ -25,7 +23,7 @@
          <div class='grupos'>
             <div class='grupo'>
                <label>Sexo: </label>
-               <label><input type="radio" name="sexo" id="masculino"> Masculino</label>
+               <label><input type="radio" name="sexo" id="masculino" > Masculino</label>
                <label><input type="radio" name="sexo" id="feminino"> Feminino</label>
             </div>
          </div>
@@ -78,25 +76,25 @@
             <button id='deletar'>Deletar</button>
          </div>
 
-         <!-- </form> -->
-      <!--Tabela para visualizar as informações-->
-      <div class='grupos'>
-         <table>
-             <thead>
-                <tr>
-                   <th>Código</th>
-                   <th>Nome</th>
-                   <th>e-mail</th>
-                   <th>celular</th>
-                   <!-- <th>Status</th> -->
-                </tr>
-             </thead>
-             <tbody id="bd">
-                
-             </tbody>
-         </table> 
-      </div>
-   </div> 
+         <!--Tabela para visualizar as informações-->
+         <div class='grupos'>
+            <table>
+               <thead>
+                  <tr>
+                     <th>Código</th>
+                     <th>Nome</th>
+                     <th>e-mail</th>
+                     <th>celular</th>
+                     <!-- <th>Status</th> -->
+                  </tr>
+               </thead>
+               <tbody id="bd">
+                  
+               </tbody>
+            </table> 
+         </div>
+
+      </form>
       <script src="js/cadastro.js"></script>
    </body>
 </html>

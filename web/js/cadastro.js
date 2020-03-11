@@ -14,8 +14,7 @@ const rdoSexo = document.getElementsByName("sexo");
 const cmbEstado = document.getElementById("estado");
 
 window.onload = mostrarBD();
-
-// Constante cep vai receber uma função anonima que vai pegar o json retornado da api do viacep  
+ 
 const cep = () =>{
 	let url = `https://viacep.com.br/ws/${txtCep.value}/json/`;
 
@@ -50,18 +49,28 @@ const verificarCampos = () =>{
 	// Trim remove os espaços em branco
 	if (txtNome.value.trim() == ""){
 		txtNome.classList.add("erro");
-		semErro = false;	
+		semErro = false;
+		
 	};
 
 	if (!emailValido(txtEmail.value)){
 		txtEmail.classList.add("erro");
-		semErro = false;	
+		semErro = false;
+
 	};
 
 	if (!celularValido(txtCelular.value)){
 		txtCelular.classList.add("erro");
-		semErro = false;adsa
+		semErro = false;
 	};
+
+	if(semErro === false){
+
+		$("#frm").submit(function(event){
+			event.preventDefault();
+		});
+
+	}
 
 	return semErro;
 };
@@ -102,7 +111,6 @@ const cadastrarAluno = () => {
 			success: function (response) {
 				mostrarBD();
 				limparCampos();
-				console.log("Resposta: " + response);
 
 			},
 			error: function (request, status, erro) {
@@ -131,8 +139,23 @@ function atualizarAluno(){
 	let estado = cmbEstado.value;
 	let cep = txtCep.value;
 
-	let codigo = sessionStorage.getItem('id');
-	let url = `http://127.0.0.1:3000/clientes/${codigo}`;
+	let id = sessionStorage.getItem('id');
+	let url = `http://127.0.0.1:3000/clientes/${id}`;
+
+	$('#cadastrar').click(function() {
+		var valor = "";
+		//Executa Loop entre todas as Radio buttons com o name de valor
+		$('input:radio[name=sexo]').each(function() {
+			//Verifica qual está selecionado
+			if ($(this).is(':checked'))
+				valor = parseInt($(this).val());
+		})
+		alert(valor);
+
+		$("#frm").submit(function(event){
+			event.preventDefault();
+		});
+	})
 
 	$.ajax({
 
@@ -140,7 +163,7 @@ function atualizarAluno(){
 		dataType: "json",
 		method: 'PATCH',
 		data:{ 
-			id		: codigo, 
+			id		: id, 
 			nome 	: nome, 
 			email 	: email, 
 			celular : celular,
@@ -154,7 +177,7 @@ function atualizarAluno(){
 		contentType: 'application/x-www-form-urlencoded',
 		
 		success: function (result,status,request) {
-			
+		
 			limparCampos();
 			mostrarBD();
 			mudarEstado("normal");
@@ -214,7 +237,12 @@ const mudarEstado = (estado) => {
 
 function preencherCampos(){
 
-	let codigo = prompt("Digite o funcionário do codigo:");
+	let codigo = parseInt(prompt("Digite o codigo do funcionário: "));
+
+	while(isNaN(codigo)){
+		codigo = parseInt(prompt("Codigo não existe! Digite novamente"));
+	}
+
 	let url = `http://127.0.0.1:3000/clientes/${codigo}`;
 	sessionStorage.setItem('id', `${codigo}`);
 
@@ -225,28 +253,28 @@ function preencherCampos(){
 		method: 'GET',
 		contentType: 'application/x-www-form-urlencoded',
 		success: function (response){
-
-			console.log(response);
-
-			if(response){
-				response.map((res) => {
-					$('#nome').val(res.nome);
-					$('#email').val(res.email);
-					$('#celular').val(res.celular);
-					$('#endereco').val(res.endereco);
-					$('#numero').val(res.numero);
-					$('#bairro').val(res.bairro);
-					$('#cidade').val(res.cidade);
-					$('#estado').val(res.estado);
-					$('#cep').val(res.cep);
-				});
-			}
+			
+			response.map((res) => {
+				$('#nome').val(res.nome);
+				$('#email').val(res.email);
+				$('#celular').val(res.celular);
+				$('#endereco').val(res.endereco);
+				$('#numero').val(res.numero);
+				$('#bairro').val(res.bairro);
+				$('#cidade').val(res.cidade);
+				$('#estado').val(res.estado);
+				$('#cep').val(res.cep);
+			});
 		},
 		error: function (request, status, erro) {
 			console.log("Problema ocorrido: " + status + "\nDescrição: " + erro);
 			console.log("Informações da requisição: \n" + request.getAllResponseHeaders());
 
 		},
+	});
+
+	$("#frm").submit(function(event){
+		event.preventDefault();
 	});
 }
 
@@ -299,7 +327,8 @@ function mostrarBD(){
 				<td>${usuario.nome}</td>
 				<td>${usuario.email}</td>
 				<td>${usuario.celular}</td>
-			</tr>`));
+			</tr>`)
+			);
 		}
 	});
 }
