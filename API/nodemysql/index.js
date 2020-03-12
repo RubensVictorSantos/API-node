@@ -25,16 +25,6 @@ function execSQLQuery(sqlQry, res){
       console.log("Query Executada: " + sqlQry + ";" + JSON.stringify(results))
       
       res.json(results)
-
-      // if(results.length >= 0){
-      //   res.json(results)
-
-      // }else{
-      //   console.log(results.length)
-      //   res.json({message: 'id não encontrado!'})
-      //   connection.end();
-
-      // }
     }
   });
 }
@@ -48,7 +38,6 @@ router.get('/',(req, res)=> res.json({message: 'Funcionando'}))
 router.get('/clientes', (req, res) =>{
   let select = 'SELECT * FROM tbl_clientes ORDER BY id DESC LIMIT 5'
   execSQLQuery(select , res)
-
 })
 
 router.get('/clientes/:id', (req, res,) =>{
@@ -57,15 +46,14 @@ router.get('/clientes/:id', (req, res,) =>{
     let select = 'SELECT * FROM tbl_clientes WHERE ID = ' + id
     execSQLQuery(select, res)
   }
-
 })
 
-router.delete('/clientes/:id', (req, res, method) =>{
+router.delete('/clientes/:id', (req, res, next) =>{
   let id = parseInt(req.params.id)
   let select = 'DELETE FROM tbl_clientes WHERE ID = ' + id
   execSQLQuery(select, res)
 
-});
+})
 
 router.post('/clientes', (req, res) =>{
 

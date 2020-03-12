@@ -26,7 +26,7 @@ const cep = () =>{
 }
 
 //LIMPAR CAMPOS
-function limparCampos(){
+const limparCampos = () =>{
 	$(":input").val("");
 }
 
@@ -143,14 +143,6 @@ function atualizarAluno(){
 	let url = `http://127.0.0.1:3000/clientes/${id}`;
 
 	$('#cadastrar').click(function() {
-		var valor = "";
-		//Executa Loop entre todas as Radio buttons com o name de valor
-		$('input:radio[name=sexo]').each(function() {
-			//Verifica qual está selecionado
-			if ($(this).is(':checked'))
-				valor = parseInt($(this).val());
-		})
-		alert(valor);
 
 		$("#frm").submit(function(event){
 			event.preventDefault();
@@ -235,7 +227,7 @@ const mudarEstado = (estado) => {
 	}
 }
 
-function preencherCampos(){
+const preencherCampos = () => {
 
 	let codigo = parseInt(prompt("Digite o codigo do funcionário: "));
 
