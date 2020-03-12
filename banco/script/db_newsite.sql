@@ -47,6 +47,30 @@ LOCK TABLES `tbl_clientes` WRITE;
 INSERT INTO `tbl_clientes` VALUES (2,'Vinicus','qwe@qwe.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302',NULL),(3,'Rubens','rubens@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302',NULL),(4,'Rubens','rubens@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302',NULL),(5,'Rubens','qwe@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302',NULL),(6,'Rubens','rubens@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302',NULL),(7,'Rubens','qwe@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302',NULL),(8,'wqeqw','qwe@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302',NULL),(9,'Rubens','qwe@gmail.com','(11) 95880-8525','Rua Castanheira','12','Parque Viana','Barueri','SP','06449302',NULL),(10,'wqeqw','qwe@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302',NULL),(11,'wqeqw','rubens@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302',NULL),(12,'Rubens','rubens@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302',NULL),(13,'Rubens','qwe@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302',NULL),(14,'Rubens','rubens@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302',NULL),(15,'rONEY','rubens@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','ES','06449302',NULL),(17,'wqeqw','rubens@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','MG','06449302',NULL),(18,'wqeqw','rubens@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','MG','06449302',NULL),(19,'Rubens','qwe@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','RJ','06449302',NULL),(22,'wqeqw','qwe@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302',NULL),(23,'Rubens','rubens@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302',NULL),(24,'Rubens','qwe@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302',NULL),(25,'Rubens','rubens@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302',NULL),(26,'Rubens','qwe@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302',NULL),(28,'Rubens','qwe@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302',NULL),(29,'Rubens','rubens@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302',NULL),(30,'Rubens','rubens@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302',NULL),(33,'Rubenw','qwe@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302',NULL),(34,'Rubens','qwe@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302',NULL),(35,'Rubens','qwe@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302',NULL);
 /*!40000 ALTER TABLE `tbl_clientes` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `tbl_login`
+--
+
+DROP TABLE IF EXISTS `tbl_login`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tbl_login` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `senha` varchar(8) NOT NULL,
+  `cpf` varchar(14) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tbl_login`
+--
+
+LOCK TABLES `tbl_login` WRITE;
+/*!40000 ALTER TABLE `tbl_login` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tbl_login` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -57,4 +81,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-11 16:25:20
+-- Dump completed on 2020-03-12 16:33:24
