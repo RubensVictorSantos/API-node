@@ -88,6 +88,7 @@ const cadastrarAluno = () => {
 		let cidade = txtCidade.value;
 		let estado = cmbEstado.value;
 		let cep = txtCep.value;
+		let sexo = $("input[name='sexo']:checked").val();
 
 		let url = 'http://127.0.0.1:3000/clientes';
 
@@ -104,7 +105,8 @@ const cadastrarAluno = () => {
 				bairro 	: bairro,
 				cidade 	: cidade,
 				estado 	: estado,
-				cep 	: cep
+				cep 	: cep,
+				sexo	: sexo
 			},
 			contentType: 'application/x-www-form-urlencoded',
 			
@@ -138,6 +140,7 @@ function atualizarAluno(){
 	let cidade = txtCidade.value;
 	let estado = cmbEstado.value;
 	let cep = txtCep.value;
+	let sexo = $("input[name='sexo']:checked").val();
 
 	let id = sessionStorage.getItem('id');
 	let url = `http://127.0.0.1:3000/clientes/${id}`;
@@ -164,7 +167,8 @@ function atualizarAluno(){
 			bairro 	: bairro,
 			cidade 	: cidade,
 			estado 	: estado,
-			cep 	: cep	
+			cep 	: cep,
+			sexo	: sexo	
 		},
 		contentType: 'application/x-www-form-urlencoded',
 		
@@ -238,6 +242,10 @@ const preencherCampos = () => {
 	let url = `http://127.0.0.1:3000/clientes/${codigo}`;
 	sessionStorage.setItem('id', `${codigo}`);
 
+	removerErro(txtNome);
+	removerErro(txtEmail);
+	removerErro(txtCelular);
+
 	$.ajax({
 
 		url: url,
@@ -256,6 +264,14 @@ const preencherCampos = () => {
 				$('#cidade').val(res.cidade);
 				$('#estado').val(res.estado);
 				$('#cep').val(res.cep);
+
+				if(res.sexo === 'm'){
+					$('#masculino').prop("checked", true);
+
+				}else{
+					$('#feminino').prop("checked", true);
+
+				}
 			});
 		},
 		error: function (request, status, erro) {

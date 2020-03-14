@@ -22,7 +22,8 @@ function execSQLQuery(sqlQry, res){
     if(error){
       res.json(error)
     }else{
-      console.log("Query Executada: " + sqlQry + ";" + JSON.stringify(results))
+      console.log("Query Executada: " + sqlQry );
+      // + ";" + JSON.stringify(results))
       
       res.json(results)
     }
@@ -66,6 +67,7 @@ router.post('/clientes', (req, res) =>{
   let cidade = req.body.cidade
   let estado = req.body.estado
   let cep = req.body.cep
+  let sexo = req.body.sexo
 
   execSQLQuery(
   `INSERT INTO tbl_clientes(nome, 
@@ -76,7 +78,8 @@ router.post('/clientes', (req, res) =>{
   bairro, 
   cidade, 
   estado, 
-  cep) 
+  cep,
+  sexo) 
   VALUES('${nome}',
   '${email}',
   '${celular}',
@@ -85,7 +88,8 @@ router.post('/clientes', (req, res) =>{
   '${bairro}',
   '${cidade}',
   '${estado}',
-  '${cep}')`, res)
+  '${cep}',
+  '${sexo}')`, res)
 
 })
 
@@ -101,6 +105,7 @@ router.patch('/clientes/:id', (req, res) => {
   let cidade = req.body.cidade
   let estado = req.body.estado
   let cep = req.body.cep
+  let sexo = req.body.sexo
   
   execSQLQuery(`UPDATE tbl_clientes SET 
   nome='${nome}', 
@@ -111,7 +116,8 @@ router.patch('/clientes/:id', (req, res) => {
   bairro = '${bairro}',
   cidade = '${cidade}',
   estado = '${estado}',
-  cep = '${cep}'
+  cep = '${cep}',
+  sexo = '${sexo}'
   WHERE ID = ${id}`, res)
 })
 
