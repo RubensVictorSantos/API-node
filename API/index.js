@@ -6,7 +6,9 @@ const cors = require('cors')
 const app = express()
 const bodyParser = require('body-parser')
 const port = 3000;/**Porta padrão */
-const connection = require("./conexao.js")
+const connection = require("./conexao.js");
+require("dotenv-safe").config();
+var jwt = require('jsonwebtoken');
 
 /**Configurando o body parser para pegar POST mais tarde*/
 app.use(bodyParser.urlencoded({extended:true}))
@@ -36,7 +38,7 @@ const router = express.Router()
    
 router.get('/',(req, res)=> res.json({message: 'Funcionando'}))
     
-router.get('/clientes', (req, res) =>{
+router.get('/clientes', verifyJWT, (req, res) =>{
   let select = 'SELECT * FROM tbl_clientes ORDER BY id DESC LIMIT 5'
   execSQLQuery(select , res)
 })
@@ -121,7 +123,62 @@ router.patch('/clientes/:id', (req, res) => {
   WHERE ID = ${id}`, res)
 })
 
+//authentication
+router.post('/login', (req, res, next) => {
+
+  const nome = req.body.nome
+  const senha = req.body.senha
+
+  let select = `SELECT * FROM tbl_usuario WHERE nome = '${nome}' AND senha = '${senha}'`
+
+  connection.query(select, function(error, result, fields){
+    
+    if(result[0] == undefined){
+      console.log('Usuário não existe!');
+      res.status(404).send('Usuário não existe!');
+    }else{
+      
+      if(error){
+        res.json(error)
+      }else{
+  
+        const id = parseInt(result[0].id)
+  
+        if(!isNaN(id)){
+  
+          // auth ok
+          const token = jwt.sign({ id }, process.env.SECRET, {
+            expiresIn: 300 // expires in 5min
+          });
+          res.status(200).send({ auth: true, token: token })
+          
+        }else{
+          console.log("Erro id")
+          res.status(500).send('Login inválido!');
+        }
+      }
+    }
+  })
+})
+
+router.get('/logout', function(req, res) {
+  res.status(200).send({ auth: false, token: null })
+})
+
 app.use('/',router)
+
+function verifyJWT(req, res, next){
+  let token = req.headers['x-access-token'];
+  if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
+  
+  jwt.verify(token, process.env.SECRET, function(err, decoded) {
+    if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+    
+    // Se tudo estiver ok, salva no request para uso posterior
+    req.userId = decoded.id;
+    next();
+  });
+}
 
 /**Inicia o servidor */
 app.listen(port)

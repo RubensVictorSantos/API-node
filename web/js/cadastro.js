@@ -5,7 +5,7 @@ var btnAtualizar = document.getElementById("atualizar");
 const txtNome = document.getElementById("nome");
 const txtEmail = document.getElementById("email");
 const txtCelular = document.getElementById("celular");
-const txtEnd = document.getElementById("endereco");
+const txtEndereco = document.getElementById("endereco");
 const txtNumero= document.getElementById("numero");
 const txtBairro = document.getElementById("bairro");
 const txtCidade = document.getElementById("cidade");
@@ -21,7 +21,7 @@ const cep = () =>{
 	fetch (url).then(res => res.json()).then(dado => {
 		txtBairro.value = dado.bairro
 		txtCidade.value = dado.localidade
-		txtEnd.value = dado.logradouro
+		txtEndereco.value = dado.logradouro
 	});
 }
 
@@ -69,7 +69,6 @@ const verificarCampos = () =>{
 		$("#frm").submit(function(event){
 			event.preventDefault();
 		});
-
 	}
 
 	return semErro;
@@ -82,7 +81,7 @@ const cadastrarAluno = () => {
 		let nome = txtNome.value;
 		let email = txtEmail.value;
 		let celular = txtCelular.value;
-		let endereco = txtEnd.value;
+		let endereco = txtEndereco.value;
 		let numero = txtNumero.value;
 		let bairro = txtBairro.value;
 		let cidade = txtCidade.value;
@@ -134,7 +133,7 @@ function atualizarAluno(){
 	let nome = txtNome.value;
 	let email = txtEmail.value;
 	let celular = txtCelular.value;
-	let endereco = txtEnd.value;
+	let endereco = txtEndereco.value;
 	let numero = txtNumero.value;
 	let bairro = txtBairro.value;
 	let cidade = txtCidade.value;
@@ -242,15 +241,14 @@ const preencherCampos = () => {
 	let url = `http://127.0.0.1:3000/clientes/${codigo}`;
 	sessionStorage.setItem('id', `${codigo}`);
 
-	removerErro(txtNome);
-	removerErro(txtEmail);
-	removerErro(txtCelular);
+	removerErro(txtNome, txtEmail,txtCelular);
 
 	$.ajax({
 
 		url: url,
 		dataType: "json",
 		method: 'GET',
+		token: token,
 		contentType: 'application/x-www-form-urlencoded',
 		success: function (response){
 			
@@ -314,11 +312,13 @@ const deletarNome = () =>{
 function mostrarBD(){
 	
 	let url = 'http://127.0.0.1:3000/clientes';
+	const token = sessionStorage.getItem('token');
 
 	$.ajax({
 		url: url,
 		dataType: "json",
 		method: 'get',
+		headers: {'x-access-token': token},
 		contentType: 'application/json',
 		
 		success: function (response) {
@@ -341,8 +341,14 @@ function mostrarBD(){
 	});
 }
 
-const removerErro = (elem) =>{
-	elem.classList.remove("erro");
+const removerErro = (elem1 = null, elem2 = null, elem3 = null) =>{
+	
+	const elementos = [elem1,elem2,elem3];
+
+	for(let i in elementos.length){
+
+		elementos[i].classList.remove("erro");
+	}
 }
 
 const mascNome = () =>{
