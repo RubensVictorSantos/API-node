@@ -35,7 +35,7 @@ CREATE TABLE `tbl_clientes` (
   `cep` varchar(8) DEFAULT NULL,
   `sexo` char(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,7 +44,7 @@ CREATE TABLE `tbl_clientes` (
 
 LOCK TABLES `tbl_clientes` WRITE;
 /*!40000 ALTER TABLE `tbl_clientes` DISABLE KEYS */;
-INSERT INTO `tbl_clientes` VALUES (1,'Rubens','qwe@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302','m');
+INSERT INTO `tbl_clientes` VALUES (1,'Rubens','qwe@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302','m'),(2,'qweqwe','qwe@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302','m'),(3,'Rubens','rubens@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302','m'),(4,'Rubens','rubens@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302','m');
 /*!40000 ALTER TABLE `tbl_clientes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -71,6 +71,31 @@ LOCK TABLES `tbl_login` WRITE;
 /*!40000 ALTER TABLE `tbl_login` DISABLE KEYS */;
 /*!40000 ALTER TABLE `tbl_login` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `tbl_usuario`
+--
+
+DROP TABLE IF EXISTS `tbl_usuario`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tbl_usuario` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nome` varchar(100) NOT NULL,
+  `senha` varchar(8) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tbl_usuario`
+--
+
+LOCK TABLES `tbl_usuario` WRITE;
+/*!40000 ALTER TABLE `tbl_usuario` DISABLE KEYS */;
+INSERT INTO `tbl_usuario` VALUES (1,'Rubens','12345678');
+/*!40000 ALTER TABLE `tbl_usuario` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -81,4 +106,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-14 15:39:00
+-- Dump completed on 2020-03-17 16:34:37
