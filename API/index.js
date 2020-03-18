@@ -8,7 +8,7 @@ const bodyParser = require('body-parser')
 const port = 3000;/**Porta padrão */
 const connection = require("./conexao.js");
 require("dotenv-safe").config();
-var jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
 /**Configurando o body parser para pegar POST mais tarde*/
 app.use(bodyParser.urlencoded({extended:true}))
@@ -31,6 +31,7 @@ function execSQLQuery(sqlQry, res){
     }
   });
 }
+
 
 /**Definindo as rotas */
 
@@ -70,6 +71,8 @@ router.post('/clientes', (req, res) =>{
   let estado = req.body.estado
   let cep = req.body.cep
   let sexo = req.body.sexo
+
+  criptografar(nome)
 
   execSQLQuery(
   `INSERT INTO tbl_clientes(nome, 
