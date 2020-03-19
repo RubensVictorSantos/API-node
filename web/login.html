@@ -6,31 +6,35 @@
             Login
         </title>
         <meta charset="utf-8">
-      <link rel="stylesheet" href="css/style.css">
-      <script type="" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <link rel="stylesheet" href="css/style.css">
+        <script type="" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     </head>
     <body>
         <div class="container">
             <form name="frm-login" id="frm-login" method="post" action="index.html">
             
                 
+                <div class="t-login">
+                    <h1 class="h1-login">Login</h1>
+                </div>
                 <div class="box">
-                    <h1 class="h-login">Login</h1>
-                    <div class="box-nome">
+                    <div class="box-label">
                         <label for="txtcpf">nome </label>
                     </div>
-                    <div class="box-i-nome">
+                    <div class="box-input">
                         <input type="text" id="txtNome" name="nome" minlength="2" required>                
                     </div>
                 </div>
                 <div class="box">
-                    <div >
+                    <div class="box-label">
                         <label for="txtSenha">senha </label>
                     </div>
-                    <div>
+                    <div class="box-input">
                         <input type="password" id="txtSenha" name="txtSenha" maxlength="8" required>
                     </div>
-                    <div>
+                </div>
+                <div class="box-btn">
+                    <div class="btn-login">
                         <input type="submit" id="btnentrar" name="Entrar" value="Entrar">
                     </div>
                 </div>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html lang="en" >
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="css/style.css">
+        <script type="" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <title>
+            Cadastrar usuário
+        </title>
+    </head>
+    <body>
+        <div class="container">
+            <form name="frm-cadastro-login" id="frm-cadastro-login" method="post" action="login.html">
+                <div class="t-login">
+                    <h1 class="h1-login">Cadastre-se</h1>
+                </div>
+                <div class="box-cadastro">
+                    <div class="box-label">
+                        <label for="txtemail">E-mail </label>
+                    </div>
+                    <div class="box-input">
+                        <input type="email" id="txtemail" name="email" minlength="6" required>                
+                    </div>
+                </div>
+                <div class="box-cadastro">
+                    <div class="box-label">
+                        <label for="txtsenha1">senha </label>
+                    </div>
+                    <div class="box-input">
+                        <input type="password" id="txtsenha1" name="txtsenha1" minlength="6" required>                
+                    </div>
+                </div>
+                <div class="box-cadastro">
+                    <div class="box-label">
+                        <label for="txtsenha2">senha </label>
+                    </div>
+                    <div class="box-input">
+                        <input type="password" id="txtsenha2" name="txtsenha2" minlength="6" required>                
+                    </div>
+                </div>
+                <div class="box-btn">
+                    <div class="btn-login">
+                        <input type="submit">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

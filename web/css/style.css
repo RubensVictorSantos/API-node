@@ -138,34 +138,79 @@ td {
 #frm-login{
    width: 300px;
    height: 200px;
+   border-radius: 2px;
+   -webkit-box-shadow: 3px 3px 10px 0px rgba(50, 50, 50, 0.75);
+	-moz-box-shadow:    3px 3px 10px 0px rgba(50, 50, 50, 0.75);
+   box-shadow:         3px 3px 10px 0px rgba(50, 50, 50, 0.75);
+}
+
+.t-login{
+   width: 100%;
+   height: 20%;
+   /* background-color: khaki; */
 }
 
 .box{
    width: 100%;
-   height: 50%; 
-   background-color: #c7d5e6;  
+   height: 30%;
+   /* background-color: #4275af;    */
 }
 
-.h-login{
-   width: 100%;
-   height: 33%;
+.h1-login{
    font-size: 20;
+   text-align: center;
+   color: #666;
+   font-family:  sans-serif;
+   font-weight: bold;
+   font-style: italic;
+
+}
+
+.box-label{
+   width: 20%;
+   height: 100%;
+   float: left;
+   display: flex;
    flex-direction: row;
    justify-content: center;
    align-items: center;
-   text-align: center;
-   font-family: Arial, Helvetica, sans-serif;
-
+   /* background-color: #c7d5e6; */
 }
 
-.box-nome{
-   width: 20%;
-   height: 33%;
-   float: left;
-}
-
-.box-i-nome{
+.box-input{
    width: 80%;
-   height: 33%;
+   height: 100%;
+   display: flex;
+   flex-direction: row;
+   justify-content: center;
+   align-items: center;
+   /* background-color: #c7d5aa; */
    float: left;
+}
+
+.btn-login{
+   width: 33%;
+   height: 100%;
+   flex-direction: row;
+   align-items: center;
+}
+
+.box-btn{
+   display: flex;
+  justify-content: flex-end;
+  
+}
+
+#frm-cadastro-login{
+   width: 40%;
+   height: 300px;
+   border-radius: 2px;
+   -webkit-box-shadow: 3px 3px 10px 0px rgba(50, 50, 50, 0.75);
+	-moz-box-shadow:    3px 3px 10px 0px rgba(50, 50, 50, 0.75);
+   box-shadow:         3px 3px 10px 0px rgba(50, 50, 50, 0.75);
+}
+
+.box-cadastro{
+   width: 100%;
+   height: 20%;
 }
