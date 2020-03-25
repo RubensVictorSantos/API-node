@@ -2,6 +2,11 @@ const btnEntrar = document.getElementById("btnentrar");
 const txtNome = document.getElementById("txtNome");
 const txtSenha = document.getElementById("txtSenha");
 
+
+const limparCampos = () =>{
+	$(":input").val("");
+}
+
 const entrar = () =>{
 
     let url = `http://127.0.0.1:3000/login`;
@@ -17,11 +22,19 @@ const entrar = () =>{
             senha: senha,
         },
         contentType: 'application/x-www-form-urlencoded',
-        success: function (response,request) {
-            let token = response.token
+        success: function (result) {
+
+            let token = result.token
 
             sessionStorage.setItem('token', `${token}`);
             window.location.replace("file:///C:/Users/Rubens/Desktop/pessoal/node/web/index.html");
+        },
+		error: function (request, status, error) {
+
+            if(request.status === 404){ 
+                alert("Usuário invalido!");
+                // limparCampos();
+            }
         }
     });
 

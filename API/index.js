@@ -61,15 +61,12 @@ router.delete('/clientes/:id', (req, res, next) =>{
 
 router.post('/cadastrar', (req, res) =>{
 
-  console.log(
-    "Email: " + req.body.email
-    + "\nSenha: " + req.body.senha
-  );
-
   let email = req.body.email
   let senha = req.body.senha
 
-  execSQLQuery(`INSERT INTO tbl_usuario(nome,senha) VALUE ('${email}','${senha}')`,res);
+  let select = `INSERT INTO tbl_usuario(nome,senha) VALUE ('${email}','${senha}')`;
+
+  execSQLQuery(select ,res);
 
 })
 
@@ -143,19 +140,16 @@ router.patch('/clientes/:id', (req, res) => {
 //authentication
 router.post('/login', (req, res, next) => {
 
-  const nome = req.body.nome
-  const senha = req.body.senha
+  let nome = req.body.nome
+  let senha = req.body.senha
 
   let select = `SELECT * FROM tbl_usuario WHERE nome = '${nome}' AND senha = '${senha}'`
 
   connection.query(select, function(error, result, fields){
     
     if(result[0] == undefined){
-      console.log('Usuário não existe!');
-      // res.status(404).send('Usuário não existe');
-      // res.send("teste")
-      // res.redirect("back")
-      res.end()
+      res.status(404).send('Usuário não encontrado');
+      
     }else{
       
       if(error){
@@ -165,7 +159,7 @@ router.post('/login', (req, res, next) => {
         const id = parseInt(result[0].id)
   
         if(!isNaN(id)){
-  
+
           // auth ok
           const token = jwt.sign({ id }, process.env.SECRET, {
             expiresIn: 300 // expires in 5min
@@ -173,7 +167,6 @@ router.post('/login', (req, res, next) => {
           res.status(200).send({ auth: true, token: token })
           
         }else{
-          console.log("Erro id")
           res.status(500).send('Login inválido!');
         }
       }
@@ -187,6 +180,8 @@ router.get('/logout', function(req, res) {
 
 app.use('/',router)
 
+
+
 function verifyJWT(req, res, next){
   let token = req.headers['x-access-token'];
   if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
@@ -194,6 +189,7 @@ function verifyJWT(req, res, next){
   jwt.verify(token, process.env.SECRET, function(err, decoded) {
     if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
     
+
     // Se tudo estiver ok, salva no request para uso posterior
     req.userId = decoded.id;
     next();
