@@ -26,7 +26,7 @@ function execSQLQuery(sqlQry, res){
     }else{
       console.log("Query Executada: " + sqlQry );
       // + ";" + JSON.stringify(results))
-      
+      console.log("result: " + JSON.stringify(results));
       res.json(results)
     }
   });
@@ -56,6 +56,20 @@ router.delete('/clientes/:id', (req, res, next) =>{
   let id = parseInt(req.params.id)
   let select = 'DELETE FROM tbl_clientes WHERE ID = ' + id
   execSQLQuery(select, res)
+
+})
+
+router.post('/cadastrar', (req, res) =>{
+
+  console.log(
+    "Email: " + req.body.email
+    + "\nSenha: " + req.body.senha
+  );
+
+  let email = req.body.email
+  let senha = req.body.senha
+
+  execSQLQuery(`INSERT INTO tbl_usuario(nome,senha) VALUE ('${email}','${senha}')`,res);
 
 })
 
@@ -138,7 +152,10 @@ router.post('/login', (req, res, next) => {
     
     if(result[0] == undefined){
       console.log('Usuário não existe!');
-      res.status(404).send('Usuário não existe!');
+      // res.status(404).send('Usuário não existe');
+      // res.send("teste")
+      // res.redirect("back")
+      res.end()
     }else{
       
       if(error){

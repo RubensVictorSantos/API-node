@@ -34,6 +34,7 @@ const emailValido = (email) =>{
 	const er = /[0-9a-z._-]+@[0-9a-z]+([.][a-z]+)+/
 	return er.test(email);
 
+	
 };
 
 const celularValido = (celular) =>{
