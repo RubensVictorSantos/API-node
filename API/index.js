@@ -140,10 +140,10 @@ router.patch('/clientes/:id', (req, res) => {
 //authentication
 router.post('/login', (req, res, next) => {
 
-  let nome = req.body.nome
+  let email = req.body.email
   let senha = req.body.senha
 
-  let select = `SELECT * FROM tbl_usuario WHERE nome = '${nome}' AND senha = '${senha}'`
+  let select = `SELECT * FROM tbl_usuario WHERE nome = '${email}' AND senha = '${senha}'`
 
   connection.query(select, function(error, result, fields){
     

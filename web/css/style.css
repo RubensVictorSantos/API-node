@@ -5,7 +5,6 @@
 }
 
 #frm{
-   /* display: flex; */
    width: 50%;
    margin: 30px auto;
    padding: 10px;
@@ -72,7 +71,6 @@ input:focus:not(#txtcpf){
    flex: 1;
    text-align: center;
    padding: 15px;
-   /* margin: 10px 0; */
 }
 
 button{
@@ -99,7 +97,6 @@ button:active{
 }
 
 table {
-   /* flex: 1; */
 	width: 100%;
 	background:#1668c4;
 	-webkit-box-shadow: 3px 3px 10px 0px rgba(50, 50, 50, 0.75);
@@ -147,13 +144,11 @@ td {
 .t-login{
    width: 100%;
    height: 20%;
-   /* background-color: khaki; */
 }
 
 .box{
    width: 100%;
    height: 30%;
-   /* background-color: #4275af;    */
 }
 
 .h1-login{
@@ -174,7 +169,7 @@ td {
    flex-direction: row;
    justify-content: center;
    align-items: center;
-   /* background-color: #c7d5e6; */
+
 }
 
 .box-input{
@@ -184,7 +179,6 @@ td {
    flex-direction: row;
    justify-content: center;
    align-items: center;
-   /* background-color: #c7d5aa; */
    float: left;
 }
 
@@ -193,13 +187,11 @@ td {
    height: 100%;
    flex-direction: row;
    align-items: center;
-   /* background-color: black; */
 }
 
 .box-btn{
    display: flex;
    justify-content: flex-end;
-   /* background-color: red; */
   
 }
 
