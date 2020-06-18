@@ -11,20 +11,20 @@ require("dotenv-safe").config();
 const jwt = require('jsonwebtoken');
 
 /**Configurando o body parser para pegar POST mais tarde*/
-app.use(bodyParser.urlencoded({extended:true}))
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(cors())
 app.use(logger('dev'))
 app.use(helmet())
 app.use(cookieParser())
 
-function execSQLQuery(sqlQry, res){
+function execSQLQuery(sqlQry, res) {
 
-  connection.query(sqlQry, function(error, results, fields){
-    if(error){
+  connection.query(sqlQry, function (error, results, fields) {
+    if (error) {
       res.json(error)
-    }else{
-      console.log("Query Executada: " + sqlQry );
+    } else {
+      console.log("Query Executada: " + sqlQry);
       // + ";" + JSON.stringify(results))
       console.log("result: " + JSON.stringify(results));
       res.json(results)
@@ -36,41 +36,72 @@ function execSQLQuery(sqlQry, res){
 /**Definindo as rotas */
 
 const router = express.Router()
-   
-router.get('/',(req, res)=> res.json({message: 'Funcionando'}))
-    
-router.get('/clientes', verifyJWT, (req, res) =>{
-  let select = 'SELECT * FROM tbl_clientes ORDER BY id DESC LIMIT 5'
-  execSQLQuery(select , res)
+
+router.get('/', (req, res) => res.json({ message: 'Funcionando' }))
+
+router.get('/cliente', verifyJWT, (req, res) => {
+  let select = 'SELECT * FROM tbl_cliente ORDER BY id_cliente DESC LIMIT 5'
+  execSQLQuery(select, res)
 })
 
-router.get('/clientes/:id', (req, res,) =>{
-  if(req.params.id){
+router.get('/funcionario', verifyJWT, (req, res) => {
+  let select = 'SELECT * FROM tbl_login_funcionario ORDER BY id_login_funcionario DESC LIMIT 5'
+  execSQLQuery(select, res)
+})
+
+router.get('/cliente/:id', (req, res,) => {
+  if (req.params.id) {
     let id = parseInt(req.params.id)
-    let select = 'SELECT * FROM tbl_clientes WHERE ID = ' + id
+    let select = 'SELECT * FROM tbl_cliente WHERE id_cliente = ' + id
     execSQLQuery(select, res)
   }
 })
 
-router.delete('/clientes/:id', (req, res, next) =>{
+router.get('/funcionario/:id', (req, res,) => {
+  if (req.params.id) {
+    let id = parseInt(req.params.id)
+    let select = 'SELECT * FROM tbl_login_funcionario WHERE id_login_funcionario = ' + id
+    execSQLQuery(select, res)
+  }
+})
+
+router.delete('/cliente/:id', (req, res, next) => {
   let id = parseInt(req.params.id)
-  let select = 'DELETE FROM tbl_clientes WHERE ID = ' + id
+  let select = 'DELETE FROM tbl_cliente WHERE id_cliente = ' + id
   execSQLQuery(select, res)
 
 })
 
-router.post('/cadastrar', (req, res) =>{
+router.delete('/funcionario/:id', (req, res, next) => {
+  let id = parseInt(req.params.id)
+  let select = 'DELETE FROM tbl_cliente WHERE id_login_funcionario = ' + id
+  execSQLQuery(select, res)
+
+})
+
+router.post('/cadastrar/funcionario', (req, res) => {
+
+  let nome = req.body.nome
+  let senha = req.body.senha
+
+  let select = `INSERT INTO tbl_login_funcionario(nome,senha) VALUE ('${nome}','${senha}')`;
+
+  execSQLQuery(select, res);
+
+})
+
+router.post('/cadastrar/cliente', (req, res) => {
 
   let email = req.body.email
   let senha = req.body.senha
 
-  let select = `INSERT INTO tbl_usuario(nome,senha) VALUE ('${email}','${senha}')`;
+  let select = `INSERT INTO tbl_login_cliente(email,senha) VALUE ('${email}','${senha}')`;
 
-  execSQLQuery(select ,res);
+  execSQLQuery(select, res);
 
 })
 
-router.post('/clientes', (req, res) =>{
+router.post('/cliente', (req, res) => {
 
   let nome = req.body.nome
   let email = req.body.email
@@ -86,7 +117,7 @@ router.post('/clientes', (req, res) =>{
   criptografar(nome)
 
   execSQLQuery(
-  `INSERT INTO tbl_clientes(nome, 
+    `INSERT INTO tbl_cliente(nome, 
   email, 
   celular, 
   endereco, 
@@ -109,8 +140,8 @@ router.post('/clientes', (req, res) =>{
 
 })
 
-router.patch('/clientes/:id', (req, res) => {
- 
+router.patch('/cliente/:id', (req, res) => {
+
   let id = parseInt(req.params.id)
   let nome = req.body.nome
   let email = req.body.email
@@ -122,8 +153,8 @@ router.patch('/clientes/:id', (req, res) => {
   let estado = req.body.estado
   let cep = req.body.cep
   let sexo = req.body.sexo
-  
-  execSQLQuery(`UPDATE tbl_clientes SET 
+
+  execSQLQuery(`UPDATE tbl_cliente SET 
   nome='${nome}', 
   email = '${email}', 
   celular = '${celular}',
@@ -134,39 +165,39 @@ router.patch('/clientes/:id', (req, res) => {
   estado = '${estado}',
   cep = '${cep}',
   sexo = '${sexo}'
-  WHERE ID = ${id}`, res)
+  WHERE id_cliente = ${id}`, res)
 })
 
 //authentication
-router.post('/login', (req, res, next) => {
+router.post('/login/cliente', (req, res, next) => {
 
   let email = req.body.email
   let senha = req.body.senha
 
-  let select = `SELECT * FROM tbl_usuario WHERE nome = '${email}' AND senha = '${senha}'`
+  let select = `SELECT * FROM tbl_login_cliente WHERE email = '${email}' AND senha = '${senha}'`
 
-  connection.query(select, function(error, result, fields){
-    
-    if(result[0] == undefined){
+  connection.query(select, function (error, result, fields) {
+
+    if (result[0] == undefined) {
       res.status(404).send('Usuário não encontrado');
-      
-    }else{
-      
-      if(error){
+
+    } else {
+
+      if (error) {
         res.json(error)
-      }else{
-  
+      } else {
+
         const id = parseInt(result[0].id)
-  
-        if(!isNaN(id)){
+
+        if (!isNaN(id)) {
 
           // auth ok
           const token = jwt.sign({ id }, process.env.SECRET, {
             expiresIn: 300 // expires in 5min
           });
           res.status(200).send({ auth: true, token: token })
-          
-        }else{
+
+        } else {
           res.status(500).send('Login inválido!');
         }
       }
@@ -174,21 +205,62 @@ router.post('/login', (req, res, next) => {
   })
 })
 
-router.get('/logout', function(req, res) {
+router.post('/login/funcionario', (req, res, next) => {
+
+  let nome = req.body.nome
+  let senha = req.body.senha
+
+  console.log(req.body.nome +
+    "\n" + req.body.senha);
+
+  let select = `SELECT * FROM tbl_login_funcionario WHERE nome = '${nome}' AND senha = '${senha}'`
+
+
+  connection.query(select, function (error, result, fields) {
+
+    if (result[0] == undefined) {
+      res.status(404).send('Usuário não encontrado');
+
+    } else {
+
+      if (error) {
+        res.json(error)
+      } else {
+
+        const id = parseInt(result[0].id)
+
+        console.log(isNaN(id))
+        if (isNaN(id)) {
+
+          // auth ok
+          const token = jwt.sign({ id }, process.env.SECRET, {
+            expiresIn: 300 // expires in 5min
+          });
+          res.status(200).send({ auth: true, token: token })
+
+        } else {
+          res.status(500).send('Login inválido!');
+        }
+      }
+    }
+  })
+})
+
+router.get('/logout', function (req, res) {
   res.status(200).send({ auth: false, token: null })
 })
 
-app.use('/',router)
+app.use('/', router)
 
 
 
-function verifyJWT(req, res, next){
+function verifyJWT(req, res, next) {
   let token = req.headers['x-access-token'];
   if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
-  
-  jwt.verify(token, process.env.SECRET, function(err, decoded) {
+
+  jwt.verify(token, process.env.SECRET, function (err, decoded) {
     if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
-    
+
 
     // Se tudo estiver ok, salva no request para uso posterior
     req.userId = decoded.id;

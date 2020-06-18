@@ -9,7 +9,7 @@ const limparCampos = () =>{
 
 const entrar = () =>{
 
-    let url = `http://127.0.0.1:3000/login`;
+    let url = `http://127.0.0.1:3000/login/funcionario`;
     let nome = txtNome.value;
     let senha = txtSenha.value;
 
@@ -27,7 +27,7 @@ const entrar = () =>{
             let token = result.token
 
             sessionStorage.setItem('token', `${token}`);
-            window.location.replace("file:///C:/Users/Rubens/Desktop/pessoal/node/web/index.html");
+            window.location.replace("file:///C:/Users/Rubens/Desktop/pessoal/nodejs/api-estacionamento/web/cms/home.html");
         },
 		error: function (request, status, error) {
 
