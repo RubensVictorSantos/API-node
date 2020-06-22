@@ -39,7 +39,12 @@ const router = express.Router()
 
 router.get('/', (req, res) => res.json({ message: 'Funcionando' }))
 
-router.get('/cliente', verifyJWT, (req, res) => {
+// router.get('/cliente', verifyJWT, (req, res) => {
+//   let select = 'SELECT * FROM tbl_cliente ORDER BY id_cliente DESC LIMIT 5'
+//   execSQLQuery(select, res)
+// })
+
+router.get('/cliente', (req, res) => {
   let select = 'SELECT * FROM tbl_cliente ORDER BY id_cliente DESC LIMIT 5'
   execSQLQuery(select, res)
 })
