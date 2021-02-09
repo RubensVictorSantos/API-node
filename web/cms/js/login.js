@@ -27,7 +27,7 @@ const entrar = () =>{
             let token = result.token
 
             sessionStorage.setItem('token', `${token}`);
-            window.location.replace("file:///C:/Users/Rubens/Desktop/pessoal/nodejs/api-estacionamento/web/cms/home.html");
+            window.location.replace("file:///C:/Users/Rubens/Desktop/pessoal/nodejs/api-node/web/cms/home.html");
         },
 		error: function (request, status, error) {
 

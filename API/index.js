@@ -5,7 +5,7 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 const bodyParser = require('body-parser')
-const port = 3000;/**Porta padrão */
+const port = 3333;/**Porta padrão */
 const connection = require("./conexao.js");
 require("dotenv-safe").config();
 const jwt = require('jsonwebtoken');

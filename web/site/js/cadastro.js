@@ -90,7 +90,7 @@ const cadastrarAluno = () => {
 		let cep = txtCep.value;
 		let sexo = $("input[name='sexo']:checked").val();
 
-		let url = 'http://127.0.0.1:3000/clientes';
+		let url = 'http://127.0.0.1:3000/cliente';
 
 		$.ajax({
 			url: url,
@@ -143,7 +143,7 @@ function atualizarAluno(){
 	let sexo = $("input[name='sexo']:checked").val();
 
 	let id = sessionStorage.getItem('id');
-	let url = `http://127.0.0.1:3000/clientes/${id}`;
+	let url = `http://127.0.0.1:3000/cliente/${id}`;
 
 	$('#cadastrar').click(function() {
 
@@ -239,7 +239,7 @@ const preencherCampos = () => {
 		codigo = parseInt(prompt("Codigo não existe! Digite novamente"));
 	}
 
-	let url = `http://127.0.0.1:3000/clientes/${codigo}`;
+	let url = `http://127.0.0.1:3000/cliente/${codigo}`;
 	sessionStorage.setItem('id', `${codigo}`);
 
 	removerErro(txtNome, txtEmail,txtCelular);
@@ -290,7 +290,7 @@ const preencherCampos = () => {
 const deletarNome = () =>{
 
 	let codigo = prompt("Digite o código para deletar:");
-	let url = `http://127.0.0.1:3000/clientes/${codigo}`;
+	let url = `http://127.0.0.1:3000/cliente/${codigo}`;
 
 	$.ajax({
 		url: url,
@@ -312,7 +312,7 @@ const deletarNome = () =>{
 
 function mostrarBD(){
 	
-	let url = 'http://127.0.0.1:3000/clientes';
+	let url = 'http://127.0.0.1:3000/cliente';
 	const token = sessionStorage.getItem('token');
 
 	$.ajax({
