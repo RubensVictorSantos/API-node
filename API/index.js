@@ -5,7 +5,6 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 const bodyParser = require('body-parser')
-const port = 3333;/**Porta padrão */
 const connection = require("./conexao.js");
 require("dotenv-safe").config();
 const jwt = require('jsonwebtoken');
@@ -25,19 +24,19 @@ function execSQLQuery(sqlQry, res) {
       res.json(error)
     } else {
       console.log("Query Executada: " + sqlQry);
-      // + ";" + JSON.stringify(results))
       console.log("result: " + JSON.stringify(results));
       res.json(results)
     }
   });
 }
 
-
 /**Definindo as rotas */
 
 const router = express.Router()
 
-router.get('/', (req, res) => res.json({ message: 'Funcionando' }))
+app.get('/*', function(req, res){
+  res.sendFile('index.html', { root: __dirname });
+});
 
 // router.get('/cliente', verifyJWT, (req, res) => {
 //   let select = 'SELECT * FROM tbl_cliente ORDER BY id_cliente DESC LIMIT 5'
@@ -273,5 +272,5 @@ function verifyJWT(req, res, next) {
   });
 }
 
-/**Inicia o servidor */
-app.listen(port)
+/** Inicia o servidor */
+app.listen(process.env.PORT)
