@@ -12,10 +12,10 @@ const con = mysql.createConnection({
 
 con.connect((err) => {
     if (err) {
-        console.log('Erro na conexão com o banco...', err)
+        console.log('\nErro na conexão com o banco...\n', err)
         return
     }
-    console.log('Conexão com o banco!')
+    console.log('\nConexão com o banco!\n')
 })
 
 module.exports = con

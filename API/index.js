@@ -24,7 +24,7 @@ function execSQLQuery(sqlQry, res) {
       res.json(error)
     } else {
       console.log("Query Executada: " + sqlQry);
-      console.log("result: " + JSON.stringify(results));
+      console.log("\nResultado: " + JSON.stringify(results));
       res.json(results)
     }
   });
@@ -34,7 +34,7 @@ function execSQLQuery(sqlQry, res) {
 
 const router = express.Router()
 
-app.get('/*', function(req, res){
+app.get('/', function(req, res){
   res.sendFile('index.html', { root: __dirname });
 });
 
@@ -44,7 +44,9 @@ app.get('/*', function(req, res){
 // })
 
 router.get('/cliente', (req, res) => {
-  let select = 'SELECT * FROM tbl_cliente ORDER BY id_cliente DESC LIMIT 5'
+
+  let select = 'SELECT * FROM tbl_cliente ORDER BY id_cliente DESC'
+
   execSQLQuery(select, res)
 })
 
