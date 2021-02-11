@@ -1,21 +1,22 @@
-const cookieParser = require('cookie-parser')
-const logger = require('morgan')
+const cookie = require('cookie-parser')
+const morgan = require('morgan')
 const helmet = require('helmet')
 const express = require('express')
 const cors = require('cors')
-const app = express()
 const bodyParser = require('body-parser')
 const connection = require("./conexao.js");
-require("dotenv-safe").config();
 const jwt = require('jsonwebtoken');
+const app = express()
+require("dotenv-safe").config();
 
 /**Configurando o body parser para pegar POST mais tarde*/
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+
 app.use(cors())
-app.use(logger('dev'))
+app.use(morgan('dev'))
 app.use(helmet())
-app.use(cookieParser())
+app.use(cookie())
 
 function execSQLQuery(sqlQry, res) {
 
@@ -23,8 +24,12 @@ function execSQLQuery(sqlQry, res) {
     if (error) {
       res.json(error)
     } else {
-      console.log("Query Executada: " + sqlQry);
-      console.log("\nResultado: " + JSON.stringify(results));
+
+      console.log(`
+        Query Executada: ${sqlQry} \n
+        Resultado: ${JSON.stringify(results)} \n`
+      );
+
       res.json(results)
     }
   });
@@ -34,7 +39,7 @@ function execSQLQuery(sqlQry, res) {
 
 const router = express.Router()
 
-app.get('/', function(req, res){
+app.get('/', function (req, res) {
   res.sendFile('index.html', { root: __dirname });
 });
 
@@ -50,7 +55,7 @@ router.get('/cliente', (req, res) => {
   execSQLQuery(select, res)
 })
 
-router.get('/funcionario', verifyJWT, (req, res) => {
+router.get('/funcionario', (req, res) => {
   let select = 'SELECT * FROM tbl_login_funcionario ORDER BY id_login_funcionario DESC LIMIT 5'
   execSQLQuery(select, res)
 })
@@ -89,8 +94,10 @@ router.post('/cadastrar/funcionario', (req, res) => {
 
   let nome = req.body.nome
   let senha = req.body.senha
+  let status = req.body.status
+  let nivel = req.body.nivel
 
-  let select = `INSERT INTO tbl_login_funcionario(nome,senha) VALUE ('${nome}','${senha}')`;
+  let select = `INSERT INTO tbl_login_funcionario(nome,senha,nivel,status) VALUE ('${nome}','${senha}',${nivel},'${status}')`;
 
   execSQLQuery(select, res);
 
@@ -258,15 +265,12 @@ router.get('/logout', function (req, res) {
 
 app.use('/', router)
 
-
-
 function verifyJWT(req, res, next) {
   let token = req.headers['x-access-token'];
   if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
 
   jwt.verify(token, process.env.SECRET, function (err, decoded) {
     if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
-
 
     // Se tudo estiver ok, salva no request para uso posterior
     req.userId = decoded.id;
