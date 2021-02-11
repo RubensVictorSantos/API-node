@@ -35,7 +35,7 @@ CREATE TABLE `tbl_cliente` (
   `cep` varchar(8) DEFAULT NULL,
   `sexo` char(1) DEFAULT NULL,
   PRIMARY KEY (`id_cliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,7 +44,6 @@ CREATE TABLE `tbl_cliente` (
 
 LOCK TABLES `tbl_cliente` WRITE;
 /*!40000 ALTER TABLE `tbl_cliente` DISABLE KEYS */;
-INSERT INTO `tbl_cliente` VALUES (2,'qweqwe','qwe@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302','m'),(3,'Rubens','rubens@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302','m'),(4,'Rubens','rubens@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302','m'),(5,'Rubens','rubens@gmail.com','(11) 95880-8525','Rua Castanheira','46','Parque Viana','Barueri','SP','06449302','m');
 /*!40000 ALTER TABLE `tbl_cliente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -69,7 +68,7 @@ CREATE TABLE `tbl_login_cliente` (
 
 LOCK TABLES `tbl_login_cliente` WRITE;
 /*!40000 ALTER TABLE `tbl_login_cliente` DISABLE KEYS */;
-INSERT INTO `tbl_login_cliente` VALUES (1,'undefined','12345678');
+INSERT INTO `tbl_login_cliente` VALUES (1,'rubens@gmail.com','12345678');
 /*!40000 ALTER TABLE `tbl_login_cliente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -107,4 +106,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-18 16:03:06
+-- Dump completed on 2021-02-11 11:01:37
