@@ -60,7 +60,7 @@ router.get('/funcionario', (req, res) => {
   execSQLQuery(select, res)
 })
 
-router.get('/cliente/:id', (req, res,) => {
+router.get('/cliente:id', (req, res,) => {
   if (req.params.id) {
     let id = parseInt(req.params.id)
     let select = 'SELECT * FROM tbl_cliente WHERE id_cliente = ' + id
@@ -76,21 +76,21 @@ router.get('/funcionario/:id', (req, res,) => {
   }
 })
 
-router.delete('/cliente/:id', (req, res, next) => {
+router.delete('/delete_cliente/:id', (req, res, next) => {
   let id = parseInt(req.params.id)
   let select = 'DELETE FROM tbl_cliente WHERE id_cliente = ' + id
   execSQLQuery(select, res)
 
 })
 
-router.delete('/funcionario/:id', (req, res, next) => {
+router.delete('/delete_funcionario/:id', (req, res, next) => {
   let id = parseInt(req.params.id)
   let select = 'DELETE FROM tbl_cliente WHERE id_login_funcionario = ' + id
   execSQLQuery(select, res)
 
 })
 
-router.post('/cadastrar/funcionario', (req, res) => {
+router.post('/cadastrar_funcionario', (req, res) => {
 
   let nome = req.body.nome
   let senha = req.body.senha
@@ -103,7 +103,7 @@ router.post('/cadastrar/funcionario', (req, res) => {
 
 })
 
-router.post('/cadastrar/cliente', (req, res) => {
+router.post('/login_cliente', (req, res) => {
 
   let email = req.body.email
   let senha = req.body.senha
@@ -114,7 +114,7 @@ router.post('/cadastrar/cliente', (req, res) => {
 
 })
 
-router.post('/cliente', (req, res) => {
+router.post('/cadastrar_cliente', (req, res) => {
 
   let nome = req.body.nome
   let email = req.body.email
@@ -126,8 +126,6 @@ router.post('/cliente', (req, res) => {
   let estado = req.body.estado
   let cep = req.body.cep
   let sexo = req.body.sexo
-
-  criptografar(nome)
 
   execSQLQuery(
     `INSERT INTO tbl_cliente(nome, 
@@ -153,7 +151,7 @@ router.post('/cliente', (req, res) => {
 
 })
 
-router.patch('/cliente/:id', (req, res) => {
+router.patch('/atualizar_cliente/:id', (req, res) => {
 
   let id = parseInt(req.params.id)
   let nome = req.body.nome
