@@ -4,9 +4,11 @@ const helmet = require('helmet')
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
+
 const connection = require("./conexao.js");
 const jwt = require('jsonwebtoken');
-const app = express()
+const app = express();
+
 require("dotenv-safe").config();
 
 /**Configurando o body parser para pegar POST mais tarde*/

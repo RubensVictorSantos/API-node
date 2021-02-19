@@ -22,8 +22,8 @@
 
             <!-- -->
             <div class="col-2 bg-light bg-gradient">
-                <nav class="nav flex-column">
-                    <a class="nav-link text-dark text-capitalize" aria-current="page" href="#get01">
+                <nav class="nav flex-column" id="nav">
+                    <!-- <a class="nav-link text-dark text-capitalize" aria-current="page" href="#get01">
                         <span class="text-success font-weight-bold font-monospace text-uppercase">
                             Get
                         </span>
@@ -69,7 +69,7 @@
                         </span>
                         Logout Cliente
 
-                    </a>
+                    </a> -->
 
 
                 </nav>
@@ -78,7 +78,7 @@
             <!-- -->
 
             <div class="col">
-                <div class="row">
+                <div class="row" id="title">
                     <div class="col border-bottom">
 
                         <h1 class="text-success p-4">API-Node</h1>
@@ -92,380 +92,98 @@
                     </div>
 
                 </div>
-
-                <div class="row">
-                    <div id="get01" class="col border-bottom">
-                        <h5 class="p-2">
-                            <span class="text-success text-uppercase">
-                                Get
-                            </span>
-                            Todos cliente registrados no banco
-
-                        </h5>
-                        <p class="border bg-light p-1 rounded">
-                            <a class="text-decoration-none" href="http://localhost:3333/cliente"
-                                target="_blank">http://localhost:3333/<span
-                                    class="text-success font-weight-bold">cliente</span></a>
-                        </p>
-                        <p class=" pb-2 mb-0">
-                            Para retorna um JSON com todos os clientes registrados no banco, precisamos acrescentar a
-                            palavra <span class="text-success">cliente</span>.
-                        </p>
-                    </div>
-
-                    <div class="col bg-dark">
-                        <h5 class="text-white-50">Example Request</h5>
-                        
-                        <div class="rounded border border-secondary m-3">
-                            <pre class="text-secondary">
-    
-    var settings = {
-        "url": "http://rubens-pc:3333/cliente",
-        "method": "GET",
-        "timeout": 0,
-        };
-        
-        $.ajax(settings).done(function (response) {
-        console.log(response);
-    });
-                            </pre>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="row">
-                    <div id="get02" class="col border-bottom">
-                        <h5 class="p-2">
-                            <span class="text-success text-uppercase">
-                                Get
-                            </span>
-                            Todos funcionários registrados no banco
-
-                        </h5>
-                        <p class="border bg-light p-1 rounded">
-                            <a class="text-decoration-none" href="http://localhost:3333/funcionario"
-                                target="_blank">http://localhost:3333/<span
-                                    class="text-success font-weight-bold">funcionario</span></a>
-                        </p>
-                        <p class=" pb-2 mb-0">
-                            Para retorna um JSON com todos os funcionários registrados no banco, precisamos acrescentar
-                            a
-                            palavra <span class="text-success">funcionario</span>.
-                        </p>
-                    </div>
-
-                    <div class="col bg-dark">
-                        <h5 class="text-white-50">Example Request</h5>
-                        
-                        <div class="rounded border border-secondary m-3">
-                            <pre class="text-secondary">
-    
-    var settings = {
-        "url": "http://rubens-pc:3333/funcionario",
-        "method": "GET",
-        "timeout": 0,
-        };
-        
-        $.ajax(settings).done(function (response) {
-        console.log(response);
-    });
-                            </pre>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="row">
-                    <div id="get03" class="col border-bottom">
-                        <h5 class="p-2">
-                            <span class="text-success text-uppercase">
-                                Get
-                            </span>
-                            Cliente pelo ID
-
-                        </h5>
-                        <p class="border bg-light p-1 rounded">
-                            <a class="text-decoration-none" href="http://localhost:3333/cliente/1"
-                                target="_blank">http://localhost:3333/<span
-                                    class="text-success font-weight-bold">cliente/1</span></a>
-                        </p>
-                        <p class=" pb-2 mb-0">
-                            Retorna um JSON com todas as informações do cliente especificado pelo id, precisamos
-                            acrescentar o
-                            número do <span class="text-success">id</span> na url depois de cliente/.
-                        </p>
-                    </div>
-
-                    <div class="col bg-dark">
-                        <h5 class="text-white-50">Example Request</h5>
-                        
-                        <div class="rounded border border-secondary m-3">
-                            <pre class="text-secondary">
-    
-    var settings = {
-        "url": "http://127.0.0.1:3333/cliente/1",
-        "method": "GET",
-        "timeout": 0,
-        };
-        
-        $.ajax(settings).done(function (response) {
-        console.log(response);
-    });
-                            </pre>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="row">
-                    <div id="get04" class="col border-bottom">
-                        <h5 class="p-2">
-                            <span class="text-success text-uppercase">
-                                Get
-                            </span>
-                            Funcionário pelo ID
-
-                        </h5>
-                        <p class="border bg-light p-1 rounded">
-                            <a class="text-decoration-none" href="http://localhost:3333/funcionario/1"
-                                target="_blank">http://localhost:3333/<span
-                                    class="text-success font-weight-bold">funcionario/1</span></a>
-                        </p>
-                        <p class=" pb-2 mb-0">
-                            Retorna um JSON com todas as informações do funcionário especificado pelo id, precisamos
-                            acrescentar o
-                            número do <span class="text-success">id</span> na url depois de funcionario/.
-                        </p>
-                    </div>
-
-                    <div class="col bg-dark ">
-
-                    </div>
-
-                </div>
-
-                <div class="row">
-                    <div id="get05" class="col border-bottom">
-                        <h5 class="p-2">
-                            <span class="text-danger text-uppercase">
-                                DELETE
-                            </span>
-                            Deletar cliente
-
-                        </h5>
-                        <p class="border bg-light p-1 rounded">
-                            <a class="text-decoration-none" href="http://localhost:3333/deletecliente/1"
-                                target="_blank">http://localhost:3333/<span
-                                    class="text-danger font-weight-bold">delete_cliente/1</span></a>
-                        </p>
-                        <p class=" pb-2 mb-0">
-                            Retorna um JSON com todas as informações do cliente especificado pelo id, precisamos
-                            acrescentar o
-                            número do <span class="text-success">id</span> na url depois de cliente/.
-                        </p>
-                    </div>
-
-                    <div class="col bg-dark ">
-
-                    </div>
-
-                </div>
-
-                <div class="row">
-                    <div id="get05" class="col border-bottom">
-                        <h5 class="p-2">
-                            <span class="text-danger text-uppercase">
-                                DELETE
-                            </span>
-                            Deletar Funcionário
-
-                        </h5>
-                        <p class="border bg-light p-1 rounded">
-                            <a class="text-decoration-none" href="http://localhost:3333/delete_funcionario/1"
-                                target="_blank">http://localhost:3333/<span
-                                    class="text-danger font-weight-bold">delete_funcionario/1</span></a>
-                        </p>
-                        <p class=" pb-2 mb-0">
-                            Retorna um JSON com todas as informações do cliente especificado pelo id, precisamos
-                            acrescentar o
-                            número do <span class="text-success">id</span> na url depois de cliente/.
-                        </p>
-                    </div>
-
-                    <div class="col bg-dark ">
-
-                    </div>
-
-                </div>
-
-                <div class="row">
-                    <div id="get05" class="col border-bottom">
-                        <h5 class="p-2">
-                            <span class="text-warning text-uppercase">
-                                POST
-                            </span>
-                            Cada Funcionário
-
-                        </h5>
-                        <p class="border bg-light p-1 rounded">
-                            <a class="text-decoration-none" href="http://localhost:3333/cadastrar_funcionario"
-                                target="_blank">http://localhost:3333/<span
-                                    class="text-warning font-weight-bold">cadastrar_funcionario</span></a>
-                        </p>
-                        <p class=" pb-2 mb-0">
-                            Retorna um JSON com todas as informações do cliente especificado pelo id, precisamos
-                            acrescentar o
-                            número do <span class="text-success">id</span> na url depois de cliente/.
-                        </p>
-                    </div>
-
-                    <div class="col bg-dark ">
-
-                    </div>
-
-                </div>
-
-                <div class="row">
-                    <div id="get05" class="col border-bottom">
-                        <h5 class="p-2">
-                            <span class="text-warning text-uppercase">
-                                POST
-                            </span>
-                            Login Cliente
-
-                        </h5>
-                        <p class="border bg-light p-1 rounded">
-                            <a class="text-decoration-none" href="http://localhost:3333/login_cliente"
-                                target="_blank">http://localhost:3333/<span
-                                    class="text-warning font-weight-bold">login_cliente</span></a>
-                        </p>
-                        <p class=" pb-2 mb-0">
-                            Retorna um JSON com todas as informações do cliente especificado pelo id, precisamos
-                            acrescentar o
-                            número do <span class="text-success">id</span> na url depois de cliente/.
-                        </p>
-                    </div>
-
-                    <div class="col bg-dark ">
-
-                    </div>
-
-                </div>
-
-                <div class="row">
-                    <div id="get05" class="col border-bottom">
-                        <h5 class="p-2">
-                            <span class="text-warning text-uppercase">
-                                POST
-                            </span>
-                            Cadastrar Clientes
-
-                        </h5>
-                        <p class="border bg-light p-1 rounded">
-                            <a class="text-decoration-none" href="http://localhost:3333/cadastrar_cliente"
-                                target="_blank">http://localhost:3333/<span
-                                    class="text-warning font-weight-bold">cadastrar_cliente</span></a>
-                        </p>
-                        <p class=" pb-2 mb-0">
-                            Retorna um JSON com todas as informações do cliente especificado pelo id, precisamos
-                            acrescentar o
-                            número do <span class="text-success">id</span> na url depois de cliente/.
-                        </p>
-                    </div>
-
-                    <div class="col bg-dark ">
-
-                    </div>
-
-                </div>
-
-                <div class="row">
-                    <div id="get05" class="col border-bottom">
-                        <h5 class="p-2">
-                            <span class="text-secondary text-uppercase">
-                                patch
-                            </span>
-                            Atualizar Cliente
-
-                        </h5>
-                        <p class="border bg-light p-1 rounded">
-                            <a class="text-decoration-none" href="http://localhost:3333/atualizar_cliente/3"
-                                target="_blank">http://localhost:3333/<span
-                                    class="text-warning font-weight-bold">atualizar_cliente/1</span></a>
-                        </p>
-                        <p class=" pb-2 mb-0">
-                            Retorna um JSON com todas as informações do cliente especificado pelo id, precisamos
-                            acrescentar o
-                            número do <span class="text-success">id</span> na url depois de cliente/.
-                        </p>
-                    </div>
-
-                    <div class="col bg-dark ">
-
-                    </div>
-
-                </div>
-
-                <div class="row">
-                    <div id="get05" class="col border-bottom">
-                        <h5 class="p-2">
-                            <span class="text-warning text-uppercase">
-                                POST
-                            </span>
-                            Autenticar Cliente
-
-                        </h5>
-                        <p class="border bg-light p-1 rounded">
-                            <a class="text-decoration-none" href="http://localhost:3333/login/cliente"
-                                target="_blank">http://localhost:3333/<span
-                                    class="text-warning font-weight-bold">login/cliente</span></a>
-                        </p>
-                        <p class=" pb-2 mb-0">
-                            Retorna um JSON com todas as informações do cliente especificado pelo id, precisamos
-                            acrescentar o
-                            número do <span class="text-success">id</span> na url depois de cliente/.
-                        </p>
-                    </div>
-
-                    <div class="col bg-dark ">
-
-                    </div>
-
-                </div>
-
-                <div class="row">
-                    <div id="get05" class="col border-bottom">
-                        <h5 class="p-2">
-                            <span class="text-success text-uppercase">
-                                GET
-                            </span>
-                            Logout             
-
-                        </h5>
-                        <p class="border bg-light p-1 rounded">
-                            <a class="text-decoration-none" href="http://localhost:3333/logout"
-                                target="_blank">http://localhost:3333/<span
-                                    class="text-warning font-weight-bold">logout</span></a>
-                        </p>
-                        <p class=" pb-2 mb-0">
-                            Retorna um JSON com todas as informações do cliente especificado pelo id, precisamos
-                            acrescentar o
-                            número do <span class="text-success">id</span> na url depois de cliente/.
-                        </p>
-                    </div>
-
-                    <div class="col bg-dark ">
-
-                    </div>
-
-                </div>
-
             </div>
 
         </div>
 
     </div>
+    <script>
+
+        let request = [
+            {
+                type: 'GET',
+                url: `cliente`,
+                title: 'Todos cliente registrados no banco',
+                content: 'Para retorna um JSON com todos os clientes registrados no banco, precisamos acrescentar a palavra cliente.',                
+                color: 'text-success',
+            },
+            {
+                type: 'GET',
+                url: `funcionario`,
+                title: 'Todos funcionários registrados no banco',
+                content: 'Para retorna um JSON com todos os funcionários registrados no banco, precisamos acrescentar a palavra cliente.',                
+                color: 'text-success',
+            },
+            {
+                type: 'GET',
+                url: `cliente/1`,
+                title: 'Cliente por ID',
+                content: 'Para retorna um JSON .',                
+                color: 'text-success',
+            },
+
+        ];
+
+        $( "#nav" ).after(Object.keys(request).map( (i) =>
+        `
+            <a class="nav-link text-dark text-capitalize" href="#get${i}">
+                <span class="${request[i].color} font-weight-bold font-monospace text-uppercase">
+                    ${request[i].type}
+                </span>
+                ${request[i].title}
+
+            </a
+        `))
+        
+
+        $( "#title" ).after(Object.keys(request).map( (i) =>
+            `
+            <div class="row">
+                <div id="get${i}" class="col border-bottom">
+                    <h5 class="p-2">
+                        <span class="${request[i].color} text-uppercase">
+                            ${request[i].type}
+                        
+                        </span>
+                        ${request[i].title}
+
+                    </h5>
+
+                    <p class="border bg-light p-1 rounded">
+                        <a class="text-decoration-none" href="http://localhost:3333/${request[i].url}" 
+                        target="_blank">http://localhost:3333/
+                            <span class="${request[i].color} font-weight-bold">${request[i].url}</span>
+
+                        </a>
+                    </p>
+                    <p class=" pb-2 mb-0">
+                        ${request[i].content}
+                    </p>
+                </div>
+
+                <div class="col bg-dark">
+                    <h5 class="text-white-50">Example Request</h5>
+
+                    <div class="rounded border border-secondary m-3">
+                        <pre class="text-secondary">
+
+    var settings = {
+        "url": "${request[i].url}",
+        "method": "${request[i].type}",
+        "timeout": 0,
+    };
+
+    $.ajax(settings).done(function (response) {
+        console.log(response);
+    });
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        
+        `))
+
+    </script>
 </body>
 
 </html>
