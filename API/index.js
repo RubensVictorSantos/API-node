@@ -111,6 +111,8 @@ router.post('/cadastrar_funcionario', (req, res) => {
   let status = req.body.status
   let nivel = req.body.nivel
 
+  `./mysqldump -u root -p db_newsite > "C://users/karine/desktop/rubens/api-node/banco/db_newsite.sql"
+  `
   let select = `INSERT INTO tbl_login_funcionario(nome,senha,nivel,status) VALUE ('${nome}','${senha}',${nivel},'${status}')`;
 
   execSQLQuery(select, res);
