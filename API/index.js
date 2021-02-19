@@ -60,7 +60,7 @@ router.get('/funcionario', (req, res) => {
   execSQLQuery(select, res)
 })
 
-router.get('/cliente:id', (req, res,) => {
+router.get('/cliente/:id', (req, res,) => {
   if (req.params.id) {
     let id = parseInt(req.params.id)
     let select = 'SELECT * FROM tbl_cliente WHERE id_cliente = ' + id
@@ -76,17 +76,29 @@ router.get('/funcionario/:id', (req, res,) => {
   }
 })
 
-router.delete('/delete_cliente/:id', (req, res, next) => {
-  let id = parseInt(req.params.id)
-  let select = 'DELETE FROM tbl_cliente WHERE id_cliente = ' + id
-  execSQLQuery(select, res)
+router.delete('/deletecliente/:id', (req, res, next) => {
 
+  console.log(req.params)
+  let id = parseInt(req.params.id)
+  console.log(id);
+
+  let select = 'DELETE FROM tbl_cliente WHERE id_cliente = ' + id
+
+  console.log(select);
+
+  res.send('DELETE request to homepage')
+  execSQLQuery(select, res)
+  
 })
 
 router.delete('/delete_funcionario/:id', (req, res, next) => {
   let id = parseInt(req.params.id)
+
+  console.log(id);
   let select = 'DELETE FROM tbl_cliente WHERE id_login_funcionario = ' + id
-  execSQLQuery(select, res)
+  
+  console.log(select);
+  execSQLQuery(select, res) 
 
 })
 
