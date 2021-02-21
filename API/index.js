@@ -154,6 +154,7 @@ router.post('/cadastrar_cliente', (req, res) => {
   estado, 
   cep,
   sexo) 
+  
   VALUES('${nome}',
   '${email}',
   '${celular}',
