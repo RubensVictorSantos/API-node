@@ -23,54 +23,6 @@
             <!-- -->
             <div class="col-2 bg-light bg-gradient">
                 <nav class="nav flex-column" id="nav">
-                    <!-- <a class="nav-link text-dark text-capitalize" aria-current="page" href="#get01">
-                        <span class="text-success font-weight-bold font-monospace text-uppercase">
-                            Get
-                        </span>
-                        Get Cliente
-
-                    </a>
-
-                    <a class="nav-link text-dark text-capitalize " href="#get02">
-                        <span class="text-success font-weight-bold font-monospace text-uppercase">
-                            Get
-                        </span>
-                        Get Cliente Id
-
-                    </a>
-
-                    <a class="nav-link text-dark text-capitalize" href="#">
-                        <span class="text-danger font-weight-bold font-monospace text-uppercase">
-                            Delete
-                        </span>
-                        Delete Cliente
-
-                    </a>
-
-                    <a class="nav-link text-dark text-capitalize" href="#">
-                        <span class="text-warning font-weight-bold font-monospace text-uppercase">
-                            Post
-                        </span>
-                        Add Cliente
-
-                    </a>
-
-                    <a class="nav-link text-dark text-capitalize" href="#">
-                        <span class="text-warning font-weight-bold font-monospace text-uppercase">
-                            Post
-                        </span>
-                        Login Cliente
-
-                    </a>
-
-                    <a class="nav-link text-dark text-capitalize" href="#">
-                        <span class="text-success font-weight-bold font-monospace text-uppercase">
-                            get
-                        </span>
-                        Logout Cliente
-
-                    </a> -->
-
 
                 </nav>
             </div>
@@ -101,7 +53,7 @@
 
         let request = [
             {
-                type: 'GET',
+                method: 'GET',
                 url: `cliente`,
                 body: ``,
                 headers: ``,
@@ -110,7 +62,7 @@
                 color: 'text-success',
             },
             {
-                type: 'GET',
+                method: 'GET',
                 url: `funcionario`,
                 body: ``,
                 headers: ``,
@@ -119,7 +71,7 @@
                 color: 'text-success',
             },
             {
-                type: 'GET',
+                method: 'GET',
                 url: `cliente/1`,
                 body: ``,
                 headers: ``,
@@ -128,7 +80,7 @@
                 color: 'text-success',
             },
             {
-                type: 'GET',
+                method: 'GET',
                 url: `funcionario/1`,
                 body: ``,
                 headers: ``,
@@ -137,19 +89,19 @@
                 color: 'text-success',
             },
             {
-                type: 'POST',
+                method: 'POST',
                 url: `cadastrar_funcionario`,
-                body: { 'nome' : 'rubens'},
-                headers: {},
+                body: { nome : 'rubens' , sexo : 'Masculino'},
+                headers: {} || '',
                 title: 'Cadastrar novo funcionario',
                 content: 'Retorna um JSON com todos os dados dos cliente de acordo com ID passado.',                
                 color: 'text-warning',
             },
             {
-                type: 'POST',
+                method: 'POST',
                 url: `login_funcionario`,
-                body: {},
-                headers: {},
+                body: {} || '',
+                headers: {} || '',
                 title: 'Login do clinte',
                 content: 'Retorna um JSON com todos os dados dos cliente de acordo com ID passado.',                
                 color: 'text-warning',
@@ -160,7 +112,7 @@
         `
             <a class="nav-link text-dark text-capitalize" href="#get${i}">
                 <span class="${request[i].color} font-weight-bold font-monospace text-uppercase">
-                    ${request[i].type}
+                    ${request[i].method}
                 </span>
                 ${request[i].title}
 
@@ -175,7 +127,7 @@
                 <div id="get${i}" class="col border-bottom">
                     <h5 class="p-2">
                         <span class="${request[i].color} text-uppercase">
-                            ${request[i].type}
+                            ${request[i].method}
                         
                         </span>
                         ${request[i].title}
@@ -192,9 +144,39 @@
                     <p class=" pb-2 mb-0">
                         ${request[i].content}
                     </p>
-                    <div class="border-bottom ">
-                        <h5>${request[i].headers.nome}</h5>
+
+                    <div class="container-fluid">
+                        <nav>
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                <a class="nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home${i}" role="tab" aria-controls="nav-home" aria-selected="true">HEADERS</a>
+                                <a class="nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile${i}" role="tab" aria-controls="nav-profile" aria-selected="false">BODY</a>
+
+                            </div>
+                        </nav>
+                        <div class="tab-content" id="nav-tabContent">
+                            <div class="tab-pane fade show active" id="nav-home${i}" role="tabpanel" aria-labelledby="nav-home-tab">
+                                <ul class="list-group list-group-flush">
+                                    ${Object.entries(request[i].headers).map( (e) => 
+                                        `<li class="list-group-item">${e}</li>`
+
+                                    )}
+                                </ul>
+                                
+                            </div>
+                            <div class="tab-pane fade" id="nav-profile${i}" role="tabpanel" aria-labelledby="nav-profile-tab">
+                                <ul class="list-group list-group-flush">
+            
+                                    ${Object.entries(request[i].body).map( (e) => 
+                                        `<li class="list-group-item">${Object.keys(e)}</li>`
+
+                                    )}
+                                </ul>
+
+                            </div>
+
+                        </div>
                     </div>
+                    
                 </div>
 
                 <div class="col bg-dark">
@@ -205,7 +187,7 @@
 
     var settings = {
         "url": "${request[i].url}",
-        "method": "${request[i].type}",
+        "method": "${request[i].method}",
         "timeout": 0,
     };
 
