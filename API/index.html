@@ -91,8 +91,14 @@
             {
                 method: 'POST',
                 url: `cadastrar_funcionario`,
-                body: { nome : 'rubens' , sexo : 'Masculino'},
-                headers: {} || '',
+                body: { nome : 'rubens' ,
+                        sexo : 'Masculino',
+                        testea : 'Masculino',
+                        sexoz : 'Masculino',
+                        testex : 'Masculino',
+                        sexod : 'Masculino',
+                        testeq : 'Masculino'},
+                headers: ``,
                 title: 'Cadastrar novo funcionario',
                 content: 'Retorna um JSON com todos os dados dos cliente de acordo com ID passado.',                
                 color: 'text-warning',
@@ -100,8 +106,8 @@
             {
                 method: 'POST',
                 url: `login_funcionario`,
-                body: {} || '',
-                headers: {} || '',
+                body: ``,
+                headers: ``,
                 title: 'Login do clinte',
                 content: 'Retorna um JSON com todos os dados dos cliente de acordo com ID passado.',                
                 color: 'text-warning',
@@ -164,14 +170,9 @@
                                 
                             </div>
                             <div class="tab-pane fade" id="nav-profile${i}" role="tabpanel" aria-labelledby="nav-profile-tab">
-                                <ul class="list-group list-group-flush">
-            
-                                    ${Object.entries(request[i].body).map( (e) => 
-                                        `<li class="list-group-item">${Object.keys(e)}</li>`
-
-                                    )}
-                                </ul>
-
+                                <pre class="">      
+${'{'+ Object.entries(request[i].body).map( (e) => JSON.stringify(e).replace(/\[|]/g,'')) + '}'}
+                                </pre>
                             </div>
 
                         </div>
