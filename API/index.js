@@ -4,11 +4,9 @@ const helmet = require('helmet')
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
-
 const connection = require("./conexao.js");
 const jwt = require('jsonwebtoken');
-const app = express();
-
+const app = express()
 require("dotenv-safe").config();
 
 /**Configurando o body parser para pegar POST mais tarde*/
@@ -111,8 +109,6 @@ router.post('/cadastrar_funcionario', (req, res) => {
   let status = req.body.status
   let nivel = req.body.nivel
 
-  `./mysqldump -u root -p db_newsite > "C://users/karine/desktop/rubens/api-node/banco/db_newsite.sql"
-  `
   let select = `INSERT INTO tbl_login_funcionario(nome,senha,nivel,status) VALUE ('${nome}','${senha}',${nivel},'${status}')`;
 
   execSQLQuery(select, res);
@@ -154,7 +150,6 @@ router.post('/cadastrar_cliente', (req, res) => {
   estado, 
   cep,
   sexo) 
-  
   VALUES('${nome}',
   '${email}',
   '${celular}',
