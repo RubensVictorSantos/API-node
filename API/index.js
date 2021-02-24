@@ -28,9 +28,9 @@ function execSQLQuery(sqlQry, res) {
     } else {
 
       console.log(`
-        Query Executada: ${sqlQry} \n
-        Resultado: ${JSON.stringify(results)} \n`
-      );
+        Query: ${sqlQry}
+        \nResultado${results}
+      `);
 
       res.json(results)
     }
@@ -45,21 +45,18 @@ app.get('/', function (req, res) {
   res.sendFile('index.html', { root: __dirname });
 });
 
-// router.get('/cliente', verifyJWT, (req, res) => {
-//   let select = 'SELECT * FROM tbl_cliente ORDER BY id_cliente DESC LIMIT 5'
-//   execSQLQuery(select, res)
-// })
+/************************* CLIENTE **************************/
 
-router.get('/cliente', (req, res) => {
-
-  let select = 'SELECT * FROM tbl_cliente ORDER BY id_cliente DESC'
-
+router.get('/cliente_autenticado', verifyJWT, (req, res) => {
+  let select = 'SELECT * FROM tbl_cliente ORDER BY id_cliente DESC LIMIT 5'
   execSQLQuery(select, res)
+
 })
 
-router.get('/funcionario', (req, res) => {
-  let select = 'SELECT * FROM tbl_login_funcionario ORDER BY id_login_funcionario DESC LIMIT 5'
+router.get('/cliente', (req, res) => {
+  let select = 'SELECT * FROM tbl_cliente ORDER BY id_cliente DESC'
   execSQLQuery(select, res)
+
 })
 
 router.get('/cliente/:id', (req, res,) => {
@@ -70,53 +67,15 @@ router.get('/cliente/:id', (req, res,) => {
   }
 })
 
-router.get('/funcionario/:id', (req, res,) => {
-  if (req.params.id) {
-    let id = parseInt(req.params.id)
-    let select = 'SELECT * FROM tbl_login_funcionario WHERE id_login_funcionario = ' + id
-    execSQLQuery(select, res)
-  }
-})
+router.delete('/cliente/:id', (req, res, next) => {
 
-router.delete('/deletecliente/:id', (req, res, next) => {
-
-  console.log(req.params)
   let id = parseInt(req.params.id)
-  console.log(id);
 
   let select = 'DELETE FROM tbl_cliente WHERE id_cliente = ' + id
 
-  console.log(select);
-
-  res.send('DELETE request to homepage')
+  // res.send('DELETE request to homepage')
   execSQLQuery(select, res)
   
-})
-
-router.delete('/delete_funcionario/:id', (req, res, next) => {
-  let id = parseInt(req.params.id)
-
-  console.log(id);
-  let select = 'DELETE FROM tbl_cliente WHERE id_login_funcionario = ' + id
-  
-  console.log(select);
-  execSQLQuery(select, res) 
-
-})
-
-router.post('/cadastrar_funcionario', (req, res) => {
-
-  let nome = req.body.nome
-  let senha = req.body.senha
-  let status = req.body.status
-  let nivel = req.body.nivel
-
-  `./mysqldump -u root -p db_newsite > "C://users/karine/desktop/rubens/api-node/banco/db_newsite.sql"
-  `
-  let select = `INSERT INTO tbl_login_funcionario(nome,senha,nivel,status) VALUE ('${nome}','${senha}',${nivel},'${status}')`;
-
-  execSQLQuery(select, res);
-
 })
 
 router.post('/login_cliente', (req, res) => {
@@ -124,9 +83,21 @@ router.post('/login_cliente', (req, res) => {
   let email = req.body.email
   let senha = req.body.senha
 
-  let select = `INSERT INTO tbl_login_cliente(email,senha) VALUE ('${email}','${senha}')`;
+  let select = `INSERT INTO tbl_cliente(email,senha) VALUE ('${email}','${senha}')`;
+  
+  connection.query(select, function (error, results, fields) {
+    if (error) {
+      res.json(error)
+    } else {
 
-  execSQLQuery(select, res);
+      console.log(`
+        Query Executada: ${sqlQry} \n
+        Resultado: ${JSON.stringify(results)} \n`
+      );
+
+      res.json(results)
+    }
+  });
 
 })
 
@@ -141,6 +112,7 @@ router.post('/cadastrar_cliente', (req, res) => {
   let cidade = req.body.cidade
   let estado = req.body.estado
   let cep = req.body.cep
+  let senha = req.body.senha
   let sexo = req.body.sexo
 
   execSQLQuery(
@@ -151,7 +123,8 @@ router.post('/cadastrar_cliente', (req, res) => {
   numero, 
   bairro, 
   cidade, 
-  estado, 
+  estado,
+  senha, 
   cep,
   sexo) 
   
@@ -164,7 +137,10 @@ router.post('/cadastrar_cliente', (req, res) => {
   '${cidade}',
   '${estado}',
   '${cep}',
+  '${senha}',
   '${sexo}')`, res)
+
+  console.log(req.body)
 
 })
 
@@ -181,6 +157,9 @@ router.patch('/atualizar_cliente/:id', (req, res) => {
   let estado = req.body.estado
   let cep = req.body.cep
   let sexo = req.body.sexo
+  let senha = req.body.senha
+
+  console.log(req.body);
 
   execSQLQuery(`UPDATE tbl_cliente SET 
   nome='${nome}', 
@@ -192,7 +171,8 @@ router.patch('/atualizar_cliente/:id', (req, res) => {
   cidade = '${cidade}',
   estado = '${estado}',
   cep = '${cep}',
-  sexo = '${sexo}'
+  sexo = '${sexo}',
+  senha = '${senha}'
   WHERE id_cliente = ${id}`, res)
 })
 
@@ -233,6 +213,47 @@ router.post('/login/cliente', (req, res, next) => {
   })
 })
 
+/************************* FUNCIONÁRIO **************************/
+
+router.get('/funcionario', (req, res) => {
+  let select = 'SELECT * FROM tbl_login_funcionario ORDER BY id_login_funcionario DESC LIMIT 5'
+  execSQLQuery(select, res)
+})
+
+router.get('/funcionario/:id', (req, res,) => {
+  if (req.params.id) {
+    let id = parseInt(req.params.id)
+    let select = 'SELECT * FROM tbl_login_funcionario WHERE id_login_funcionario = ' + id
+    execSQLQuery(select, res)
+  }
+})
+
+router.delete('/delete_funcionario/:id', (req, res, next) => {
+  let id = parseInt(req.params.id)
+
+  console.log(id);
+  let select = 'DELETE FROM tbl_cliente WHERE id_login_funcionario = ' + id
+  
+  console.log(select);
+  execSQLQuery(select, res) 
+
+})
+
+router.post('/cadastrar_funcionario', (req, res) => {
+
+  let nome = req.body.nome
+  let senha = req.body.senha
+  let status = req.body.status
+  let nivel = req.body.nivel
+
+  let select = `INSERT INTO tbl_login_funcionario(nome,senha,nivel,status) VALUE ('${nome}','${senha}',${nivel},'${status}')`;
+
+  execSQLQuery(select, res);
+
+})
+
+//authentication
+
 router.post('/login/funcionario', (req, res, next) => {
 
   let nome = req.body.nome
@@ -242,7 +263,6 @@ router.post('/login/funcionario', (req, res, next) => {
     "\n" + req.body.senha);
 
   let select = `SELECT * FROM tbl_login_funcionario WHERE nome = '${nome}' AND senha = '${senha}'`
-
 
   connection.query(select, function (error, result, fields) {
 
@@ -273,6 +293,8 @@ router.post('/login/funcionario', (req, res, next) => {
     }
   })
 })
+
+/************************* LOGOUT **************************/
 
 router.get('/logout', function (req, res) {
   res.status(200).send({ auth: false, token: null })
