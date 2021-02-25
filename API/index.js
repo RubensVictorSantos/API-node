@@ -4,11 +4,9 @@ const helmet = require('helmet')
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
-
 const connection = require("./conexao.js");
 const jwt = require('jsonwebtoken');
-const app = express();
-
+const app = express()
 require("dotenv-safe").config();
 
 /**Configurando o body parser para pegar POST mais tarde*/
@@ -78,6 +76,30 @@ router.delete('/cliente/:id', (req, res, next) => {
   
 })
 
+router.delete('/delete_funcionario/:id', (req, res, next) => {
+  let id = parseInt(req.params.id)
+
+  console.log(id);
+  let select = 'DELETE FROM tbl_cliente WHERE id_login_funcionario = ' + id
+  
+  console.log(select);
+  execSQLQuery(select, res) 
+
+})
+
+router.post('/cadastrar_funcionario', (req, res) => {
+
+  let nome = req.body.nome
+  let senha = req.body.senha
+  let status = req.body.status
+  let nivel = req.body.nivel
+
+  let select = `INSERT INTO tbl_login_funcionario(nome,senha,nivel,status) VALUE ('${nome}','${senha}',${nivel},'${status}')`;
+
+  execSQLQuery(select, res);
+
+})
+
 router.post('/login_cliente', (req, res) => {
 
   let email = req.body.email
@@ -127,7 +149,6 @@ router.post('/cadastrar_cliente', (req, res) => {
   senha, 
   cep,
   sexo) 
-  
   VALUES('${nome}',
   '${email}',
   '${celular}',
