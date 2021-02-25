@@ -239,34 +239,33 @@
                         ${request[i].content}
                     </p>
 
-                    <div class="container-fluid">
-                        <nav>
-                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                <a class="nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home${i}" role="tab" aria-controls="nav-home" aria-selected="true">HEADERS</a>
-                                <a class="nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile${i}" role="tab" aria-controls="nav-profile" aria-selected="false">BODY</a>
+                    ${Object.keys(request[i].body).length > 0 || Object.keys(request[i].headers).length > 0 ?`
+                        <div class="container-fluid">
+                            <nav>
+                                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                    <a class="nav-link active" id="nav-profile-tab" data-toggle="tab" href="#nav-profile${i}" role="tab" aria-controls="nav-profile" aria-selected="false">BODY</a>
+                                    <a class="nav-link" id="nav-home-tab" data-toggle="tab" href="#nav-home${i}" role="tab" aria-controls="nav-home" aria-selected="true">HEADERS</a>
+                                </div>
+                            </nav>
+                            <div class="tab-content" id="nav-tabContent">
+                                <div class="tab-pane fade" id="nav-home${i}" role="tabpanel" aria-labelledby="nav-home-tab">
+                                    <ul class="list-group list-group-flush">
+                                        ${Object.entries(request[i].headers).map((e) =>`<li class="list-group-item">${e}</li>`)}
 
-                            </div>
-                        </nav>
-                        <div class="tab-content" id="nav-tabContent">
-                            <div class="tab-pane fade show active" id="nav-home${i}" role="tabpanel" aria-labelledby="nav-home-tab">
-                                <ul class="list-group list-group-flush">
-                                    ${Object.entries(request[i].headers).map((e) =>
-                `<li class="list-group-item">${e}</li>`
+                                    </ul>
+                                    
+                                </div>
 
-            )}
-                                </ul>
-                                
-                            </div>
-
-                            <div class="tab-pane fade" id="nav-profile${i}" role="tabpanel" aria-labelledby="nav-profile-tab">
-                                <pre>      
+                                <div class="tab-pane fade show active" id="nav-profile${i}" role="tabpanel" aria-labelledby="nav-profile-tab">
+                                    <pre>      
 ${filter(JSON.stringify(request[i].body))}
-                                </pre>
-                            </div>
+                                    </pre>
+                                </div>
 
+                            </div>
                         </div>
-                    </div>
                     
+                    `:''}
                 </div>
 
                 <div class="col bg-dark">
