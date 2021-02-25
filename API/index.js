@@ -25,297 +25,119 @@ function execSQLQuery(sqlQry, res) {
       res.json(error)
     } else {
 
-      console.log(`
-        Query: ${sqlQry}
-        \nResultado${results}
-      `);
-
       res.json(results)
     }
   });
 }
 
-/**Definindo as rotas */
-
+/** Definindo as rotas */
 const router = express.Router()
 
 app.get('/', function (req, res) {
   res.sendFile('index.html', { root: __dirname });
+
 });
 
-/************************* CLIENTE **************************/
+/************************* ROTAS CLIENTE **************************/
 
-router.get('/cliente_autenticado', verifyJWT, (req, res) => {
-  let select = 'SELECT * FROM tbl_cliente ORDER BY id_cliente DESC LIMIT 5'
-  execSQLQuery(select, res)
-
-})
-
+/** Traz todos os dados de todos clientes do banco */
 router.get('/cliente', (req, res) => {
-  let select = 'SELECT * FROM tbl_cliente ORDER BY id_cliente DESC'
-  execSQLQuery(select, res)
+  let qry = 'SELECT * FROM tbl_cliente ORDER BY id_cliente DESC'
 
+  execSQLQuery(qry, res)
 })
 
+/** Traz somente os dados do cliente que esta especificado pelo id */
 router.get('/cliente/:id', (req, res,) => {
-  if (req.params.id) {
-    let id = parseInt(req.params.id)
-    let select = 'SELECT * FROM tbl_cliente WHERE id_cliente = ' + id
-    execSQLQuery(select, res)
-  }
+  let id = parseInt(req.params.id);
+  let qry = `SELECT * FROM tbl_cliente WHERE id_cliente = ${id}`
+
+  execSQLQuery(qry, res)
 })
 
+/** Adiciona um cliente no banco */
+router.post('/cliente', (req, res) => {
+
+  let { nome, email, celular, endereco, numero, bairro, cidade, estado, cep, senha, sexo } = { ...req.body }
+
+  let qry = `INSERT INTO tbl_cliente( nome, email, celular, endereco, numero, bairro, cidade, estado, cep, senha, sexo) 
+    VALUES('${nome}','${email}','${celular}','${endereco}','${numero}','${bairro}','${cidade}','${estado}','${cep}','${senha}','${sexo}')`
+
+  execSQLQuery(qry, res)
+
+})
+
+/** Altera os dados do cliente que esta especificado pelo id */
+router.patch('/cliente/:id', (req, res) => {
+
+  let id = parseInt(req.params.id)
+
+  execSQLQuery(`UPDATE tbl_cliente SET 
+    nome =    '${req.body.nome}', 
+    email =   '${req.body.email}', 
+    celular = '${req.body.celular}',
+    endereco ='${req.body.endereco}',
+    numero =  '${req.body.numero}',
+    bairro =  '${req.body.bairro}',
+    cidade =  '${req.body.cidade}',
+    estado =  '${req.body.estado}',
+    cep =     '${req.body.cep}',
+    sexo =    '${req.body.sexo}',
+    senha =   '${req.body.senha}'
+    WHERE id_cliente = ${id}`, res)
+})
+
+/** Exclui o cliente do banco */
 router.delete('/cliente/:id', (req, res, next) => {
 
   let id = parseInt(req.params.id)
+  let qry = `DELETE FROM tbl_cliente WHERE id_cliente = ${id}`
 
-  let select = 'DELETE FROM tbl_cliente WHERE id_cliente = ' + id
-
-  // res.send('DELETE request to homepage')
-  execSQLQuery(select, res)
-  
-})
-
-router.delete('/delete_funcionario/:id', (req, res, next) => {
-  let id = parseInt(req.params.id)
-
-  console.log(id);
-  let select = 'DELETE FROM tbl_cliente WHERE id_login_funcionario = ' + id
-  
-  console.log(select);
-  execSQLQuery(select, res) 
+  execSQLQuery(qry, res)
 
 })
 
-router.post('/cadastrar_funcionario', (req, res) => {
+/************************* LOGIN E LOGOUT **************************/
 
-  let nome = req.body.nome
-  let senha = req.body.senha
-  let status = req.body.status
-  let nivel = req.body.nivel
+/** Autenticação do cliente, aqui é criado um token para o cliente*/
+router.post('/cliente/login', (req, res, next) => {
 
-  let select = `INSERT INTO tbl_login_funcionario(nome,senha,nivel,status) VALUE ('${nome}','${senha}',${nivel},'${status}')`;
+  let {email, senha} = {... req.body}
 
-  execSQLQuery(select, res);
+  /** Query busca dados do cliente de acordo com o e-mail e senha passado pelo req.body */
+  let qry = `SELECT * FROM tbl_cliente WHERE email = '${email}' AND senha = '${senha}'`
 
-})
+  connection.query(qry, (error, result, fields) => {
 
-router.post('/login_cliente', (req, res) => {
+    let len = Object.keys(result).length
 
-  let email = req.body.email
-  let senha = req.body.senha
+    if (len < 1) {
+      res.status(404).send('Senha e/ou E-mail inválido!');
 
-  let select = `INSERT INTO tbl_cliente(email,senha) VALUE ('${email}','${senha}')`;
-  
-  connection.query(select, function (error, results, fields) {
-    if (error) {
-      res.json(error)
-    } else {
-
-      console.log(`
-        Query Executada: ${sqlQry} \n
-        Resultado: ${JSON.stringify(results)} \n`
-      );
-
-      res.json(results)
-    }
-  });
-
-})
-
-router.post('/cadastrar_cliente', (req, res) => {
-
-  let nome = req.body.nome
-  let email = req.body.email
-  let celular = req.body.celular
-  let endereco = req.body.endereco
-  let numero = req.body.numero
-  let bairro = req.body.bairro
-  let cidade = req.body.cidade
-  let estado = req.body.estado
-  let cep = req.body.cep
-  let senha = req.body.senha
-  let sexo = req.body.sexo
-
-  execSQLQuery(
-    `INSERT INTO tbl_cliente(nome, 
-  email, 
-  celular, 
-  endereco, 
-  numero, 
-  bairro, 
-  cidade, 
-  estado,
-  senha, 
-  cep,
-  sexo) 
-  VALUES('${nome}',
-  '${email}',
-  '${celular}',
-  '${endereco}',
-  '${numero}',
-  '${bairro}',
-  '${cidade}',
-  '${estado}',
-  '${cep}',
-  '${senha}',
-  '${sexo}')`, res)
-
-  console.log(req.body)
-
-})
-
-router.patch('/atualizar_cliente/:id', (req, res) => {
-
-  let id = parseInt(req.params.id)
-  let nome = req.body.nome
-  let email = req.body.email
-  let celular = req.body.celular
-  let endereco = req.body.endereco
-  let numero = req.body.numero
-  let bairro = req.body.bairro
-  let cidade = req.body.cidade
-  let estado = req.body.estado
-  let cep = req.body.cep
-  let sexo = req.body.sexo
-  let senha = req.body.senha
-
-  console.log(req.body);
-
-  execSQLQuery(`UPDATE tbl_cliente SET 
-  nome='${nome}', 
-  email = '${email}', 
-  celular = '${celular}',
-  endereco = '${endereco}',
-  numero = '${numero}',
-  bairro = '${bairro}',
-  cidade = '${cidade}',
-  estado = '${estado}',
-  cep = '${cep}',
-  sexo = '${sexo}',
-  senha = '${senha}'
-  WHERE id_cliente = ${id}`, res)
-})
-
-//authentication
-router.post('/login/cliente', (req, res, next) => {
-
-  let email = req.body.email
-  let senha = req.body.senha
-
-  let select = `SELECT * FROM tbl_login_cliente WHERE email = '${email}' AND senha = '${senha}'`
-
-  connection.query(select, function (error, result, fields) {
-
-    if (result[0] == undefined) {
-      res.status(404).send('Usuário não encontrado');
+    } else if (len > 1) {
+      res.status(500).send('Existe mais de um cliente com o mesmo login, por favor resolver junto ao T.I.');
 
     } else {
+      const id = parseInt(result[0].id_cliente)
 
-      if (error) {
-        res.json(error)
-      } else {
+      // Usando JWT para criar um token
+      const token = jwt.sign({ id }, process.env.SECRET, {
+        expiresIn: 300 // expires in 5min
+      });
 
-        const id = parseInt(result[0].id)
+      // Retorna um objeto com valores os auth(booleano) confirmando a autenticação e o token 
+      res.status(200).send({ auth: true, token: token })
 
-        if (!isNaN(id)) {
-
-          // auth ok
-          const token = jwt.sign({ id }, process.env.SECRET, {
-            expiresIn: 300 // expires in 5min
-          });
-          res.status(200).send({ auth: true, token: token })
-
-        } else {
-          res.status(500).send('Login inválido!');
-        }
-      }
     }
   })
 })
 
-/************************* FUNCIONÁRIO **************************/
-
-router.get('/funcionario', (req, res) => {
-  let select = 'SELECT * FROM tbl_login_funcionario ORDER BY id_login_funcionario DESC LIMIT 5'
-  execSQLQuery(select, res)
-})
-
-router.get('/funcionario/:id', (req, res,) => {
-  if (req.params.id) {
-    let id = parseInt(req.params.id)
-    let select = 'SELECT * FROM tbl_login_funcionario WHERE id_login_funcionario = ' + id
-    execSQLQuery(select, res)
-  }
-})
-
-router.delete('/delete_funcionario/:id', (req, res, next) => {
-  let id = parseInt(req.params.id)
-
-  console.log(id);
-  let select = 'DELETE FROM tbl_cliente WHERE id_login_funcionario = ' + id
-  
-  console.log(select);
-  execSQLQuery(select, res) 
+/** Rota que precisa de autenticação */
+router.get('/cliente_autenticado', verifyJWT, (req, res) => {
+  let qry = 'SELECT * FROM tbl_cliente ORDER BY id_cliente DESC LIMIT 5'
+  execSQLQuery(qry, res)
 
 })
-
-router.post('/cadastrar_funcionario', (req, res) => {
-
-  let nome = req.body.nome
-  let senha = req.body.senha
-  let status = req.body.status
-  let nivel = req.body.nivel
-
-  let select = `INSERT INTO tbl_login_funcionario(nome,senha,nivel,status) VALUE ('${nome}','${senha}',${nivel},'${status}')`;
-
-  execSQLQuery(select, res);
-
-})
-
-//authentication
-
-router.post('/login/funcionario', (req, res, next) => {
-
-  let nome = req.body.nome
-  let senha = req.body.senha
-
-  console.log(req.body.nome +
-    "\n" + req.body.senha);
-
-  let select = `SELECT * FROM tbl_login_funcionario WHERE nome = '${nome}' AND senha = '${senha}'`
-
-  connection.query(select, function (error, result, fields) {
-
-    if (result[0] == undefined) {
-      res.status(404).send('Usuário não encontrado');
-
-    } else {
-
-      if (error) {
-        res.json(error)
-      } else {
-
-        const id = parseInt(result[0].id)
-
-        console.log(isNaN(id))
-        if (isNaN(id)) {
-
-          // auth ok
-          const token = jwt.sign({ id }, process.env.SECRET, {
-            expiresIn: 300 // expires in 5min
-          });
-          res.status(200).send({ auth: true, token: token })
-
-        } else {
-          res.status(500).send('Login inválido!');
-        }
-      }
-    }
-  })
-})
-
-/************************* LOGOUT **************************/
 
 router.get('/logout', function (req, res) {
   res.status(200).send({ auth: false, token: null })
@@ -323,15 +145,20 @@ router.get('/logout', function (req, res) {
 
 app.use('/', router)
 
+/************************* FUNÇÃO AUTENTICAR TOKEN *************************/
+
 function verifyJWT(req, res, next) {
   let token = req.headers['x-access-token'];
-  if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
+
+  // Verificando se existe token
+  if (!token) return res.status(401).send({ auth: false, message: 'Nenhum token fornecido.' });
 
   jwt.verify(token, process.env.SECRET, function (err, decoded) {
-    if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+    if (err) return res.status(500).send({ auth: false, message: 'Falha ao autenticar o token.' });
 
     // Se tudo estiver ok, salva no request para uso posterior
     req.userId = decoded.id;
+
     next();
   });
 }
