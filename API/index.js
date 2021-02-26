@@ -8,6 +8,7 @@ const connection = require("./conexao.js");
 const jwt = require('jsonwebtoken');
 const app = express()
 require("dotenv-safe").config();
+const crypto = require('crypto'); 
 
 /**Configurando o body parser para pegar POST mais tarde*/
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -60,8 +61,10 @@ router.post('/cliente', (req, res) => {
 
   let { nome, email, celular, endereco, numero, bairro, cidade, estado, cep, senha, sexo } = { ...req.body }
 
+  let pwd = encrypt(senha)
+
   let qry = `INSERT INTO tbl_cliente( nome, email, celular, endereco, numero, bairro, cidade, estado, cep, senha, sexo) 
-    VALUES('${nome}','${email}','${celular}','${endereco}','${numero}','${bairro}','${cidade}','${estado}','${cep}','${senha}','${sexo}')`
+    VALUES('${nome}','${email}','${celular}','${endereco}','${numero}','${bairro}','${cidade}','${estado}','${cep}','${pwd}','${sexo}')`
 
   execSQLQuery(qry, res)
 
@@ -71,6 +74,8 @@ router.post('/cliente', (req, res) => {
 router.patch('/cliente/:id', (req, res) => {
 
   let id = parseInt(req.params.id)
+
+  let pwd = encrypt(req.body.senha)
 
   execSQLQuery(`UPDATE tbl_cliente SET 
     nome =    '${req.body.nome}', 
@@ -83,7 +88,7 @@ router.patch('/cliente/:id', (req, res) => {
     estado =  '${req.body.estado}',
     cep =     '${req.body.cep}',
     sexo =    '${req.body.sexo}',
-    senha =   '${req.body.senha}'
+    senha =   '${pwd}'
     WHERE id_cliente = ${id}`, res)
 })
 
@@ -102,10 +107,12 @@ router.delete('/cliente/:id', (req, res, next) => {
 /** Autenticação do cliente, aqui é criado um token para o cliente*/
 router.post('/cliente/login', (req, res, next) => {
 
-  let {email, senha} = {... req.body}
+  let { email, senha } = { ...req.body }
+
+  let pwd = encrypt(senha);
 
   /** Query busca dados do cliente de acordo com o e-mail e senha passado pelo req.body */
-  let qry = `SELECT * FROM tbl_cliente WHERE email = '${email}' AND senha = '${senha}'`
+  let qry = `SELECT * FROM tbl_cliente WHERE email = '${email}' AND senha = '${pwd}'`
 
   connection.query(qry, (error, result, fields) => {
 
@@ -159,9 +166,44 @@ function verifyJWT(req, res, next) {
     // Se tudo estiver ok, salva no request para uso posterior
     req.userId = decoded.id;
 
+    console.log(req)
+
     next();
   });
+} 
+
+function encrypt(text) { 
+  const key = crypto.randomBytes(32); 
+  const iv = crypto.randomBytes(16);
+
+  let bufferKey = Buffer.from(key)
+
+  let cipher = crypto.createCipheriv('aes-256-cbc', bufferKey, iv); 
+ 
+  let encrypted = cipher.update(text);
+  encrypted = Buffer.concat([encrypted, cipher.final()]); 
+
+  return { iv: iv.toString('hex'), encryptedData: encrypted.toString('hex'), bufferKey: bufferKey.toString('hex') }; 
 }
+
+function decrypt(text) { 
+
+  let iv = Buffer.from(text.iv, 'hex'),
+      encryptedText = Buffer.from(text.encryptedData, 'hex'); 
+ 
+  let decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(text.bufferKey,'HEX'), iv); 
+
+  let decrypted = decipher.update(encryptedText); 
+  decrypted = Buffer.concat([decrypted, decipher.final()]); 
+
+  return decrypted.toString(); 
+} 
+
+var output = encrypt("GeeksforGeeks"); 
+console.log(output); 
+
+console.log('\n' + decrypt(output)); 
+
 
 /** Inicia o servidor */
 app.listen(process.env.PORT)
