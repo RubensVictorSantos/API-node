@@ -21,11 +21,11 @@
     <div class="container-fluid">
         <div class="row">
 
-            <!-- -->
-            <div class="col-2 p-0"> 
-                <div class="col-2 position-fixed border-right p-0" style="height: 100vh;">
-                    <div class="container-fluid rounded w-75 m-3 bg-light text-success">
-                        <h6>API-Node</h6>
+            <!-- Nav -->
+            <div class="col-2 m-0 p-0"> 
+                <div class="col-2 position-fixed border-right p-0 m-0" style="height: 100vh;">
+                    <div class=" w-100 mr-0 ml-0 p-0 bg-light text-success">
+                        <h6 class="p-3">API-Node</h6>
                     </div>
                     <nav class="nav flex-column" id="nav">
     
@@ -63,13 +63,22 @@
                 url: `cliente`,
                 body: ``,
                 headers: ``,
-                title: 'Todos cliente registrados no banco',
-                content: 'Para retorna um JSON com todos os clientes registrados no banco, precisamos acrescentar a palavra cliente.',
+                title: 'Lista de clientes',
+                content: `Retorna uma listas de clientes.`,
+                color: 'text-success',
+            },
+            {
+                method: 'GET',
+                url: `cliente/1`,
+                body: ``,
+                headers: ``,
+                title: 'Cliente específico',
+                content: 'Retorna um cliente identificado pelo ID.',
                 color: 'text-success',
             },
             {
                 method: 'POST',
-                url: `cadastrar_cliente`,
+                url: `cliente`,
                 body: {
                     nome: 'Elon Musk',
                     email: 'elon.musk@com',
@@ -84,116 +93,72 @@
                     senha: 12345678,
                 },
                 headers: ``,
-                title: 'Cadastrar Cliente',
-                content: '',
-                color: 'text-warning',
-            },
-            {
-                method: 'GET',
-                url: `funcionario`,
-                body: ``,
-                headers: ``,
-                title: 'Todos funcionários registrados no banco',
-                content: 'Retorna um JSON com todos os funcionários registrados no banco, para isso precisamos acrescentar a palavra cliente.',
-                color: 'text-success',
-            },
-            {
-                method: 'GET',
-                url: `cliente/1`,
-                body: ``,
-                headers: ``,
-                title: 'Cliente por ID',
-                content: 'Retorna um JSON com todos os dados do cliente de acordo com ID passado.',
-                color: 'text-success',
-            },
-            {
-                method: 'GET',
-                url: `funcionario/1`,
-                body: ``,
-                headers: ``,
-                title: 'Funcionario por ID',
-                content: 'Retorna um JSON com todos os dados do funcionario de acordo com ID passado.',
-                color: 'text-success',
-            },
-            {
-                method: 'POST',
-                url: `cadastrar_funcionario`,
-                body: {
-                    nome: 'rubens',
-                    sexo: 'Masculino',
-                    testea: 'Masculino',
-                    sexoz: 'Masculino',
-                    testex: 'Masculino',
-                    sexod: 'Masculino',
-                    testeq: 'Masculino'
-                },
-                headers: ``,
-                title: 'Cadastrar novo funcionario',
-                content: 'Retorna um JSON com todos os dados dos cliente de acordo com ID passado.',
-                color: 'text-warning',
-            },
-            {
-                method: 'POST',
-                url: `login_funcionario`,
-                body: ``,
-                headers: ``,
-                title: 'Login do clinte',
-                content: 'Retorna um JSON com todos os dados dos cliente de acordo com ID passado.',
+                title: 'Criar cliente',
+                content: 'Cria um novo cliente',
                 color: 'text-warning',
             },
             {
                 method: 'PATCH',
-                url: `atualizar_cliente/2`,
+                url: `cliente/2`,
                 body: {
-                    "nome": "Rick Sanchez ",
-                    "email": "rick@gmail.com",
-                    "celular": "(11)95880-8525",
-                    "endereco": "Rua Zika vai la",
-                    "numero": "249",
-                    "bairro": "Parque viana",
-                    "cidade": "Barueri",
-                    "estado": "São Paulo",
-                    "cep": "06422030",
-                    "sexo": "M",
-                    "senha": "12345678"
+                    nome: "Rick Sanchez ",
+                    email: "rick@gmail.com",
+                    celular: "(11)95880-8525",
+                    endereco: "Rua Zika vai la",
+                    numero: "249",
+                    bairro: "Parque viana",
+                    cidade: "Barueri",
+                    estado: "São Paulo",
+                    cep: "06422030",
+                    sexo: "M",
+                    senha: "12345678"
                 },
                 headers: ``,
-                title: 'Atualizar dados do cliente',
-                content: 'Retorna um JSON com todos os dados dos cliente de acordo com ID passado.',
+                title: 'Atualizar Cliente',
+                content: 'Atualiza o cliente identificado pelo ID.',
                 color: 'text-secondary',
-            },
-            {
-                method: 'POST',
-                url: `login/cliente`,
-                body: { email: 'elon.musk@gmail.com', senha: '12345678' },
-                headers: ``,
-                title: 'Login do clinte',
-                content: 'Retorna um JSON com todos os dados dos cliente de acordo com ID passado.',
-                color: 'text-warning',
-            },
-            {
-                method: 'GET',
-                url: `logout`,
-                title: 'Logout',
-                body: ``,
-                headers: ``,
-                content: 'Retorna um JSON com todos os dados dos cliente de acordo com ID passado.',
-                color: 'text-success',
             },
             {
                 method: 'DELETE',
                 url: `cliente/1`,
-                title: 'Deletar Clientes',
                 body: ``,
                 headers: ``,
-                content: 'Retorna um JSON com todos os dados dos cliente de acordo com ID passado.',
+                title: 'Excluir Cliente',
+                content: 'Exclui o cliente identificado pelo ID.',
                 color: 'text-danger',
+            },
+            {
+                method: 'POST',
+                url: `cliente/login`,
+                body: { email: 'cliente3@gmail.com', senha: 12345678 },
+                headers: ``,
+                title: 'Login cliente',
+                content: 'Retorna um JSON com o token do cliente específicado pelo e-mail e senha. Após 5min depois do login esse token expira.',
+                color: 'text-warning',
+            },
+            {
+                method: 'GET',
+                url: `cliente_autenticado`,
+                title: 'Cliente autenticado',
+                body: ``,
+                headers: {'x-access-token': `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjE0MjY3OTEzLCJleHAiOjE2MTQyNjgyMTN9.eB7XHb3jQlTkSZsCrjvZZoPGgaXOi-6cQNIDcHSLvH4`},
+                content: 'Essa URL só vai poder ser acessada se tiver autenticação do token valido e retornara uma Lista de cliente.',
+                color: 'text-success',
+            },
+            {
+                method: 'GET',
+                url: `logout`,
+                title: 'Logout cliente',
+                body: ``,
+                headers: ``,
+                content: 'Retorna um JSON onde o valor do token recebe null e não poderá ser usado novamente.',
+                color: 'text-success',
             },
         ];
 
         $("#nav").after(Object.keys(request).map((i) =>
             `
-            <a class="nav-link text-dark text-capitalize" href="#get${i}">
+            <a class="nav-link text-dark text-capitalize " href="#get${i}">
                 <span class="${request[i].color} font-weight-bold font-monospace text-uppercase">
                     ${request[i].method}
                 </span>
@@ -203,10 +168,11 @@
         `))
 
         const filter = (e) => {
+            let str = JSON.stringify(e);
             let char = '';
 
-            for (let i in e) {
-                char = char + e.charAt(i).replace(/(,)/, `,\n`);
+            for (let i in str) {
+                char = char + str.charAt(i).replace(/(,)/, `,\n`);
             }
 
             return char
@@ -239,34 +205,33 @@
                         ${request[i].content}
                     </p>
 
-                    <div class="container-fluid">
-                        <nav>
-                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                <a class="nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home${i}" role="tab" aria-controls="nav-home" aria-selected="true">HEADERS</a>
-                                <a class="nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile${i}" role="tab" aria-controls="nav-profile" aria-selected="false">BODY</a>
+                    ${Object.keys(request[i].body).length > 0 || Object.keys(request[i].headers).length > 0 ?`
+                        <div class="container-fluid">
+                            <nav>
+                                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                    <a class="nav-link active" id="nav-profile-tab" data-toggle="tab" href="#nav-profile${i}" role="tab" aria-controls="nav-profile" aria-selected="false">BODY</a>
+                                    <a class="nav-link" id="nav-home-tab" data-toggle="tab" href="#nav-home${i}" role="tab" aria-controls="nav-home" aria-selected="true">HEADERS</a>
+                                </div>
+                            </nav>
+                            <div class="tab-content" id="nav-tabContent">
+                                <div class="tab-pane fade" id="nav-home${i}" role="tabpanel" aria-labelledby="nav-home-tab">
+                                    <ul class="list-group list-group-flush">
+                                        ${Object.entries(request[i].headers).map((e) =>`<li class="list-group-item">${e}</li>`)}
+
+                                    </ul>
+                                    
+                                </div>
+
+                                <div class="tab-pane fade show active" id="nav-profile${i}" role="tabpanel" aria-labelledby="nav-profile-tab">
+                                    <pre>      
+${filter(request[i].body)}
+                                    </pre>
+                                </div>
 
                             </div>
-                        </nav>
-                        <div class="tab-content" id="nav-tabContent">
-                            <div class="tab-pane fade show active" id="nav-home${i}" role="tabpanel" aria-labelledby="nav-home-tab">
-                                <ul class="list-group list-group-flush">
-                                    ${Object.entries(request[i].headers).map((e) =>
-                `<li class="list-group-item">${e}</li>`
-
-            )}
-                                </ul>
-                                
-                            </div>
-
-                            <div class="tab-pane fade" id="nav-profile${i}" role="tabpanel" aria-labelledby="nav-profile-tab">
-                                <pre>      
-${filter(JSON.stringify(request[i].body))}
-                                </pre>
-                            </div>
-
                         </div>
-                    </div>
                     
+                    `:''}
                 </div>
 
                 <div class="col bg-dark">
@@ -279,6 +244,7 @@ ${filter(JSON.stringify(request[i].body))}
         "url": "${request[i].url}",
         "method": "${request[i].method}",
         "timeout": 0,
+        ${request[i].body? `"data:"` + filter(request[i].body) : ''}
     };
 
     $.ajax(settings).done(function (response) {
