@@ -34,8 +34,9 @@ CREATE TABLE `tbl_cliente` (
   `estado` varchar(100) DEFAULT NULL,
   `cep` varchar(8) DEFAULT NULL,
   `sexo` char(1) DEFAULT NULL,
+  `senha` varchar(255) NOT NULL,
   PRIMARY KEY (`id_cliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,90 +45,8 @@ CREATE TABLE `tbl_cliente` (
 
 LOCK TABLES `tbl_cliente` WRITE;
 /*!40000 ALTER TABLE `tbl_cliente` DISABLE KEYS */;
-INSERT INTO `tbl_cliente` VALUES (1,'Rick Sanchez','rick@gmail.com','(11)95880-8525','Rua Zika vai la','249','Parque viana','Barueri','São Paulo',NULL,'M'),(2,'Morty Smith','morty@gmail.com','(11)96523-7825','Rua Salvador Daqui','249','Jardim Libano','Barueri','São Paulo',NULL,'M'),(3,'Jerry Smith','jerry@gmail.com','(11)99999-7878','Av. Smith','249','São diego','Barueri','São Paulo',NULL,'M'),(4,'Beth Smith','beth@gmail.com','(11)92356-5656','Av. Pitanguinha','249','Gabriela','Barueri','São Paulo',NULL,'F');
+INSERT INTO `tbl_cliente` VALUES (1,'cliente1','cliente1@gmail.com','(11)95555-5555','Rua Castanheira','9','Parque Viana','Barueri','São Paulo','06422030','M','$2a$10$Tyu/aehvBtgOxksihFOWHOpwgkia00QWXLXrVP27pVCLX8lKiHDVC'),(2,'cliente2','cliente2@gmail.com','(11)90000-0000','Rua Zika vai la','5','Parque viana','Barueri','São Paulo','06422030','M','$2a$10$2SidQQ/qcVG4hoJS9pHGIuTe7w7TyR1w2GUOqx1DLuiuJ/.fXmyFi'),(3,'cliente3','cliente3@gmail.com','(11)90000-0000','Rua Zika vai la','10','Parque viana','Barueri','São Paulo','06422030','M','$2a$10$WjME1xpaQx7xzj8V/5.okOI8MLHfUxSBPLn8GPwa5IWrvLZhQKM/q'),(5,'cliente5','cliente5@gmail.com','(11)95555-5555','Rua Castanheira','6','Parque Viana','Barueri','São Paulo','12345678','M','$2a$10$dBQtOFVHC7UT0Cmwu5JG3e.b3Y5s63zmmQfXZg0TahE5XXUbJ2Mkm'),(6,'cliente6','cliente6@gmail.com','(11)95555-5555','Rua Castanheira','5','Parque Viana','Barueri','São Paulo','06422030','M','$2a$10$IqYiYdvAChyR5bxsrp5pnunPF2VP1YXaILE3wKm8i.sHLXyIieT5a'),(8,'cliente8','cliente8@gmail.com','(11)95555-5555','Rua Castanheira','6','Parque Viana','Barueri','São Paulo','06422030','M','$2a$10$IqYiYdvAChyR5bxsrp5pnunPF2VP1YXaILE3wKm8i.sHLXyIieT5a'),(9,'cliente9','cliente9@gmail.com','(11)95555-5555','Rua Castanheira','5','Parque Viana','Barueri','São Paulo','06422030','M','$2a$10$IqYiYdvAChyR5bxsrp5pnunPF2VP1YXaILE3wKm8i.sHLXyIieT5a'),(10,'cliente10','cliente10@gmail.com','(11)95555-5555','Rua Castanheira','8','Parque Viana','Barueri','São Paulo','06422030','M','$2a$10$IqYiYdvAChyR5bxsrp5pnunPF2VP1YXaILE3wKm8i.sHLXyIieT5a'),(12,'cliente12','cliente12@gmail.com','(11)95555-5555','Rua Castanheira','9','Parque Viana','Barueri','São Paulo','06422030','M','$2a$10$IqYiYdvAChyR5bxsrp5pnunPF2VP1YXaILE3wKm8i.sHLXyIieT5a'),(13,'cliente13','cliente13@gmail.com','(11)95555-5555','Rua Castanheira','9','Parque Viana','Barueri','São Paulo','06422030','M','$2a$10$IqYiYdvAChyR5bxsrp5pnunPF2VP1YXaILE3wKm8i.sHLXyIieT5a'),(14,'cliente14','cliente14@gmail.com','(11)95555-5555','Rua Castanheira','9','Parque Viana','Barueri','São Paulo','06422030','M','$2a$10$IqYiYdvAChyR5bxsrp5pnunPF2VP1YXaILE3wKm8i.sHLXyIieT5a'),(15,'cliente15','cliente15@gmail.com','(11)95555-5555','Rua Castanheira','6','Parque Viana','Barueri','São Paulo','06422030','M','$2a$10$IqYiYdvAChyR5bxsrp5pnunPF2VP1YXaILE3wKm8i.sHLXyIieT5a');
 /*!40000 ALTER TABLE `tbl_cliente` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `tbl_login_cliente`
---
-
-DROP TABLE IF EXISTS `tbl_login_cliente`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `tbl_login_cliente` (
-  `id_login_cliente` int(11) NOT NULL AUTO_INCREMENT,
-  `email` varchar(150) NOT NULL,
-  `senha` varchar(60) NOT NULL,
-  PRIMARY KEY (`id_login_cliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tbl_login_cliente`
---
-
-LOCK TABLES `tbl_login_cliente` WRITE;
-/*!40000 ALTER TABLE `tbl_login_cliente` DISABLE KEYS */;
-INSERT INTO `tbl_login_cliente` VALUES (1,'rubens@gmail.com','12345678'),(2,'rubens@gmail.com','12345678'),(3,'sabio@gmail.com','undefined');
-/*!40000 ALTER TABLE `tbl_login_cliente` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `tbl_login_funcionario`
---
-
-DROP TABLE IF EXISTS `tbl_login_funcionario`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `tbl_login_funcionario` (
-  `id_login_funcionario` int(11) NOT NULL AUTO_INCREMENT,
-  `nome` varchar(100) NOT NULL,
-  `senha` varchar(8) NOT NULL,
-  `nivel` int(11) NOT NULL,
-  `status` tinyint(1) DEFAULT '0',
-  PRIMARY KEY (`id_login_funcionario`),
-  KEY `fk_nivel` (`nivel`),
-  CONSTRAINT `fk_nivel` FOREIGN KEY (`nivel`) REFERENCES `tbl_nivel` (`id_nivel`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tbl_login_funcionario`
---
-
-LOCK TABLES `tbl_login_funcionario` WRITE;
-/*!40000 ALTER TABLE `tbl_login_funcionario` DISABLE KEYS */;
-INSERT INTO `tbl_login_funcionario` VALUES (1,'Rubens Victor','12345678',1,1),(2,'Niquel Náusea','12345678',2,1),(3,'Fliti','12345678',2,1),(4,'Rato Ruter','12345678',3,1),(5,'Gatinha','12345678',3,1),(6,'Sábio do Buraco','12345678',3,1),(7,'Sábio do Buraco','12345678',3,1);
-/*!40000 ALTER TABLE `tbl_login_funcionario` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `tbl_nivel`
---
-
-DROP TABLE IF EXISTS `tbl_nivel`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `tbl_nivel` (
-  `id_nivel` int(11) NOT NULL AUTO_INCREMENT,
-  `nome` varchar(50) DEFAULT NULL,
-  `usuario` tinyint(1) NOT NULL DEFAULT '0',
-  `produto` tinyint(1) NOT NULL DEFAULT '0',
-  `cliente` tinyint(1) NOT NULL DEFAULT '0',
-  `status` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id_nivel`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tbl_nivel`
---
-
-LOCK TABLES `tbl_nivel` WRITE;
-/*!40000 ALTER TABLE `tbl_nivel` DISABLE KEYS */;
-INSERT INTO `tbl_nivel` VALUES (1,'administrador',1,1,1,1),(2,'cataloguista',0,1,0,1),(3,'operador básico',0,0,0,1);
-/*!40000 ALTER TABLE `tbl_nivel` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -139,4 +58,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-02-19  8:57:22
+-- Dump completed on 2021-03-02 14:16:41
