@@ -22,13 +22,13 @@
         <div class="row">
 
             <!-- Nav -->
-            <div class="col-2 m-0 p-0"> 
+            <div class="col-2 m-0 p-0">
                 <div class="col-2 position-fixed border-right p-0 m-0" style="height: 100vh;">
                     <div class=" w-100 mr-0 ml-0 p-0 bg-light text-success">
                         <h6 class="p-3">API-Node</h6>
                     </div>
                     <nav class="nav flex-column" id="nav">
-    
+
                     </nav>
                 </div>
             </div>
@@ -141,7 +141,7 @@
                 url: `cliente_autenticado`,
                 title: 'Cliente autenticado',
                 body: ``,
-                headers: {'x-access-token': `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjE0MjY3OTEzLCJleHAiOjE2MTQyNjgyMTN9.eB7XHb3jQlTkSZsCrjvZZoPGgaXOi-6cQNIDcHSLvH4`},
+                headers: { 'x-access-token': `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjE0MjY3OTEzLCJleHAiOjE2MTQyNjgyMTN9.eB7XHb3jQlTkSZsCrjvZZoPGgaXOi-6cQNIDcHSLvH4` },
                 content: 'Essa URL só vai poder ser acessada se tiver autenticação do token valido e retornara uma Lista de cliente.',
                 color: 'text-success',
             },
@@ -168,6 +168,9 @@
         `))
 
         const filter = (e) => {
+
+            if (e == '') { return '' }
+
             let str = JSON.stringify(e);
             let char = '';
 
@@ -193,19 +196,19 @@
                     </h5>
 
                     <p class="border bg-light p-1 rounded">
-                        ${ request[i].method === 'GET'?
-                        `<a class="text-decoration-none" href="http://localhost:3333/${request[i].url}" 
+                        ${request[i].method === 'GET' ?
+                `<a class="text-decoration-none" href="http://localhost:3333/${request[i].url}" 
                         target="_blank">http://localhost:3333/
                             <span class="${request[i].color} font-weight-bold">${request[i].url}</span>
 
                         </a>`
-                        : `http://localhost:3333/<span class="${request[i].color} font-weight-bold">${request[i].url}</span>`}
+                : `http://localhost:3333/<span class="${request[i].color} font-weight-bold">${request[i].url}</span>`}
                     </p>
                     <p class=" pb-2 mb-0">
                         ${request[i].content}
                     </p>
 
-                    ${Object.keys(request[i].body).length > 0 || Object.keys(request[i].headers).length > 0 ?`
+                    ${Object.keys(request[i].body).length > 0 || Object.keys(request[i].headers).length > 0 ? `
                         <div class="container-fluid">
                             <nav>
                                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -216,7 +219,7 @@
                             <div class="tab-content" id="nav-tabContent">
                                 <div class="tab-pane fade" id="nav-home${i}" role="tabpanel" aria-labelledby="nav-home-tab">
                                     <ul class="list-group list-group-flush">
-                                        ${Object.entries(request[i].headers).map((e) =>`<li class="list-group-item">${e}</li>`)}
+                                        ${Object.entries(request[i].headers).map((e) => `<li class="list-group-item"><pre>${JSON.stringify(e).replace(',',':')}</pre></li>`)}
 
                                     </ul>
                                     
@@ -231,7 +234,7 @@ ${filter(request[i].body)}
                             </div>
                         </div>
                     
-                    `:''}
+                    `: ''}
                 </div>
 
                 <div class="col bg-dark">
@@ -244,7 +247,7 @@ ${filter(request[i].body)}
         "url": "${request[i].url}",
         "method": "${request[i].method}",
         "timeout": 0,
-        ${request[i].body? `"data:"` + filter(request[i].body) : ''}
+        ${request[i].body ? `"data:"` + filter(request[i].body) : ''}
     };
 
     $.ajax(settings).done(function (response) {

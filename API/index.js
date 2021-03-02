@@ -1,38 +1,37 @@
-const cookie = require('cookie-parser')
+require("dotenv-safe").config()
 const morgan = require('morgan')
-const helmet = require('helmet')
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
-const connection = require("./conexao.js");
-const jwt = require('jsonwebtoken');
+const connection = require("./conexao.js")
+const jwt = require('jsonwebtoken')
+const bcryptjs = require("bcryptjs")
 const app = express()
-require("dotenv-safe").config();
-const crypto = require('crypto'); 
 
-/**Configurando o body parser para pegar POST mais tarde*/
+/** Configurando o body parser para pegar POST mais tarde */
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
-
 app.use(cors())
+
+/** Morgan vai mostrar quais requisições estão chegando em nosso servidor HTTP */
 app.use(morgan('dev'))
-app.use(helmet())
-app.use(cookie())
 
 function execSQLQuery(sqlQry, res) {
 
-  connection.query(sqlQry, function (error, results, fields) {
-    if (error) {
-      res.json(error)
-    } else {
+  connection.query(sqlQry, (err, results, fields) => {
+    if (err) {
+      return res.json(err)
 
-      res.json(results)
+    } else {
+      return res.json(results)
+
     }
   });
 }
 
 /** Definindo as rotas */
-const router = express.Router()
+const router = express.Router();
+const salt = bcryptjs.genSaltSync(10);
 
 app.get('/', function (req, res) {
   res.sendFile('index.html', { root: __dirname });
@@ -58,13 +57,13 @@ router.get('/cliente/:id', (req, res,) => {
 
 /** Adiciona um cliente no banco */
 router.post('/cliente', (req, res) => {
-
   let { nome, email, celular, endereco, numero, bairro, cidade, estado, cep, senha, sexo } = { ...req.body }
 
-  let pwd = encrypt(senha)
+  // Senha criptografada
+  const csenha = bcryptjs.hashSync(senha, salt);
 
   let qry = `INSERT INTO tbl_cliente( nome, email, celular, endereco, numero, bairro, cidade, estado, cep, senha, sexo) 
-    VALUES('${nome}','${email}','${celular}','${endereco}','${numero}','${bairro}','${cidade}','${estado}','${cep}','${pwd}','${sexo}')`
+    VALUES('${nome}','${email}','${celular}','${endereco}','${numero}','${bairro}','${cidade}','${estado}','${cep}','${csenha}','${sexo}')`
 
   execSQLQuery(qry, res)
 
@@ -75,7 +74,7 @@ router.patch('/cliente/:id', (req, res) => {
 
   let id = parseInt(req.params.id)
 
-  let pwd = encrypt(req.body.senha)
+  const csenha = bcryptjs.hashSync(req.body.senha, salt);
 
   execSQLQuery(`UPDATE tbl_cliente SET 
     nome =    '${req.body.nome}', 
@@ -88,7 +87,7 @@ router.patch('/cliente/:id', (req, res) => {
     estado =  '${req.body.estado}',
     cep =     '${req.body.cep}',
     sexo =    '${req.body.sexo}',
-    senha =   '${pwd}'
+    senha =   '${csenha}'
     WHERE id_cliente = ${id}`, res)
 })
 
@@ -109,31 +108,37 @@ router.post('/cliente/login', (req, res, next) => {
 
   let { email, senha } = { ...req.body }
 
-  let pwd = encrypt(senha);
+  // Query busca dados do cliente de acordo com o e-mail e senha passado pelo req.body */
+  let qry = `SELECT * FROM tbl_cliente WHERE email = '${email}'`
 
-  /** Query busca dados do cliente de acordo com o e-mail e senha passado pelo req.body */
-  let qry = `SELECT * FROM tbl_cliente WHERE email = '${email}' AND senha = '${pwd}'`
+  connection.query(qry, (err, result) => {
 
-  connection.query(qry, (error, result, fields) => {
+    if (err) { return res.json(err) }
 
-    let len = Object.keys(result).length
+    if (result[0]) {
 
-    if (len < 1) {
-      res.status(404).send('Senha e/ou E-mail inválido!');
+      // Comparando as senhas
+      if (bcryptjs.compareSync(senha, result[0].senha)) {
 
-    } else if (len > 1) {
-      res.status(500).send('Existe mais de um cliente com o mesmo login, por favor resolver junto ao T.I.');
+        const id = parseInt(result[0].id_cliente)
+
+        // Usando JWT para criar um token
+        const token = jwt.sign({ id }, process.env.SECRET, {
+          expiresIn: 300 // expires in 5min
+        });
+
+        // Retorna um objeto com valores os auth(booleano) confirmando a autenticação e o token 
+        return res.status(200).send({ auth: true, token: token })
+
+      } else {
+        // Senha está errada
+        return res.status(404).send('Senha e/ou E-mail inválido!')
+
+      }
 
     } else {
-      const id = parseInt(result[0].id_cliente)
-
-      // Usando JWT para criar um token
-      const token = jwt.sign({ id }, process.env.SECRET, {
-        expiresIn: 300 // expires in 5min
-      });
-
-      // Retorna um objeto com valores os auth(booleano) confirmando a autenticação e o token 
-      res.status(200).send({ auth: true, token: token })
+      // E-mail não foi encontrado
+      return res.status(404).send('Senha e/ou E-mail inválido!');
 
     }
   })
@@ -166,43 +171,9 @@ function verifyJWT(req, res, next) {
     // Se tudo estiver ok, salva no request para uso posterior
     req.userId = decoded.id;
 
-    console.log(req)
-
     next();
   });
-} 
-
-function encrypt(text) { 
-  const key = crypto.randomBytes(32); 
-  const iv = crypto.randomBytes(16);
-
-  let bufferKey = Buffer.from(key)
-
-  let cipher = crypto.createCipheriv('aes-256-cbc', bufferKey, iv); 
- 
-  let encrypted = cipher.update(text);
-  encrypted = Buffer.concat([encrypted, cipher.final()]); 
-
-  return { iv: iv.toString('hex'), encryptedData: encrypted.toString('hex'), bufferKey: bufferKey.toString('hex') }; 
 }
-
-function decrypt(text) { 
-
-  let iv = Buffer.from(text.iv, 'hex'),
-      encryptedText = Buffer.from(text.encryptedData, 'hex'); 
- 
-  let decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(text.bufferKey,'HEX'), iv); 
-
-  let decrypted = decipher.update(encryptedText); 
-  decrypted = Buffer.concat([decrypted, decipher.final()]); 
-
-  return decrypted.toString(); 
-} 
-
-var output = encrypt("GeeksforGeeks"); 
-console.log(output); 
-
-console.log('\n' + decrypt(output)); 
 
 
 /** Inicia o servidor */
