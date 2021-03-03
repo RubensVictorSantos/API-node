@@ -71,7 +71,7 @@ router.post('/cliente', (req, res) => {
 
 /** Altera os dados do cliente que esta especificado pelo id */
 router.patch('/cliente/:id', (req, res) => {
-
+  
   let id = parseInt(req.params.id)
 
   const csenha = bcryptjs.hashSync(req.body.senha, salt);
@@ -174,7 +174,6 @@ function verifyJWT(req, res, next) {
     next();
   });
 }
-
 
 /** Inicia o servidor */
 app.listen(process.env.PORT)
