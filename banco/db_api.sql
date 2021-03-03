@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.7.28, for Win64 (x86_64)
 --
--- Host: localhost    Database: db_newsite
+-- Host: localhost    Database: db_api
 -- ------------------------------------------------------
 -- Server version	5.7.28-log
 
