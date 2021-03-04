@@ -1,9 +1,24 @@
 # API-Node - exemplo de app Node.js + express + jsonwebtoken + bcryptjs + dotenv-safe
 ## Instalação
 ### Prerequisitos da aplicação
-* Instalação do server nodejs; e
-* Recomendado rodar no SO Windows.
+* Instalação do server nodejs;
+* Recomendado rodar no SO Windows;
 * Criar arquivo .env dentro da pasta api com todas as configurações do banco.
+```
+PORT= Porta que sua api vai rodar
+
+# Jsonwebtoken
+
+SECRET= Sequência de caracteres que será usado para fazer o token  
+
+# Configurações do banco de dados
+
+DB_NAME= Nome do seu banco de dados
+DB_USER= Usuário para acessar o banco
+DB_HOST= Endereço onde seu banco está hospedado
+DB_PORT= Porta que seu banco está usando
+DB_PASS= Senha para acessa o banco
+```
 * Importar o script do banco API-Node/banco/db_api.sql
 ### Instalação da aplicação
 #### Instalação do backend
