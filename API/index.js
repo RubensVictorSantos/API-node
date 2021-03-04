@@ -174,4 +174,4 @@ function verifyJWT(req, res, next) {
 }
 
 /** Inicia o servidor */
-app.listen(process.env.PORT)
+app.listen(3333)
