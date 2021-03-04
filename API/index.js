@@ -1,7 +1,6 @@
 require("dotenv-safe").config()
 const morgan = require('morgan')
 const express = require('express')
-const cors = require('cors')
 const bodyParser = require('body-parser')
 const connection = require("./conexao.js")
 const jwt = require('jsonwebtoken')
@@ -11,7 +10,6 @@ const app = express()
 /** Configurando o body parser para pegar POST mais tarde */
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
-app.use(cors())
 
 /** Morgan vai mostrar quais requisições estão chegando em nosso servidor HTTP */
 app.use(morgan('dev'))
